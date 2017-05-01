@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+           
+           	<!-- View Fields Fragments -->
+           	<div th:fragment="viewFieldIncludedClass(fId)">
+                    <label class="control-label" th:for="${fId}">
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+                    <div class="controls">
+                        <label class="input"><span th:text="${__${fId}__}"></span>&nbsp;</label>
+                    </div>
+            </div>
+            
+            <div th:fragment="viewFieldNotIncludedClass(fId)">
+					<label class="control-label" th:for="${fId}">
+	                   	<span th:text="#{model.__${fId}__}"></span>
+	                </label>
+                    <div class="controls">
+                        <label class="input"><span th:text="${__${fId}__}"></span>&nbsp;</label>
+                    </div>
+           	</div>
+           	
+           	<!-- labelFieldEnum  -->
+            <div th:fragment="viewFieldEnum(fId,propertiesName, enum)" >
+					<label class="control-label" th:for="${fId}">
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+					<div class="controls">
+						<span th:text="#{*{__${enum}__[__${fId}__-1].__${propertiesName}__}}"></span>
+					</div>
+			</div>
+           
+            <!-- textFieldMaxLength -->
+           <div th:fragment="textFieldMaxLength(fId, cssClassName, requiredField, readonly, maxlength)">
+                    <label class="control-label" th:for="${fId}">
+	                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+                    <div class="controls">
+                        <input type="text" th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" th:maxlength="${maxlength}" ></input>
+                        <span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+                    </div>
+            </div>
+
+            <!-- textFieldMaxLengthWithCustomId -->
+           <div th:fragment="textFieldMaxLengthWithCustomId(fId, nameID, cssClassName, requiredField, readonly, maxlength)">
+                    <label class="control-label" th:for="${fId}">
+	                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+                    <div class="controls">
+                        <input th:id="${nameID}" type="text" th:class="${cssClassName}" th:field="*{__${fId}__}" 
+                        	th:errorclass="text-error"  th:readonly="${readonly}" th:maxlength="${maxlength}" ></input>
+                        <span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+                    </div>
+            </div>
+            
+            <!-- textFieldEnum  -->
+            <div th:fragment="textFieldEnum(fId,propertiesName, enum, cssClassName, readonly)" >
+					<label class="control-label" th:for="${fId}">
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+					<div class="controls">
+								<input type="hidden" th:readonly="${readonly}"  th:field="*{__${fId}__}" ></input>
+								<input type="text"   th:class="${cssClassName}" 
+									   th:value="#{*{__${enum}__[__${fId}__-1].__${propertiesName}__}}" 
+									   th:readonly="${readonly}"></input>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+
+            <div th:fragment="textFieldWithClearButton(fId, cssClassName, requiredField, readonly)">
+                    <label class="control-label" th:for="${fId}">
+	                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+                    <div class="controls">
+                        <input type="text" th:class="${cssClassName}" th:field="*{__${fId}__}"
+                               th:errorclass="text-error"  th:readonly="${readonly}"></input>
+                        <button id="btnFieldClean" class="btn" type="button" name="clearFields"><i class="icon-remove"></i><span th:text="#{formFilter.button.clean}"></span></button>
+                        <span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+                    </div>
+            </div>
+			
+			<!-- TextArea Fragments -->
+           	<div th:fragment="textAreaFieldWithClearButton(fId, cssClassName, requiredField, readonly)">
+               	<label class="control-label" th:for="${fId}">
+                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+               	</label>
+               	<div class="controls">
+                   	<textarea th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" cols="160" rows="6">
+                   	</textarea>
+                   	<button id="btnFieldClean" class="btn" type="button" name="clearFields"><i class="icon-remove"></i><span th:text="#{formFilter.button.clean}"></span></button>
+                   	<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+               	</div>
+           	</div>
+
+           	<div th:fragment="textAreaField(fId, cssClassName, requiredField, readonly)">
+               	<label class="control-label" th:for="${fId}">
+                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+               	</label>
+               	<div class="controls">
+                   	<textarea th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" cols="160" rows="6">
+                   	</textarea>
+                   	<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+               	</div>
+           	</div>
+           	
+           	<div th:fragment="textAreaFieldMaxlength(fId, cssClassName, requiredField, readonly, maxlength)">
+               	<label class="control-label" th:for="${fId}">
+                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+               	</label>
+               	<div class="controls">
+                   	<textarea th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" cols="160" rows="6" th:maxlength="${maxlength}">
+                   	</textarea>
+                   	<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+               	</div>
+               		<script type="text/javascript">
+						$("textarea[maxlength]").keypress(function(event){
+						    var key = event.which;
+						    //todas as teclas incluindo enter
+						    if(key >= 33 || key == 13) {
+						        var maxLength = $(this).attr("maxlength");
+						        var length = this.value.length;
+						        if(length >= maxLength) {
+						            event.preventDefault();
+						        }
+						    }
+						});
+	
+					</script>			
+           	</div>
+            
+            <!-- CheckBox Fragments -->
+           	<div th:fragment="checkboxField(fId, cssClassName, requiredField, readonly)">
+                    <label class="control-label" th:for="${fId}">
+	                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+					<div class="controls">
+	                    <label th:class="${cssClassName}">
+	                        <input type="checkbox" th:field="*{__${fId}__}" th:readonly="${readonly}"  ></input>
+	                        <span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+	                    </label>
+	                </div>
+            </div>
+            
+            <!-- Radio Button Fragments -->
+            <div th:fragment="radioButton(fId, qtdInputRadio, cssClassName, requiredField, disabled)">
+                <label class="control-label" th:for="${fId}">
+                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+                </label>
+				<div class="controls">
+	                    <div th:each="i : ${#numbers.sequence( 1, __${qtdInputRadio}__)}">
+	                    	<label th:class="${cssClassName}">
+	                        	<input type="radio" checked="checked" th:field="*{__${fId}__}" th:disabled="${disabled}" th:value="${i}" ></input>
+	                        	<span th:text="#{model.__*{class.simpleName}__.__${fId}__.label__${i}__}"></span>
+	                        </label>
+	                    </div>
+                      	<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+               	</div>
+			</div>
+			
+			<div th:fragment="radioButtonEnum(fId, enum, cssClassName, requiredField, disabled)" >
+			
+			
+					<label class="control-label" th:for="${fId}">
+	                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+	                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+	                </label>
+	                
+					<div class="controls">
+						<div th:each="obj : *{__${enum}__}">
+						<input type="radio" checked="checked" th:field="*{__${fId}__}" th:disabled="${disabled}" th:value="${obj.id}" ></input>
+						
+							
+						
+							
+							
+						
+							
+							
+		                    <span th:text="#{__${obj.description}__}"></span>
+						</div>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+
+            <div th:fragment="radioButtonBoolean(fId, cssClassName, requiredField, disabled)">
+                <label class="control-label" th:for="${fId}">
+                   	<strong class="required"  th:if="${requiredField}" >*</strong>
+                   	<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+                </label>
+				<div class="controls">
+                    	<label th:class="${cssClassName}">
+                        	<input type="radio" checked="checked" th:field="*{__${fId}__}" th:disabled="${disabled}" th:value="${1}" ></input>
+                        	<span th:text="#{model.__*{class.simpleName}__.__${fId}__.label.true}"></span>
+                        </label>
+                    	<label th:class="${cssClassName}">
+                        	<input type="radio" checked="checked" th:field="*{__${fId}__}" th:disabled="${disabled}" th:value="${0}" ></input>
+                        	<span th:text="#{model.__*{class.simpleName}__.__${fId}__.label.false}"></span>
+                        </label>
+                      	<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+               	</div>
+			</div>
+
+			
+			<!-- Selects Fragments -->
+            <div th:fragment="selectList(fId, listEntity, optionValue, optionText, requiredField, disabled, all)">
+					<label for="select01" class="control-label" >
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					<div class="controls">
+						<select th:field="*{__${fId}__}" th:disabled="${disabled}">
+							<option th:if="__${all}__ == false"  value="" th:text="#{inputs.first.option.select}"></option>
+							<option th:if="__${all}__ == true"  value="" th:text="#{label.common.all}"></option>
+							<option th:each="obj : *{__${listEntity}__}" th:value="${obj.__${optionValue}__}"  th:text="${obj.__${optionText}__}" ></option>
+						</select>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+
+
+            <div th:fragment="selectListDoubleDescription(fId, cssClassName, listEntity, optionValue, optionText1, optionText2,separator, requiredField, disabled, all)">
+					<label for="select01" class="control-label" >
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					<div class="controls">
+						<select th:field="*{__${fId}__}" th:disabled="${disabled}" th:class="${cssClassName}">
+							<option th:if="__${all}__ == false"  value="" th:text="#{inputs.first.option.select}"></option>
+							<option th:if="__${all}__ == true"  value="" th:text="#{label.common.all}"></option>
+							<option th:each="obj : *{__${listEntity}__}" th:value="${obj.__${optionValue}__}">
+								<span th:text="${obj.__${optionText1}__}"></span>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
+								<span th:text="${separator}"></span>
+								<span th:text="${obj.__${optionText2}__}"></span>
+							</option>
+						</select>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+			
+			<div th:fragment="selectListWithClass(fId, cssClassName, listEntity, optionValue, optionText, requiredField, disabled, all)">
+					<label for="select01" class="control-label" >
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					<div class="controls">
+						<select th:field="*{__${fId}__}" th:disabled="${disabled}" th:class="${cssClassName}">
+							<option th:if="__${all}__ == false"  value="" th:text="#{inputs.first.option.select}"></option>
+							<option th:if="__${all}__ == true"  value="" th:text="#{label.common.all}"></option>
+							<option th:each="obj : *{__${listEntity}__}" th:value="${obj.__${optionValue}__}"  th:text="${obj.__${optionText}__}" ></option>
+						</select>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+			
+            <div th:fragment="selectListWithoutLabel(fId, listEntity, optionValue, optionText, disabled, )">
+						<select th:field="*{__${fId}__}" th:disabled="${disabled}">
+							<option  value="" th:text="#{inputs.first.option.select}"></option>
+							<option th:each="obj : *{__${listEntity}__}" th:value="${obj.__${optionValue}__}"  th:text="${obj.__${optionText}__}" ></option>
+						</select>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+			</div>
+			
+			<div th:fragment="selectMap(fId, map, requiredField, disabled, all)" >
+					<label for="select01" class="control-label" >
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					<div class="controls">
+						<select th:field="*{__${fId}__}" th:disabled="${disabled}" >
+							<option th:if="__${all}__ == false" value=""  th:text="#{inputs.first.option.select}"></option>
+							<option th:if="__${all}__ == true"  value=""  th:text="#{label.common.all}"></option>
+							<option class="selectChange" th:each="obj : *{__${map}__}" th:value="${obj.key}"  th:text="#{__${obj.value}__}" ></option>
+						</select>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+
+			<div th:fragment="selectMapWithoutLabel(fId, map, requiredField, disabled, all)" >
+					<select th:field="*{__${fId}__}" th:disabled="${disabled}" >
+						<option th:if="__${all}__ == false" value=""  th:text="#{inputs.first.option.select}"></option>
+						<option th:if="__${all}__ == true"  value=""  th:text="#{label.common.all}"></option>
+						<option class="selectChange" th:each="obj : *{__${map}__}" th:value="${obj.key}"  th:text="#{__${obj.value}__}" ></option>
+					</select>
+					<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+			</div>
+
+			<div th:fragment="selectEnum(fId, enum, cssClassName, requiredField, disabled, all)" >
+					<label class="control-label" th:for="${fId}">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					<div class="controls">
+						<select th:field="*{__${fId}__}" th:disabled="${disabled}" th:class="${cssClassName}">
+							<option th:if="__${all}__ == false" value=""  th:text="#{inputs.first.option.select}"></option>
+							<option th:if="__${all}__ == true"  value=""  th:text="#{label.common.all}"></option>
+							<option th:each="obj : *{__${enum}__}" th:value="${obj.id}"  th:text="#{__${obj.description}__}" ></option>
+						</select>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+
+			<div th:fragment="selectEnumWithoutLabel(fId, enum, cssClassName, disabled, all)" >
+					<select th:field="*{__${fId}__}" th:disabled="${disabled}" th:class="${cssClassName}">
+						<option th:if="__${all}__ == false" value=""  th:text="#{inputs.first.option.select}"></option>
+						<option th:if="__${all}__ == true"  value=""  th:text="#{label.common.all}"></option>
+						<option th:each="obj : *{__${enum}__}" th:value="${obj.id}"  th:text="#{__${obj.description}__}" ></option>
+					</select>
+					<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+			</div>
+			
+			<!-- MultiSelects Fragments -->
+			<div th:fragment="multipleSelectMapsAjax(fId, map, requiredField, disabled, hasLabel, withHeaderKey)" >
+					<label for="select01" class="control-label" th:if="${hasLabel}">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					<div class="controls">
+						<table>
+							<tr>
+								<td>
+									<select id="${fId}" th:field="*{__${fId}__}" th:disabled="${disabled}" class="multiselect" multiple="multiple" style="width: 125px" size="7">
+										<option th:if="${withHeaderKey}"  value="" th:text="#{inputs.first.option.select}"></option>
+										<option th:each="obj : *{__${map}__}" th:value="${obj.key}"  th:text="#{__${obj.value}__}" ></option>
+									</select>
+									<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+								</td>
+								<td>
+									<span></span>
+								</td>
+								<td>
+									<select th:field="*{value}" id="sltValue" multiple="multiple" style="width: 200px" size="7">
+										<option th:each="obj : ${mapResult}" th:value="${obj.key}"  th:text="#{${obj.value}}" ></option>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</div>
+			</div>
+			
+			<div th:fragment="multiSelectFieldAddAndRemove(fId, listSelect, optionValueSel, optionTextSel,
+																	listItems, optionValueItem, optionTextItem)">
+               <div class="controls">
+
+                   <table>
+                        <tr>
+                            <td>
+                               <select th:id="selectable__${fId}__" multiple="multiple" th:name="nmSelectable__${fId}__">
+                                   <option class="selectScriptPort" th:each="obj : ${__${listSelect}__}"
+                                           th:value="${__${optionValueSel}__}"
+                                           th:text="${__${optionTextSel}__}">
+                                   </option>
+                               </select>
+                            </td>
+                            <td style="align-content: center">
+                                <a href='#' th:name="nmSelectItem__${fId}__" th:id="select-item__${fId}__" ><span th:text="#{button.select}"></span></a>
+                                <a href='#' th:name="nmDeselectItem__${fId}__" th:id="deselect-item__${fId}__" ><span th:text="#{button.remove}"></span></a>
+                            </td>
+                            <td>
+                               <select th:id="selected__${fId}__" multiple="multiple" th:field="*{__${fId}__}" th:name="__${fId}__">
+                                   <option class="selectScriptPort" th:each="obj : ${__${listItems}__}"
+                                           th:value="${__${optionValueItem}__}"
+                                           th:text="${__${optionTextItem}__}">
+                                   </option>
+                               </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+               </div>
+           	</div>
+			
+			<!-- Date fields fragments -->
+			<div th:fragment="dateField(fId, nameCalendar, requiredField, readonly)">
+
+                    <input type="hidden" th:id="isReady__${nameCalendar}__" th:value="${readonly}" ></input>
+
+					<label class="control-label">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					
+					<div class="controls">
+						<div class="input-append date" data-date-format="yyyy-mm-dd" th:id="${nameCalendar}" >
+	                        <input type="text" th:field="*{__${fId}__}" th:id="${fId}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+	                        <span class="add-on"><i class="icon-th"></i></span>
+						</div>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+			
+			<!-- Language only 'en' or 'pt_BR' and separators only '/' or '-' -->
+			<div th:fragment="dateFieldFormat(fId, nameCalendar, requiredField, readonly, language, separator)">
+
+                    <input type="hidden" th:id="isReady__${nameCalendar}__" th:value="${readonly}" ></input>
+
+					<label class="control-label">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					
+					<div class="controls">
+						<div th:if="${language}=='pt_BR'">
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="dd-mm-yyyy" th:id="${nameCalendar}" >
+		                        <input type="text" th:field="*{__${fId}__}" th:id="${fId}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="dd/mm/yyyy" th:id="${nameCalendar}" >
+		                        <input type="text" th:field="*{__${fId}__}" th:id="${fId}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						<div th:if="${language}=='en'">
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="yyyy-mm-dd" th:id="${nameCalendar}" >
+		                        <input type="text" th:field="*{__${fId}__}" th:id="${fId}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="yyyy/mm/dd" th:id="${nameCalendar}" >
+		                        <input type="text" th:field="*{__${fId}__}" th:id="${fId}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+			
+			<!-- Language only 'en' or 'pt_BR' and separators only '/' or '-' -->
+			<div th:fragment="dateFieldWithClassFormat(fId, cssClassName, nameCalendar, requiredField, readonly, language, separator)">
+
+                    <input type="hidden" th:id="isReady__${nameCalendar}__" th:value="${readonly}" ></input>
+
+					<label class="control-label">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					
+					<div class="controls">
+						<div th:if="${language}=='pt_BR'">
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="dd-mm-yyyy" th:id="${nameCalendar}" >
+		                        <input type="text" th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+	                        	<span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="dd/mm/yyyy" th:id="${nameCalendar}" >
+		                        <input type="text" th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+	                        	<span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						<div th:if="${language}=='en'">
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="yyyy-mm-dd" th:id="${nameCalendar}" >
+		                        <input type="text" th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+	                        	<span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="yyyy/mm/dd" th:id="${nameCalendar}" >
+		                        <input type="text" th:class="${cssClassName}" th:field="*{__${fId}__}" th:errorclass="text-error"  th:readonly="${readonly}" ></input>
+	                        	<span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+			
+			<!-- Language only 'en' or 'pt_BR' and separators only '/' or '-' -->
+			<div th:fragment="dateFieldPeriodWithoutLabelFormat(fIdInit, fIdEnd, requiredField, readonlyFieldInit, readonlyFieldEnd, language, separator)">
+
+                    <input type="hidden" th:id="isReady__${fIdInit}__" th:value="${readonlyFieldInit}" ></input>
+                    <input type="hidden" th:id="isReady__${fIdEnd}__" th:value="${readonlyFieldEnd}" ></input>
+
+					<label class="control-label">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+					</label>
+					
+					<div class="controls">
+						<div th:if="${language}=='pt_BR'">
+							<!-- Separator '-' -->
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="dd-mm-yyyy" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="dd-mm-yyyy" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<!-- Separator '/' -->
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="dd/mm/yyyy" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="dd/mm/yyyy" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						<div th:if="${language}=='en'">
+							<!-- Separator '-' -->
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="yyyy-mm-dd" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="yyyy-mm-dd" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<!-- Separator '/' -->
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="yyyy/mm/dd" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="yyyy/mm/dd" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						
+						<span class="text-error" th:if="${#fields.hasErrors('__${fIdInit}__')}" th:errors="*{__${fIdInit}__}"></span>
+                        <span class="text-error" th:if="${#fields.hasErrors('__${fIdEnd}__')}" th:errors="*{__${fIdEnd}__}"></span>
+					</div>
+			</div>
+			
+			<!-- Language only 'en' or 'pt_BR' and separators only '/' or '-' -->
+			<div th:fragment="dateFieldPeriodFormat(fLabel, fIdInit, fIdEnd, requiredField, readonlyFieldInit, readonlyFieldEnd, language, separator)">
+
+                    <input type="hidden" th:id="isReady__${fIdInit}__" th:value="${readonlyFieldInit}" ></input>
+                    <input type="hidden" th:id="isReady__${fIdEnd}__" th:value="${readonlyFieldEnd}" ></input>
+
+					<label class="control-label">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fLabel}__}"></span>
+					</label>
+					
+					<div class="controls">
+						<div th:if="${language}=='pt_BR'">
+							<!-- Separator '-' -->
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="dd-mm-yyyy" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="dd-mm-yyyy" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<!-- Separator '/' -->
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="dd/mm/yyyy" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="dd/mm/yyyy" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						<div th:if="${language}=='en'">
+							<!-- Separator '-' -->
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="yyyy-mm-dd" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='-'" class="input-append date" data-date-format="yyyy-mm-dd" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<!-- Separator '/' -->
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="yyyy/mm/dd" th:id="id__${fIdInit}__">
+		                        <input type="text" th:field="*{__${fIdInit}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldInit}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<div th:if="${separator}=='/'" class="input-append date" data-date-format="yyyy/mm/dd" th:id="id__${fIdEnd}__">
+		                        <input type="text" th:field="*{__${fIdEnd}__}" th:errorclass="text-error"  th:readonly="${readonlyFieldEnd}" size="10"></input>
+		                        <span class="add-on"><i class="icon-th"></i></span>
+							</div>
+						</div>
+						
+						<span class="text-error" th:if="${#fields.hasErrors('__${fIdInit}__')}" th:errors="*{__${fIdInit}__}"></span>
+                        <span class="text-error" th:if="${#fields.hasErrors('__${fIdEnd}__')}" th:errors="*{__${fIdEnd}__}"></span>
+					</div>
+			</div>
+			
+			<!-- File Fragments -->
+			<!-- BE CAREFUL	 WHEN USING -->
+			<!-- Does Not Work with Internet Explorer Version 9 or < !!! -->
+			<div th:fragment="fileCustom(fIdFile, fId, requiredField, lblButton)">
+
+					<label class="control-label">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					
+					<div class="controls">
+						<script>
+							$(document).ready( function() {
+							 	$('#falseinput').click(function(){
+							    	$("#fileinput").click();
+							  	});
+							 	
+							 	$('.inputfile').change(function(){
+							 		$("#file-falso").val($(this).val());
+								});
+							});
+						</script>
+						<input id="fileinput" type="file" style="display:none;" class="inputfile" th:field="*{__${fIdFile}__}" />
+						<input id="file-falso" type="text" th:class="input-xlarge" th:field="*{__${fId}__}" th:errorclass="text-error"/>
+						<button id="falseinput" class="btn btn-primary" type="button" th:text="#{__${lblButton}__}"></button>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+			
+			<!-- Works in any browser -->
+			<div th:fragment="file(fIdFile, fId, requiredField, readonly, sizeValue)">
+
+					<label class="control-label">
+						<strong class="required"  th:if="${requiredField}" >*</strong>
+						<span th:text="#{model.__*{class.simpleName}__.__${fId}__}"></span>
+					</label>
+					
+					<div class="controls">
+						<script>
+							$(document).ready( function() {
+							 	
+							 	$('.input-file').change(function(){
+							 		$("#file-falso").val($(this).val());
+								});
+							});
+						</script>
+                        <input id="fileinput" type="file" class="input-file" th:field="*{__${fIdFile}__}" 
+                        		th:size="${__${sizeValue}__}" th:readonly="${readonly}"  />
+                        
+                        <input id="file-falso" type="hidden" th:field="*{__${fId}__}" th:errorclass="text-error"/>
+						<span class="text-error" th:if="${#fields.hasErrors('__${fId}__')}" th:errors="*{__${fId}__}"></span>
+					</div>
+			</div>
+			
+</html>

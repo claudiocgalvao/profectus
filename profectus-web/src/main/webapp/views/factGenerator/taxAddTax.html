@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content" style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.change.tax}" style="text-transform: none;" ></h1>
+				</div>
+
+				<div th:include="factGenerator/factGeneratorMessage :: messageView" />
+
+				<form  id="formTax" class="form-horizontal form-container" action="#" th:action="@{/factGenerator/taxAddTax}" th:object="${factGeneratorDTO}" method="post">
+
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.startTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.responsible}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:field="*{dayTrade}"></input>
+					<input type="hidden" th:value="${firstFieldError}" th:id="firstFieldError"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.saveTax}" th:id="saveTax"></input>
+					<input type="hidden" th:id="action" th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName" th:field="*{viewName}"></input>
+					
+ 					<fieldset>
+
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')"></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('limitMonthLosses', 'input-small', 'false', 'true','2')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('typeDetermination','description','typeDeterminationEnum', 'input-small', 'readonly')" ></div>
+						
+						<div class="control-group" >
+							<label class="control-label" th:for="dayTrade"><span th:text="#{model.FactGeneratorDTO.dayTrade}"></span></label>
+						    <div class="controls"  >
+								<input type="text" th:class="input-mini" th:value="#{${factGeneratorDTO.getDescriptionDayTrade(factGeneratorDTO.dayTrade)}}" th:readonly="true"></input>
+						     </div>
+						</div>
+						
+						<!-- <div class="control-group" th:include="fragments/inputs :: textAreaField('factGeneratorVersionDTO.calculationBase', 'span12', 'false', 'true')" /> -->
+						
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-medium', 'true')" />
+						
+						<div class="control-group" th:include="fragments/inputs :: selectList('factGeneratorVersionDTO.taxDTO.id', 'listTaxDTO', 'id', 'code', 'true', 'false', 'false')" />
+						
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorVersionDTO.taxDTO.description', 'input-xxlarge', 'false', 'true','30')" />
+ 					
+ 					
+ 					</fieldset>
+					<div class="form-actions">
+						<button id="buttonInclude" class="btn btn-primary" type="submit" ><span th:text="#{button.include}"></span></button>
+						<!-- <button id="buttonClean" class="btn" type="button"><i class="icon-remove"></i>&nbsp;<span th:text="#{button.clean}"></span></button> -->
+						<button id="buttonFinalize" class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+	<script type="text/javascript">
+	
+
+		$(document).ready(function() {
+			
+           configureDataTable('#variableTable', [6]);
+
+		});
+		
+		$(window).load(function() {
+
+			$("[name='variableDTO.variableSize']").keypress(onlyNumber);
+			//blockCtrlKey("[name='code']");
+			//blockPasteWithMouse("[name='code']");
+
+			//$("#description").keypress(onlyWordAndNumber);
+			//blockCtrlKey("[name='description']");
+			//blockPasteWithMouse("[name='description']");
+			
+			//Setar focu no primeiro campo com erro------------------
+     	   $("[name='"+$("#firstFieldError").val()+"']").focus();
+
+			//$("#buttonClean").click(function(){
+				//$("[name='factGeneratorVersionDTO.taxDTO.id']").val("");
+				//$("[name='factGeneratorVersionDTO.taxDTO.description']").val("");
+			//});
+			
+	    $("#buttonFinalize").click(function(){
+	    	$("#action").val("finalize");
+	    	$("#viewName").val("factGenerator/tabTaxList");
+	    });
+
+		    //EVENTO CHANGE
+	        $("[name='factGeneratorVersionDTO.taxDTO.id']").change(function () {
+	        	//var textSelect = $('select option:selected').text();
+	        	$("#formTax").submit();
+	        	
+	        });
+
+		    //saveTax
+		    $("#buttonInclude").click(function(){
+		    	$("#saveTax").val("true");
+		    });
+		    
+		});
+
+	</script>
+</div>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	
+	<!--MODAL CONFIRM CANCEL -->
+ 		<div class="modal hide" id="confirmCancel">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3><span th:text="#{title.variable.modal.confirm}" ></span></h3>
+			</div>
+			<div class="modal-body">
+						
+			<fieldset>
+			 	<span th:text="#{message.formVariable.modal.confirm.cancel}"></span>
+			</fieldset>
+						
+			</div>
+			<div class="modal-footer">
+				<form name="formModal"		th:action="@{/factGenerator/list}" method="post">
+					<button type="button" 	class="btn" data-dismiss="modal"><span th:text="#{button.no}"></span></button>
+					<button type="submit" 	class="btn btn-primary" ><span th:text="#{button.yes}"></span></button>
+				</form>
+			</div>
+		</div>
+	
+		<!--MODAL DELETE -->
+ 		<div class="modal hide" id="confirmDeleteVariavel">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3><span th:text="#{title.variable.modal.confirm}" ></span></h3>
+			</div>
+			<div class="modal-body">
+						
+			<fieldset>
+			 	<span th:text="#{message.formVariable.modal.confirm.delete}"></span>
+			</fieldset>
+						
+			</div>
+			<div class="modal-footer">
+				<form name="formModal"		th:action="@{/factGenerator/deleteVariable}" th:object="${factGeneratorDTO}" method="post">
+					 <input type="hidden"  	th:field="*{id}" th:id="modalfactGeneratorId"></input>
+					 <input type="hidden"  	th:field="*{variableDTO.id}" th:id="modalVariableId"></input>
+					 <input type="hidden"  	th:field="*{factGeneratorVersionDTO.id}" th:id="modalFactGeneratorVersionId"></input>
+					 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.situation}" th:id="modalSituationId"></input>
+					 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}"></input>
+					 <input type="hidden" 	th:id="action2" th:field="*{action}"></input>
+			 		 <input type="hidden" 	th:id="viewName2" th:field="*{viewName}"></input>
+					<button type="button" 	class="btn" data-dismiss="modal"><span th:text="#{button.no}"></span></button>
+					<button type="submit" 	class="btn btn-primary" ><span th:text="#{button.yes}"></span></button>
+				</form>
+			</div>
+		</div>
+	
+	<div id="content" style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+	
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.change.variable}" style="text-transform: none;" ></h1>
+				</div>
+				
+				<div th:include="factGenerator/factGeneratorMessage :: messageView" />
+
+				<form  th:id="form" class="form-horizontal form-container" action="#" th:action="@{/factGenerator/saveVariableChange}" th:object="${factGeneratorDTO}" method="post">
+ 					
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.responsible}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:field="*{dayTrade}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+					<input type="hidden" th:id="action" th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName" th:field="*{viewName}"></input>
+					
+ 					<fieldset>
+ 						
+						
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')"></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('limitMonthLosses', 'input-small', 'false', 'true','2')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('typeDetermination','description','typeDeterminationEnum', 'input-small', 'readonly')" ></div>
+						
+						<div class="control-group" >
+							<label class="control-label" th:for="dayTrade"><span th:text="#{model.FactGeneratorDTO.dayTrade}"></span></label>
+						    <div class="controls"  >
+								<input type="text" th:class="input-mini" th:value="#{${factGeneratorDTO.getDescriptionDayTrade(factGeneratorDTO.dayTrade)}}" th:readonly="true"></input>
+						     </div>
+						</div>
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.startTerm', 'startTerm', 'false', 'true', 'en', '-')" />
+						<div class="control-group" th:include="fragments/inputs :: textAreaField('factGeneratorVersionDTO.calculationBase', 'span12', 'false', 'true')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('variableDTO.name', 'input-xlarge', 'true', 'false','30')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('variableDTO.description', 'input-xxlarge', 'true', 'false','50')" />
+						<div class="control-group" th:include="fragments/inputs :: selectEnum('variableDTO.origin', 'variableDTO.variableOriginEnum', 'input-medium', 'true', 'false', 'false')"/>
+						<div class="control-group" th:include="fragments/inputs :: selectEnum('variableDTO.type', 'variableDTO.variableTypeEnum', 'input-xlarge', 'true', 'false', 'false')"/>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('variableDTO.variableSize', 'input-medium', 'true', 'false','8')" />
+						<div class="control-group" th:include="fragments/inputs :: radioButtonBoolean('variableDTO.mandatory','radio', 'true', 'false')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLengthWithCustomId('variableDTO.value','variableValue','input-xlarge', 'true', 'false','2048')" />
+						<div th:include="fragments/inputs :: radioButtonBoolean('variableDTO.key','radio', 'true', 'false')" />
+						
+						
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('variableDTO.fieldIndex', 'input-medium', 'true', 'false','20')" />
+						
+					</fieldset>
+					
+					<div class="form-actions" >
+						<button id="buttonSave" class="btn btn-primary" type="submit" ><span th:text="#{button.save}"></span></button>
+						<button id="buttonClean" class="btn" type="button"><span th:text="#{button.clean}"></span></button>
+						<button id="buttonFinalize" class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+					</div>
+			 	</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+	//<![CDATA[
+
+		$(document).ready(function() {
+
+         configureDataTable('#variableTable', [8]);
+
+         blockCtrlKey("[name='variableDTO.value']");
+         blockPasteWithMouse("[name='variableDTO.value']");
+         
+         setMaxlengthFieldValue();
+           
+         //validar field value----------------------------------------------------------------
+			var origin = $("[name='variableDTO.origin']").val();
+		    var type = $("[name='variableDTO.type']").val();
+     
+           if ($.trim(origin) == "1") {
+               
+           	$("[name='variableDTO.value']").attr('disabled', false);//Habilita
+          	$("[name='variableDTO.mandatory']").attr('checked',true);
+          	$("[name='variableDTO.mandatory']").attr('disabled', true);
+          	$("[name='variableDTO.key']").attr('checked',true);
+          	$("[name='variableDTO.key']").attr('disabled', true);
+
+
+            if($.trim(type) == "1"){//Text
+               	$("[name='variableDTO.value']").off();
+               	$("[name='variableDTO.value']").keypress(onlyWordAndNumber);
+                blockCtrlKey("[name='variableDTO.value']");
+              	blockPasteWithMouse("[name='variableDTO.value']");
+              	
+               }
+               
+               if($.trim(type) == "2"){//Integer
+             	   $("[name='variableDTO.value']").off();
+                   $("[name='variableDTO.value']").keypress(onlyNumber);
+                   blockCtrlKey("[name='variableDTO.value']");
+                   blockPasteWithMouse("[name='variableDTO.value']");
+                   
+                }
+
+                if($.trim(type) == "3"){//FLOAT
+             	    $("[name='variableDTO.value']").off();
+                 	$("[name='variableDTO.value']").keypress(onlyNumber);
+                    $("[name='variableDTO.value']").maskMoney({decimal: ",", thousands: "."});//MASK
+                    blockCtrlKey("[name='variableDTO.value']");
+                    blockPasteWithMouse("[name='variableDTO.value']");
+                    
+                }
+
+               if($.trim(type) == "4"){//DATE
+            	   $("[name='variableDTO.value']").off();
+            	   $("[name='variableDTO.variableSize']").val('10');
+            	   setMaxlengthFieldValue();
+            	   $("[name='variableDTO.variableSize']").attr('disabled', true);
+               	   onlyDateFormat("[name='variableDTO.value']");
+                   blockCtrlKey("[name='variableDTO.value']");
+                   blockPasteWithMouse("[name='variableDTO.value']");
+                   
+                   //$("[name='variableDTO.value']").datepicker({
+                     	//autoclose: true,
+                      	//format: 'yyyy-mm-dd'
+                   //});
+               }
+           	
+           }else{
+        	   
+           	$("[name='variableDTO.value']").val('');//Limpa
+        	$("[name='variableDTO.value']").off();
+           	$("[name='variableDTO.value']").attr('disabled', true)//Desabilita
+          	$("[name='variableDTO.mandatory']").attr('disabled', false);
+          	$("[name='variableDTO.key']").attr('disabled', false);
+
+          	
+            if($.trim(type) == "4"){//DATE
+         	   $("[name='variableDTO.variableSize']").val('10');
+         	  	setMaxlengthFieldValue();
+         	   $("[name='variableDTO.variableSize']").attr('disabled', true);
+            }
+
+            if($.trim(type) != "4"){//NOT DATE
+	        	$("[name='variableDTO.variableSize']").attr('disabled', false);
+	         }
+
+           }
+           
+           //------------------------------------------------------------------------------------
+		});
+		
+		$(window).load(function() {
+			
+			//Variable Name
+			$("[name='variableDTO.name']").keypress(onlyWordAndNumber);
+			blockCtrlKey("[name='variableDTO.name']");
+			blockPasteWithMouse("[name='variableDTO.name']");
+
+			//Variable Name
+			$("[name='variableDTO.description']").keypress(onlyWordAndNumber);
+			blockCtrlKey("[name='variableDTO.description']");
+			blockPasteWithMouse("[name='variableDTO.description']");
+
+			//Variable Size
+			$("[name='variableDTO.variableSize']").keypress(onlyNumber);
+			blockCtrlKey("[name='variableDTO.variableSize']");
+			blockPasteWithMouse("[name='variableDTO.variableSize']");
+
+			$("[name='variableDTO.fieldIndex']").keypress(onlyNumber);
+			blockCtrlKey("[name='variableDTO.fieldIndex']");
+			blockPasteWithMouse("[name='variableDTO.fieldIndex']");
+			
+			//Setar focu no primeiro campo com erro------------------
+     	   $("[name='"+$("#firstFieldError").val()+"']").focus();
+
+			///EVENT CHANGE ORIGIN
+			$("[name='variableDTO.origin']").change(function(){
+			
+				var origin = $("[name='variableDTO.origin']").val();
+                var type = $("[name='variableDTO.type']").val();
+                
+	            if ($.trim(origin) == "1") {
+	                
+	            	$("[name='variableDTO.value']").attr('disabled', false);//Habilita
+	              	$("[name='variableDTO.mandatory']").attr('checked',true);
+	              	$("[name='variableDTO.mandatory']").attr('disabled', true);
+	              	$("[name='variableDTO.key']").attr('checked',true);
+	              	$("[name='variableDTO.key']").attr('disabled', true);
+	            	
+	                
+	                if($.trim(type) == "1"){//Text
+	                	$("[name='variableDTO.value']").val("");
+	                	$("[name='variableDTO.value']").off();
+	                	$("[name='variableDTO.value']").keypress(onlyWordAndNumber);
+	                    blockCtrlKey("[name='variableDTO.value']");
+	                    blockPasteWithMouse("[name='variableDTO.value']");
+	                    
+	                }
+
+	                if($.trim(type) == "2"){//Integer
+	             	   $("[name='variableDTO.value']").val("");
+	             	   $("[name='variableDTO.value']").off();
+	                   $("[name='variableDTO.value']").keypress(onlyNumber);
+	                   blockCtrlKey("[name='variableDTO.value']");
+	                   blockPasteWithMouse("[name='variableDTO.value']");
+	                   
+	                }
+
+	                if($.trim(type) == "3"){//FLOAT
+	                	$("[name='variableDTO.value']").val("");
+	             	    $("[name='variableDTO.value']").off();
+	                 	$("[name='variableDTO.value']").keypress(onlyNumber);
+	                    $("[name='variableDTO.value']").maskMoney({decimal: ",", thousands: "."});//MASK
+	                    blockCtrlKey("[name='variableDTO.value']");
+	                    blockPasteWithMouse("[name='variableDTO.value']");
+	                    
+	                }
+
+	               if($.trim(type) == "4"){//DATE
+	            	   
+	            	   $("[name='variableDTO.value']").val("");
+	            	   $("[name='variableDTO.value']").off();
+	            	   $("[name='variableDTO.variableSize']").val('10');
+	                   setMaxlengthFieldValue();
+	            	   $("[name='variableDTO.variableSize']").attr('disabled', true);
+	               	   onlyDateFormat("[name='variableDTO.value']");
+	                   blockCtrlKey("[name='variableDTO.value']");
+	                   blockPasteWithMouse("[name='variableDTO.value']");
+	               }
+	               
+	               if($.trim(type) != "4"){//NOT DATE
+	            	   $("[name='variableDTO.variableSize']").val('');
+    	        	   $("[name='variableDTO.variableSize']").attr('disabled', false);
+		           }
+
+	            }else{
+	            	
+	            	$("[name='variableDTO.value']").val('');//Limpa
+	            	$("[name='variableDTO.value']").off();
+	            	$("[name='variableDTO.value']").attr('disabled', true)//Desabilita
+	              	$("[name='variableDTO.mandatory']").attr('disabled', false);
+	              	$("[name='variableDTO.key']").attr('disabled', false);
+
+	            }
+	            
+			});
+			
+			
+			//EVENT CHANGE TYPE
+			$("[name='variableDTO.type']").change(function(){
+				
+				var origin = $("[name='variableDTO.origin']").val();
+                var type = $("[name='variableDTO.type']").val();
+                
+	            if ($.trim(origin) == "1") {
+
+	                if($.trim(type) == "1"){//Text
+	                	
+	                	$("[name='variableDTO.value']").val("");
+	                	$("[name='variableDTO.value']").off();
+	                	$("[name='variableDTO.value']").keypress(onlyWordAndNumber);
+	                    blockCtrlKey("[name='variableDTO.value']");
+	                    blockPasteWithMouse("[name='variableDTO.value']");
+	                    
+	                }
+	
+	                if($.trim(type) == "2"){//Integer
+	             	   $("[name='variableDTO.value']").val("");
+	             	   $("[name='variableDTO.value']").off();
+	                   $("[name='variableDTO.value']").keypress(onlyNumber);
+	                   blockCtrlKey("[name='variableDTO.value']");
+	                   blockPasteWithMouse("[name='variableDTO.value']");
+	                   
+
+	                }
+	
+	                if($.trim(type) == "3"){//FLOAT
+	                	$("[name='variableDTO.value']").val("");
+	             	    $("[name='variableDTO.value']").off();
+	                 	$("[name='variableDTO.value']").keypress(onlyNumber);
+	                    $("[name='variableDTO.value']").maskMoney({decimal: ",", thousands: "."});//MASK
+	                    blockCtrlKey("[name='variableDTO.value']");
+	                    blockPasteWithMouse("[name='variableDTO.value']");
+	                    
+
+	                }
+	
+	               if($.trim(type) == "4"){//DATE
+	            	   
+	            	   $("[name='variableDTO.value']").val("");
+	            	   $("[name='variableDTO.value']").off();
+	            	   $("[name='variableDTO.variableSize']").val('10');
+	            	   setMaxlengthFieldValue();
+	            	   $("[name='variableDTO.variableSize']").attr('disabled', true);
+
+	            	   onlyDateFormat("[name='variableDTO.value']");
+	                   blockCtrlKey("[name='variableDTO.value']");
+	                   blockPasteWithMouse("[name='variableDTO.value']");
+	                   
+	                   //$("[name='variableDTO.value']").datepicker({
+	                      	//autoclose: true,
+	                       	//format: 'yyyy-mm-dd'
+	                      //});
+
+	               }
+
+	               if($.trim(type) != "4"){//NOT DATE
+	            	   $("[name='variableDTO.variableSize']").val('');
+    	        	   $("[name='variableDTO.variableSize']").attr('disabled', false);
+		           }
+               
+	            }else{
+	            	
+	            	$("[name='variableDTO.value']").val('');//Limpa
+	            	$("[name='variableDTO.value']").off();
+	            	$("[name='variableDTO.value']").attr('disabled', true)//Desabilita
+	            	
+	            	
+	               if($.trim(type) == "4"){//DATE
+	            	   $("[name='variableDTO.variableSize']").val('10');
+	            	   $("[name='variableDTO.variableSize']").attr('disabled', true);
+	               }
+
+	               if($.trim(type) != "4"){//NOT DATE
+	            	   $("[name='variableDTO.variableSize']").val('');
+    	        	   $("[name='variableDTO.variableSize']").attr('disabled', false);
+		           }
+
+	            }
+	            
+			});
+			
+			
+		    //Botões de Action
+  		    $("#buttonSave").click(function(){
+		    	$("#action").val("save");
+		    	$("#viewName").val("factGenerator/tabTaxList");
+		    });
+
+		    $("#buttonFinalize").click(function(){
+		    	$("#action").val("finalize");
+		    	$("#viewName").val("factGenerator/tabTaxList");
+		    });
+		    
+			$("#buttonClean").click(function(){
+				$("[name='variableDTO.id']").val("");
+				$("[name='variableDTO.name']").val("");
+				$("[name='variableDTO.description']").val("");
+				$("[name='variableDTO.origin']").val("");
+				$("[name='variableDTO.type']").val("");
+				$("[name='variableDTO.variableSize']").val("");
+				$("[name='variableDTO.mandatory']").attr('checked',false);
+				$("[name='variableDTO.value']").val("");
+				$("#action").val("");
+			});
+			
+		    $("[name='variableDTO.name']").keypress(blockSpace);
+            blockCtrlKey("[name='variableDTO.value']");
+          	blockPasteWithMouse("[name='variableDTO.value']");
+		          	
+
+          	//Validate size value ---------------------------------------------------
+          	$("[name='variableDTO.variableSize']").blur(function(evt) {
+          		setMaxlengthFieldValue();
+          	});
+
+          	var origin = $("[name='variableDTO.origin']").val();
+          	if ($.trim(origin) == "1") {
+
+	          	$("[name='variableDTO.variableSize']").focusout(function(evt) {
+	
+	          		var variableSize = $("[name='variableDTO.variableSize']").val();
+	          		if(variableSize == "" || variableSize == null){
+	          			$("#action").val("save");
+	        			$( "#form" ).submit();
+	        			return false;
+	        		}
+	 
+	          	});
+          	}
+			//----------------------------------------------------------------------------
+		});
+		
+		function deleteVariable(factGeneratorId, versionId, variableId, situationId){
+			$("#modalfactGeneratorId").val(factGeneratorId);
+			$("#modalFactGeneratorVersionId").val(versionId);
+			$("#modalVariableId").val(variableId);
+			$("#modalSituationId").val(situationId);
+			$("#action2").val("deleteVariable");
+			$("#viewName2").val("factGenerator/variableChange");
+		}
+		
+		//]]>
+
+	</script>
+</div>
+</html>

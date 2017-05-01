@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+	<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+</head>
+
+<div th:fragment="contentBody">
+
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+
+			<div class="row-fluid">
+				<div class="span12">
+				    <div class="page-header">
+					    <h1 style="text-transform: none;" th:text="#{title.validatorFactGenerator.consult}"></h1>
+					</div>
+
+					<div id="divformFilter" style="display:none;" >	
+  						
+  						<div class="row-fluid">
+							<div class="clearfix"></div>
+						</div>		
+ 						
+		 				<form id="formFilter" class="form-inline actions-toolbar" action="#" th:action="@{/validatorFactGenerator/list}" th:object="${factGeneratorDTO}" method="post">
+		 					
+ 							<div class="actions-toolbar-inner"> 							
+ 								<label th:text="#{formFilter.button.search}"></label> 
+								<label class="radio-inline"><input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" th:value="1" th:checked="${optionRadioFilter == '1'}?'checked'" >&nbsp;<span th:text="#{formFilter.label.code}"></span></input></label>
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								<label class="radio-inline"><input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" th:value="2" th:checked="${optionRadioFilter == '2'}?'checked'">&nbsp;<span th:text="#{formFilter.label.name.fact.generator}"></span></input></label> 						
+ 							</div>
+ 
+ 	
+							<div class="actions-toolbar-inner">
+ 								<input type="text" id="inputFormFilter" class="input-xlarge" style="margin-right:5px;" th:field="*{inputFormFilter}" ></input>
+								<button id="btnFormFilter" type="submit" class="btn btn-primary" ><i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+							    <button id="btnFormClean"  type="button" class="btn" onclick="clearFilter();"><i class="icon-remove"></i>&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+							</div>
+						</form>	
+						<br/>
+					</div>
+				
+ 
+				<table id="factGeneratorListDtId" class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th><span th:text="#{dataTable.column.fact.generator.code}"></span></th>
+							<th><span th:text="#{dataTable.column.fact.generator.name}"></span></th>
+							<th><span th:text="#{dataTable.column.fact.generator.version}"></span></th>
+							<th><span th:text="#{dataTable.column.fact.generator.situation}"></span></th>
+							<th><span th:text="#{dataTable.column.fact.generator.responsible}"></span></th>
+						</tr>
+					</thead>
+ 					<tbody>
+  						<tr th:each="factGeneratorDTO : ${listFactGeneratorDTO}">
+  						
+							<td><a th:href="@{/validatorFactGenerator/view(factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id})}" th:title="#{title.link.view.details}" th:text="${factGeneratorDTO.code}"></a></td>  						
+ 							<td th:text="${factGeneratorDTO.description}"></td>
+							<td><span th:text="${factGeneratorDTO.versionView}"></span></td>
+ 							<td th:text="#{${factGeneratorDTO.getDescriptionSituarionEnum(factGeneratorDTO.factGeneratorVersionDTO.situation)}}"></td>
+ 							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.responsible}"></td>
+ 						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			
+		</div>
+ 	</div>
+ <script>
+        //<![CDATA[
+    function clearFilter() {
+    			$("[name='optionRadioFilter']").val("1");
+                document.getElementById('inputFormFilter').value='';
+                document.getElementById('formFilter').submit();
+         }
+
+                   
+     $(document).ready(function () {
+            configureDataTable('#factGeneratorListDtId', []);
+      });
+        
+        $(window).load(function() {
+
+            $(".rowTopTable").append($("#divformFilter").html());
+            
+            $("[name='inputFormFilter']").keypress(onlyWordAndNumber);
+            
+        });
+        
+        //]]>
+    </script>
+ 
+   
+
+</div>
+</html>

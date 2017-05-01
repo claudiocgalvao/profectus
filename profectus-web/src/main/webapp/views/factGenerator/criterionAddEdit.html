@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+
+	<!--MODAL-->
+ 		<div class="modal hide" id="showWordKey">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3><span th:text="#{message.formFormula.modal.show.word.key.link}" ></span></h3>
+			</div>
+			<div class="modal-body">
+						
+			<fieldset>
+			 	<ul>
+				 	<li th:text="#{message.formFormula.modal.show.word.key.1}" ></li>
+				 	<li th:text="#{message.formFormula.modal.show.word.key.2}" ></li>
+				 	<li th:text="#{message.formFormula.modal.show.word.key.3}" ></li>
+				 	<li th:text="#{message.formFormula.modal.show.word.key.4}" ></li>
+			 	</ul>
+			 	<h6 th:text="#{message.formFormula.modal.show.word.key.5}" ></h6>
+			 	<h6 th:text="#{message.formFormula.modal.show.word.key.6}" ></h6>
+			 	<h6 th:text="#{message.formFormula.modal.show.word.key.7}" ></h6>
+			 	<h6 th:text="#{message.formFormula.modal.show.word.key.8}" ></h6>
+			</fieldset>
+						
+			</div>
+			<div class="modal-footer">
+				<form name="formModal"		th:action="@{/factGenerator/list}" method="post">
+					<button type="button" 	class="btn" data-dismiss="modal"><span th:text="#{button.close}"></span></button>
+				</form>
+			</div>
+		</div>
+
+
+	<div id="content" style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.add.criterion}" style="text-transform: none;"></h1>
+				</div>
+
+				<div th:include="factGenerator/factGeneratorMessage :: messageView" />
+				
+				<form  id="formCriterion" class="form-horizontal form-container" action="#" th:action="@{/factGenerator/saveCriterion}" th:object="${factGeneratorDTO}" method="post">
+ 					
+ 					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.responsible}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:field="*{dayTrade}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+					<input type="hidden" th:id="saveTax" th:value="*{factGeneratorVersionDTO.taxDTO.saveTax}"></input>
+					<input type="hidden" th:id="action" th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName" th:field="*{viewName}"></input>
+					<input type="hidden" th:field="*{currentIndex}" ></input>
+					
+ 					<fieldset>
+ 					
+ 						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')"></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('limitMonthLosses', 'input-small', 'false', 'true','2')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('typeDetermination','description','typeDeterminationEnum', 'input-small', 'readonly')" ></div>
+						
+						<div class="control-group" >
+							<label class="control-label" th:for="dayTrade"><span th:text="#{model.FactGeneratorDTO.dayTrade}"></span></label>
+						    <div class="controls"  >
+								<input type="text" th:class="input-mini" th:value="#{${factGeneratorDTO.getDescriptionDayTrade(factGeneratorDTO.dayTrade)}}" th:readonly="true"></input>
+						     </div>
+						</div>
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.startTerm', 'startTerm', 'false', 'true', 'en', '-')" />
+						<!-- <div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.endTerm', 'endTerm', 'true', 'false', 'en', '-')" /> -->
+						
+ 						<div class="control-group" th:include="fragments/inputs :: textAreaFieldMaxlength('factGeneratorVersionDTO.calculationBase', 'span12', 'true', 'false', '2048')" />
+						
+						<div class="controls">
+								<p class="pull-right" ><a href="#" data-toggle="modal" data-target="#showWordKey">
+									<i class="arrow"></i><span th:text="#{message.formFormula.modal.show.word.key.link}"></span></a></p></div>
+						
+<!-- 						<div class="control-group"
+							th:include="fragments/inputs :: selectList('factGeneratorVersionDTO.taxDTO.id', 'listTaxDTO', 'id', 'code', 'false', 'true', 'false')"></div>
+ -->						
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorVersionDTO.taxDTO.description', 'input-xxlarge', 'false', 'true','0')" />
+
+						<!-- CRITERION -->
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorVersionDTO.taxDTO.code', 'input-medium', 'false', 'true','0')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorVersionDTO.taxDTO.taxCriterionDTO.collectionCode', 'input-large', 'true', 'false','4')" />
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.taxDTO.taxCriterionDTO.periodCalculation', 'periodCalculation', 'true', 'false', 'en', '-')" />
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.taxDTO.taxCriterionDTO.paymentDate', 'paymentDate', 'true', 'false', 'en', '-')" />
+						<div class="control-group" th:include="fragments/inputs :: textAreaFieldMaxlength('factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.taxFormula', 'span12', 'true', 'false','2048')" />
+						
+						<div><p class="pull-right" >
+								<a href="#" data-toggle="modal" data-target="#showWordKey">
+									<i class="arrow"></i><span th:text="#{message.formFormula.modal.show.word.key.link}"></span></a></p></div>
+						
+ 					</fieldset>
+
+
+ 					<div class="row-fluid"  >
+	 					<div class="span4" style="margin-left: 220px;">
+							<table id="variableTable" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.nameInternal}" ></span><i class="sort"></i></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="variableDTO, iterStat : ${listInternalVariable}" >
+										<td th:text="${variableDTO.name}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>					 					
+						<div class="span4">
+							<table id="variableTable2" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.nameExternal}" ></span><i class="sort"></i></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="variableDTO, iterStat : ${listExternalVariable}" >
+										<td th:text="${variableDTO.name}"></td>
+									</tr>
+								</tbody>
+							</table> 					
+						</div>
+ 					</div>
+					<div class="form-actions">
+						
+						<button id="buttonPrev" class="btn btn-primary" type="submit"><span th:text="#{button.prev}"></span></button>
+						
+						<button id="buttonSave" class="btn" type="submit" ><!-- <i class="icon-remove"></i>&nbsp; --><span th:text="#{button.save}"></span></button>
+						
+						<button id="buttonValidate" class="btn" type="submit"><span th:text="#{button.validator}"></span></button>
+						
+						<button id="buttonCancel" class="btn" type="submit"><!-- <i class="icon-remove"></i>&nbsp; --><span th:text="#{button.finalize}"></span></button>
+						
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+	<script >
+	//<![CDATA[
+		$(document).ready(function() {
+
+		    //Calendar
+            if ($("#isReadyperiodCalculation").val() == "false") {
+                $("#periodCalculation").datepicker({
+                	autoclose: true
+                });
+            }
+            if ($("#isReadypaymentDate").val() == "false") {
+                $("#paymentDate").datepicker({
+                	autoclose: true
+                });
+            }
+            if ($("#isReadystartTerm").val() == "false") {
+                $("#startTerm").datepicker({
+                	autoclose: true
+                });
+            }
+            if ($("#isReadyendTerm").val() == "false") {
+                $("#endTerm").datepicker({
+                	autoclose: true
+                });
+            }
+
+
+		    //Action
+ 		    $("#buttonPrev").click(function(){
+		    	$("#action").val("prev");
+		    	$("#viewName").val("factGenerator/factGeneratorList");
+		    });
+		    
+		    $("#buttonSave").click(function(){
+		    	$("#action").val("save");
+		    	$("#viewName").val("factGenerator/criterionView");
+		    });
+		    
+ 		    $("#buttonValidate").click(function(){
+		    	$("#action").val("validate");
+		    	$("#viewName").val("factGenerator/factGeneratorList");
+		    });
+ 		    
+		    $("#buttonCancel").click(function(){
+		    	$("#action").val("cancel");
+		    	$("#viewName").val("factGenerator/factGeneratorList");
+		    });
+
+		    
+			//ColletionCode
+			$("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.collectionCode']").keypress(onlyNumber);
+			blockCtrlKey("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.collectionCode']");
+			blockPasteWithMouse("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.collectionCode']");
+
+            //periodCalculation
+            onlyDateFormat("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.periodCalculation']");
+			blockCtrlKey("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.periodCalculation']");
+			blockPasteWithMouse("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.periodCalculation']");
+
+			//paymentDate
+            onlyDateFormat("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.paymentDate']");
+			blockCtrlKey("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.paymentDate']");
+			blockPasteWithMouse("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.paymentDate']");
+
+			//startTerm
+			onlyDateFormat("[name='factGeneratorVersionDTO.startTerm']");
+			blockCtrlKey("[name='factGeneratorVersionDTO.startTerm']");
+			blockPasteWithMouse("[name='factGeneratorVersionDTO.startTerm']");
+			
+			//endTerm
+			//onlyDateFormat("[name='factGeneratorVersionDTO.endTerm']");
+			//blockCtrlKey("[name='factGeneratorVersionDTO.endTerm']");
+			//blockPasteWithMouse("[name='factGeneratorVersionDTO.endTerm']");
+
+			
+			//calculationBase
+			$("[name='factGeneratorVersionDTO.calculationBase']").keypress(onlyWordAndNumberMathematicalSigns);
+	       	blockCtrlKey("[name='factGeneratorVersionDTO.calculationBase']");
+    		blockPasteWithMouse("[name='factGeneratorVersionDTO.calculationBase']");
+
+			
+			//taxFormula
+			$("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.taxFormula']").keypress(onlyWordAndNumberMathematicalSigns);
+	       	blockCtrlKey("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.taxFormula']");
+    		blockPasteWithMouse("[name='factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.taxFormula']");
+			
+			
+			//Setar focus no primeiro campo com erro------------------
+     	   $("[name='"+$("#firstFieldError").val()+"']").focus();
+     	   $('select').val("");
+
+     	   
+     	   //Disabled buttonValidate
+     	   if($("#formulaId").val() == ""){
+     		   $("#buttonValidate").prop("disabled",true);
+     	   }
+     	   
+     	  if($("#formulaId").val() != ""){
+     		  $("#buttonValidate").prop("disabled",false);
+     	   }
+		    
+	});
+		//]]>
+
+	</script>
+	
+</div>
+</html>

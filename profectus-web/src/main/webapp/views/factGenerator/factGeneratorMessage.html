@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+           
+           	<div th:fragment="messageView">
+           	
+           					<div th:if='${factGeneratorDTO.treatmentMessageDTO!=null}' 
+					 th:include="fragments/alert :: alert('${factGeneratorDTO.treatmentMessageDTO.typeMessage}', '${factGeneratorDTO.treatmentMessageDTO.message}')"></div>
+           		
+            </div>
+</html>

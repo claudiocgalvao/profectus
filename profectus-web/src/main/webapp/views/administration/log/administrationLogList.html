@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="../../resources/citi/js/bootstrap.js" rel="stylesheet" />
+	<link href="../../resources/citi/js/bootstrap-datepicker.js" rel="stylesheet" />
+	<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+	<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+</head>
+<div th:fragment="contentBody" >
+	<div id="content" style="float: right; width: 81%; margin-top:25px; margin-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+			    <div class="page-header">
+				    <h1 th:text="#{title.adm.lgo.consult}"></h1>
+				</div>
+				<div id="divformFilter" style="display:block;">		
+ 					<form id="formFilter" class="form-horizontal form-container" action="#" th:action="@{/admLog/list}" th:object="${logDTO}" method="post">
+						<fieldset>
+							<div class="control-group">
+								
+								<div class="control-group"  th:include="fragments/inputs :: dateField('eventDateFilter', 'eventDateFilter', false, false)"></div>
+								
+								<div class="control-group" th:include="fragments/inputs :: selectEnum('actionFilter', 'actionEnum', 'input-medium', 'false', 'false', 'true')" />
+								
+								<div class="form-actions">
+									<button id="btnFormFilter" class="btn btn-primary" type="submit"><i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+									<button id="btnFormClean" class="btn" onclick="clearFilter();" name="clearFields"><i class="icon-remove"></i>&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+								</div>
+								
+							</div>
+							
+							<div class="control-group">
+								<table id="admLogListDtId" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<!-- <th width="10%" > -->
+											<th><span th:text="#{dataTable.column.adm.log.id}" ></span><i class="sort"></i></th>
+											<th><span th:text="#{dataTable.column.adm.log.dateTime}"></span><i class="sort"></i></th>
+											<th><span th:text="#{dataTable.column.adm.log.fgId}"></span><i class="sort"></i></th>
+											<th><span th:text="#{dataTable.column.adm.log.fgvId}" ></span><i class="sort"></i></th>
+											<th><span th:text="#{dataTable.column.adm.log.fgCode}"></span><i class="sort"></i></th>
+											<th><span th:text="#{dataTable.column.adm.log.fgvVersion}"></span><i class="sort"></i></th>
+											<th><span th:text="#{dataTable.column.adm.log.action}" ></span><i class="sort"></i></th>
+											<th><span th:text="#{dataTable.column.adm.log.login}" ></span><i class="sort"></i></th>
+										</tr>
+									</thead>
+									<tbody>
+				 						<tr th:each="admLogDTO, stat : ${admLogDTOList}">
+											<td th:text="${admLogDTO.logId}"></td>
+											<td th:text="${admLogDTO.eventDateStr}"></td>
+											<td th:text="${admLogDTO.fgId}"></td>
+											<td th:text="${admLogDTO.fgvId}"></td>
+											<td th:text="${admLogDTO.fgCode}"></td>
+											<td th:text="${admLogDTO.version}"></td>
+											<td>
+												<span th:if='${admLogDTO.action==1}'  th:text="#{lbl.log.action.clone}"></span>
+												<span th:if='${admLogDTO.action==2}'  th:text="#{lbl.log.action.replaceRequest}"></span>
+												<span th:if='${admLogDTO.action==3}'  th:text="#{lbl.log.action.reactiveRequest}"></span>
+												<span th:if='${admLogDTO.action==4}'  th:text="#{lbl.log.action.cancelRequest}"></span>
+												<span th:if='${admLogDTO.action==5}'  th:text="#{lbl.log.action.suspendRequest}"></span>
+												<span th:if='${admLogDTO.action==6}'  th:text="#{lbl.log.action.replaceApproval}"></span>
+												<span th:if='${admLogDTO.action==7}'  th:text="#{lbl.log.action.suspendApproval}"></span>
+												<span th:if='${admLogDTO.action==8}'  th:text="#{lbl.log.action.reactiveApproval}"></span>
+												<span th:if='${admLogDTO.action==9}'  th:text="#{lbl.log.action.cancelApproval}"></span>
+												<span th:if='${admLogDTO.action==10}' th:text="#{lbl.log.action.publishFGProduction}"></span>
+												<span th:if='${admLogDTO.action==11}' th:text="#{lbl.log.action.unlockFG}"></span>
+												<span th:if='${admLogDTO.action==12}' th:text="#{lbl.log.action.rejectChange}"></span>
+												<span th:if='${admLogDTO.action==13}' th:text="#{lbl.log.action.rejectPublishToProduction}"></span>
+												<span th:if='${admLogDTO.action==14}' th:text="#{lbl.log.action.replaceApproval.denied.authorization.error}"></span>
+											</td>
+											<td th:text="${admLogDTO.userLogin}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+														
+							<div class="control-group"></div>
+							
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	
+			    function clearFilter() {
+					$("[name='eventDateFilter']").val("");
+					$("[name='actionFilter']").val("");
+					document.getElementById('formFilter').submit();
+				}
+	
+	     	    $(document).ready(function() {
+	     			configureDataTableInsideForm("#admLogListDtId", []);
+	     	    });
+	
+	    		/*Adicionar form depois de executado o DataTable*/ 
+	    		$(window).load(function() {
+					$(".rowTopTable").append($("#divformFilter").html());
+					
+	                $("#eventDateFilter").datepicker({
+	                   	autoclose: true
+                   });
+
+	     	   	    //eventDateFilter
+	    			onlyDateFormatThis("[name='eventDateFilter']");
+	    			blockCtrlKey("[name='eventDateFilter']");
+	    			blockPasteWithMouse("[name='eventDateFilter']");
+	    			$("[name='eventDateFilter']").keypress(onlyWordAndNumber);
+
+	     		});
+		</script>
+ </div>
+</html>

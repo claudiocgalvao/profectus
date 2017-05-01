@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.tax.consult}" style="text-transform:none;"></h1>
+				</div>
+
+				<div  th:include="factGenerator/factGeneratorMessage :: messageView" />
+
+				<form class="form-horizontal form-container" action="#" th:action="@{/factGenerator/view}" th:object="${factGeneratorDTO}" method="post">
+
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.startTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.responsible}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:id="action" th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName" th:field="*{viewName}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+
+
+					<fieldset>
+						
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')"></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('limitMonthLosses', 'input-small', 'false', 'true','2')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('typeDetermination','description','typeDeterminationEnum', 'input-small', 'readonly')" ></div>
+						
+						<div class="control-group" >
+							<label class="control-label" th:for="dayTrade"><span th:text="#{model.FactGeneratorDTO.dayTrade}"></span></label>
+						    <div class="controls"  >
+								<input type="text" th:class="input-mini" th:value="#{${factGeneratorDTO.getDescriptionDayTrade(factGeneratorDTO.dayTrade)}}" th:readonly="true"></input>
+						     </div>
+						</div>
+						
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.startTerm', 'startTerm', 'false', 'true', 'en', '-')" />
+						
+						<div class="control-group" th:include="fragments/inputs :: textAreaField('factGeneratorVersionDTO.calculationBase', 'span12', 'false', 'true')" />
+						
+						<div class="control-group">
+
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#tab1" data-toggle="tab"><span th:text="#{title.tab.tax}"></span></a></li>
+								<li><a href="#tab2" data-toggle="tab" ><span th:text="#{title.tab.variable}"></span></a></li>
+							</ul>
+							<div class="tab-content">
+								
+								<!-- TAB TAX -->
+								<div class="tab-pane active" id="tab1">
+									<h4 th:text="#{title.validatorFactGenerator.list.taxs}"></h4>
+									<table id="taxListDtId"
+										class="table table-bordered table-striped dataTable">
+										<thead>
+											<tr>
+												<th><span th:text="#{dataTable.column.tab.tax.code}"></span></th>
+												<th><span th:text="#{dataTable.column.tab.tax.description}"></span></th>
+												<th><span th:text="#{dataTable.column.tab.tax.collectionCode}"></span></th>
+												<th><span th:text="#{dataTable.column.tab.tax.periodCalculation}"></span></th>
+												<th><span th:text="#{dataTable.column.tab.tax.paymentDate}"></span></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="taxDTO : ${factGeneratorDTO.listTaxDTO}">
+												<td>
+													<a th:href="@{/factGenerator/editTaxCriterion(action=${'criterionView'},
+																factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id},
+																factGeneratorVersionDTO.taxDTO.id=${taxDTO.id},
+																factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id=${taxDTO.taxCriterionDTO.id}, 
+																factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id=${taxDTO.taxCriterionDTO.formulaDTO.id})}"
+																th:title="#{title.link.view.details}" th:text="${taxDTO.code}"></a>
+													 										
+												</td>
+												<td><span th:text="${taxDTO.description}"></span></td>
+												<td><span th:text="${taxDTO.taxCriterionDTO.collectionCode}"></span></td>
+												<td><span th:text="${taxDTO.taxCriterionDTO.periodCalculation}"></span></td>
+												<td><span th:text="${taxDTO.taxCriterionDTO.paymentDate}"></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								
+								<!-- TAB VARIABLE -->
+								<div class="tab-pane" id="tab2">
+									<h4 th:text="#{title.factGenerator.list.variable}" ></h4>
+									<table id="variableTable" class="table table-bordered table-striped dataTable">
+											<thead>
+												<tr>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.sequence}" ></span><i class="sort"></i></th>
+													<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.name}" ></span><i class="sort"></i></th>
+													<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.description}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.origin}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.type}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.variableSize}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.mandatory}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.value}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.key}" ></span><i class="sort"></i></th>
+												</tr>
+											</thead>
+											<tbody  th:id="tbodyList" >
+													<tr th:each="variableDTO, iterStat : ${factGeneratorDTO.listVariableDTO}" >
+													
+													<td style="text-align: center;" th:text="${variableDTO.fieldIndex}"></td>
+													
+													<td th:text="${variableDTO.name}"></td>
+													
+													<td th:text="${variableDTO.description}"></td>
+													
+													<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionOriginEnum(variableDTO.origin)}}"></td>
+													
+													<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionTypeEnum(variableDTO.type)}}"></td>
+													
+													<td style="text-align: center;" th:text="${variableDTO.variableSize}"></td>
+													
+													<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionMandatory(variableDTO.mandatory)}}"></td>
+													
+													<td style="text-align: center;" th:text="${variableDTO.value}"></td>
+													
+													<td style="text-align: center;">
+															<span th:if="${variableDTO.key != null}">
+																	<span th:text="#{${variableDTO.getDescriptionKeyNetting(variableDTO.key)}}"></span>
+															</span>		
+													</td>
+													</tr>
+												</tbody>
+										</table>
+								</div>
+							</div>
+						</div>
+
+					</fieldset>
+
+					<div class="form-actions">
+							<button id="buttonChange" th:if="${IS_CHANGE_DESCRIPTION}" class="btn btn-primary" type="submit" ><span th:text="#{button.change}"></span></button>
+
+							<!-- <button id="buttonSave" th:if="${!IS_CHANGE_DESCRIPTION}" class="btn btn-primary" type="submit" ><span th:text="#{button.save}"></span></button> -->
+							
+							<!-- <button id="buttonPrev" class="btn" type="submit"><span th:text="#{button.prev}"></span></button> -->
+							
+							<!-- <button id="buttonNext" class="btn" type="submit"><span th:text="#{button.next}"></span></button> -->
+							
+							<button id="buttonCancel" class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+		    //Action
+ 		    $("#buttonPrev").click(function(){
+		    	$("#action").val("prev");
+		    	$("#viewName").val("factGenerator/factGeneratorList");
+		    });
+		    
+		    $("#buttonNext").click(function(){
+		    	$("#action").val("next");
+		    	$("#viewName").val("factGenerator/criterionView");
+		    });
+		    
+		    $("#buttonChange").click(function(){
+		    	$("#action").val("change");
+		    	$("#viewName").val("factGenerator/factGeneratorChange");
+		    });
+		    
+		    $("#buttonCancel").click(function(){
+		    	$("#action").val("cancel");
+		    	$("#viewName").val("factGenerator/factGeneratorList");
+		    });
+
+		    $("#buttonSave").click(function(){
+		    	$("#action").val("save");
+		    	$("#viewName").val("factGenerator/tabTaxList");
+		    });
+
+			//$("#description").keypress(onlyWordAndNumber);
+			//blockCtrlKey("[name='description']");
+			//blockPasteWithMouse("[name='description']");
+			
+			//Setar focu no primeiro campo com erro------------------
+     	   $("[name='"+$("#firstFieldError").val()+"']").focus();
+		    
+		});
+	</script>
+</div>
+</html>

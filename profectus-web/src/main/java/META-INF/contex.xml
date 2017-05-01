@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context crossContext="true">
+    <ResourceLink name="jdbc/u885303517_gtidb" global="jdbc/u885303517_gtidb" type="javax.sql.DataSource"/>
+</Context>

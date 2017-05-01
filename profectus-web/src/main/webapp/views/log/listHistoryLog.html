@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="../../resources/citi/js/bootstrap.js" rel="stylesheet" />
+	<link href="../../resources/citi/js/bootstrap-datepicker.js" rel="stylesheet" />
+	<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+	<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+</head>
+<div th:fragment="contentBody" >
+	<div id="content" style="float: right; width: 81%; margin-top:25px; margin-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+			    <div class="page-header">
+				    <h1 th:text="#{title.HistoryLog}"></h1>
+				</div>
+				<div id="divformFilter" style="display:block;">		
+ 					<form id="formFilter" class="form-horizontal form-container" action="#" th:action="@{/historyLog/list}" th:object="${historyLogDTO}" method="post">
+						<fieldset>
+							<div class="control-group">
+								
+								<div class="control-group"  th:include="fragments/inputs :: dateFieldPeriodFormat('period', 'periodoIniFilter', 'periodoFimFilter', 'true', 'false', 'false', 'en', '-')"></div>
+								
+								<div class="control-group"  th:include="fragments/inputs :: selectList('functionalityFilter', 'selectFunctionality', 'key', 'value', 'false', 'false', 'false')"></div>
+								
+								<div class="control-group"  th:include="fragments/inputs :: selectList('actionFilter', 'selectAction', 'key', 'value', 'false', 'false', 'false')"></div>
+								
+								<div class="control-group"  th:include="fragments/inputs :: selectList('statusFilter', 'selectStatus', 'key', 'value', 'false', 'false', 'false')"></div>
+								
+								<div class="form-actions">
+									<button id="btnFormFilter" class="btn btn-primary"><i class="icon-filter icon-white"></i><span th:text="#{formFilter.button.filter}"></span></button>
+									<button id="btnFormClean" class="btn" type="submit" name="clearFields"><i class="icon-remove"></i><span th:text="#{formFilter.button.clean}"></span></button>
+								</div>
+								
+							</div>
+							
+							<div class="control-group">
+								<table id="historyLogListDtId" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th width="10%" ><span th:text="#{datatable.column.HistoryLog.dateHour}" ></span><i class="sort"></i></th>
+											<th width="10%" ><span th:text="#{datatable.column.HistoryLog.login}"></span><i class="sort"></i></th>
+											<th width="10%" ><span th:text="#{datatable.column.HistoryLog.userName}"></span><i class="sort"></i></th>
+											<th width="15%" ><span th:text="#{datatable.column.HistoryLog.profile}" ></span><i class="sort"></i></th>
+											<th width="15%" ><span th:text="#{datatable.column.HistoryLog.functionality}"></span><i class="sort"></i></th>
+											<th width="10%" ><span th:text="#{datatable.column.HistoryLog.action}"></span><i class="sort"></i></th>
+											<th width="10%" ><span th:text="#{datatable.column.HistoryLog.originalContent}" ></span><i class="sort"></i></th>
+											<th width="10%" ><span th:text="#{datatable.column.HistoryLog.changedContent}" ></span><i class="sort"></i></th>
+											<th width="10%" ><span th:text="#{datatable.column.HistoryLog.status}" ></span><i class="sort"></i></th>
+										</tr>
+									</thead>
+									<tbody>
+				 						<tr th:each="historyLogDTO, stat : ${listHistoryLogDto}">
+											<td th:text="${historyLogDTO.dateTime}"></td>
+											<td th:text="${historyLogDTO.login}"></td>
+											<td th:text="${historyLogDTO.userName}"></td>
+											<td th:text="${historyLogDTO.profile}"></td>
+											<td>
+												<span th:if='${historyLogDTO.functionality=="PTF"}' th:text="#{func.portfolio}"></span>
+												<span th:if='${historyLogDTO.functionality=="TTX"}' th:text="#{func.fee}"></span>
+												<span th:if='${historyLogDTO.functionality=="VAR"}' th:text="#{func.var}"></span>
+												<span th:if='${historyLogDTO.functionality=="FXA"}' th:text="#{func.range}"></span>
+												<span th:if='${historyLogDTO.functionality=="FXI"}' th:text="#{func.internalRange}"></span>
+												
+												<span th:if='${historyLogDTO.functionality=="GRP"}' th:text="#{func.group}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_A_RF"}' th:text="#{func.group.a.fixedincome}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_A_RV"}' th:text="#{func.group.func.group.a.variableincome}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_A_F"}' th:text="#{func.group.func.group.a.future}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_A_C"}' th:text="#{func.group.func.group.a.quota}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_C_RF"}' th:text="#{func.group.func.group.c.fixedincome}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_C_RV"}' th:text="#{func.group.func.group.c.variableincome}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_C_F"}' th:text="#{func.group.func.group.c.future}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_C_P"}' th:text="#{func.group.func.group.c.portfolio}"></span>
+												<span th:if='${historyLogDTO.functionality=="GRP_P_PF"}' th:text="#{func.group.func.group.p.portfolio}"></span>
+												
+												<span th:if='${historyLogDTO.functionality=="SPT"}' th:text="#{func.script}"></span>
+												<span th:if='${historyLogDTO.functionality=="SEG"}' th:text="#{func.segment}"></span>
+												<span th:if='${historyLogDTO.functionality=="FOR"}' th:text="#{func.formula}"></span>
+												<span th:if='${historyLogDTO.functionality=="ASS"}' th:text="#{func.association}"></span>	
+												<span th:if='${historyLogDTO.functionality=="FT_CONF"}' th:text="#{func.approvalRequest}"></span>
+											</td>
+											<td>
+												<span th:if='${historyLogDTO.action=="ACS"}' th:text="#{action.acs}"></span>
+												<span th:if='${historyLogDTO.action=="SCH"}' th:text="#{action.sch}"></span>
+												<span th:if='${historyLogDTO.action=="INC"}' th:text="#{action.inc}"></span>
+												<span th:if='${historyLogDTO.action=="CHD"}' th:text="#{action.chd}"></span>
+												<span th:if='${historyLogDTO.action=="DEL"}' th:text="#{action.del}"></span>
+												<span th:if='${historyLogDTO.action=="ACP"}' th:text="#{action.acp}"></span>
+												<span th:if='${historyLogDTO.action=="DNY"}' th:text="#{action.dny}"></span>
+												<span th:if='${historyLogDTO.action=="PCS"}' th:text="#{action.pcs}"></span>
+												<span th:if='${historyLogDTO.action=="ACI"}' th:text="#{action.aci}"></span>
+												<span th:if='${historyLogDTO.action=="ACE"}' th:text="#{action.ace}"></span>
+												<span th:if='${historyLogDTO.action=="ACV"}' th:text="#{action.acv}"></span>
+											</td>
+											<td>
+												<a th:if='${historyLogDTO.originalContent != null }' 
+												th:onclick="'alert(\'' + ${historyLogDTO.originalContent} + '\')'">
+												<i class="icon-eye-open" ></i></a>
+											</td>
+											<td>
+												<a th:if='${historyLogDTO.changedContent != null }' 
+												th:onclick="'alert(\'' + ${historyLogDTO.changedContent} + '\')'">
+												<i class="icon-eye-open" ></i></a>
+											</td>
+											<td>
+												<span th:if='${historyLogDTO.status=="" || historyLogDTO.status==null}' th:text="#{status.HistoryLog.NA}"></span>
+												<span th:if='${historyLogDTO.status=="W"}' th:text="#{status.HistoryLog.W}"></span>
+												<span th:if='${historyLogDTO.status=="D"}' th:text="#{status.HistoryLog.A}"></span>
+												<span th:if='${historyLogDTO.status=="A"}' th:text="#{status.HistoryLog.D}"></span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+														
+							<div class="control-group"></div>
+							
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+	     	    $(document).ready(function() {
+	     	    	
+	     	   	    $('.datepicker').datepicker();
+	     	        
+	     			if($("#isReadyperiodoIniFilter").val() == "false"){
+	     				$("#idperiodoIniFilter").datepicker();	
+	     			}
+	     			
+	     			if($("#isReadyperiodoFimFilter").val() == "false"){
+	     				$("#idperiodoFimFilter").datepicker();	
+	     			}
+					
+	     			configureDataTableInsideForm("#historyLogListDtId", []);
+	    			
+			        $(".dataTables_wrapper #btnFormFilter").click(function () {
+			            if ($(".dataTables_wrapper #inputFormFilter").val() == "") {
+			                return false;
+			            } else {
+			                $("#inputFormFilter").submit();
+			            }
+			        });
+			
+			        $(".dataTables_wrapper #btnFormClean").click(function () {
+			            $(".dataTables_wrapper #inputFormFilter").val("")
+			        });
+	     			
+	     	    });
+	
+	    		/*Adicionar form depois de executado o DataTable*/ 
+	    		$(window).load(function() {
+					$(".rowTopTable").append($("#divformFilter").html());
+	     		});
+		</script>
+ </div>
+</html>

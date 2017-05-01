@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.add}" style="text-transform: none;"></h1>
+				</div>
+
+				<form class="form-horizontal form-container" action="#" th:action="@{/factGenerator/save}" th:object="${factGeneratorDTO}" method="post">
+					
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.responsible}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.calculationBase}"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+					<input type="hidden" th:field="*{isNewVersion}"></input>
+					<input type="hidden" th:id="action" th:field="*{action}"></input>
+
+ 				    <fieldset>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'true', 'false','30')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'true', 'false','50')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'false', 'true','11')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('limitMonthLosses', 'input-small', 'true', 'false','2')" />
+						<div class="control-group" th:include="fragments/inputs :: selectEnum('typeDetermination', 'typeDeterminationEnum', 'input-medium', 'true', 'false', 'false')" />
+						<div class="control-group" th:include="fragments/inputs :: radioButtonBoolean('dayTrade', 'radio', 'true', 'false')" />
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.startTerm', 'startTerm', 'true', 'false', 'en', '-')" />
+						<!-- <div class="control-group" th:include="fragments/inputs :: textAreaFieldMaxlength('factGeneratorVersionDTO.calculationBase', 'span12', 'false', 'true', '2048')" /> -->
+					</fieldset>
+
+					<div class="form-actions">
+							<button id="buttonSave" class="btn btn-primary" type="submit"><span th:text="#{button.save}"></span></button>
+							<button id="buttonClean" class="btn" type="button"><i class="icon-remove"></i>&nbsp;<span th:text="#{button.clean}"></span></button>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			//code
+			$("[name='code']").keypress(blockSpace);
+			$("[name='code']").keypress(onlyWordAndNumber);
+	       	blockCtrlKey("[name='code']");
+      		blockPasteWithMouse("[name='code']");
+
+      		$("[name='description']").keypress(onlyWordAndNumber);
+			blockCtrlKey("[name='description']");
+			blockPasteWithMouse("[name='description']");
+			
+			$("#limitMonthLosses").keypress(onlyNumber);
+			blockCtrlKey("[name='limitMonthLosses']");
+			blockPasteWithMouse("[name='limitMonthLosses']");
+
+			//startTerm
+			onlyDateFormat("[name='factGeneratorVersionDTO.startTerm']");
+			blockCtrlKey("[name='factGeneratorVersionDTO.startTerm']");
+			blockPasteWithMouse("[name='factGeneratorVersionDTO.startTerm']");
+			
+			//endTerm
+			//onlyDateFormat("[name='factGeneratorVersionDTO.endTerm']");
+			//blockCtrlKey("[name='factGeneratorVersionDTO.endTerm']");
+			//blockPasteWithMouse("[name='factGeneratorVersionDTO.endTerm']");
+			
+		    //CalculationBase
+	       	blockCtrlKey("[name='factGeneratorVersionDTO.calculationBase']");
+	   		blockPasteWithMouse("[name='factGeneratorVersionDTO.calculationBase']");
+			
+			
+			//Setar focu no primeiro campo com erro------------------
+     	   $("[name='"+$("#firstFieldError").val()+"']").focus();
+
+           if ($("#isReadystartTerm").val() == "false") {
+               $("#startTerm").datepicker({
+               	autoclose: true
+               });
+           }
+			
+   			$("#buttonSave").click(function(){
+   				$("[name='action']").val("saveFactGenerator");
+   			});
+           
+           
+			$("#buttonClean").click(function(){
+	
+				$("#code").val("");
+				$("#description").val("");
+				$("[name='limitMonthLosses']").val("");
+				$("#typeDetermination").val("");
+				$("[name='dayTrade']").prop('checked', false);
+				$("[name='factGeneratorVersionDTO.startTerm']").val("");
+			});
+
+		});
+	</script>
+</div>
+</html>

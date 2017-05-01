@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+	<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+	<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+</head>
+
+<div th:fragment="contentBody">
+
+
+			<!-- MODAL CONFIRM -->
+			<div class="modal hide" id="confirmDeleteVariable">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h3><span th:text="#{title.tax.modal.confirm}" ></span></h3>
+				</div>
+				<div class="modal-body">
+							
+				<fieldset>
+				 	<span th:text="#{message.formTax.typeTax.delete.confirm}"></span>
+				</fieldset>
+							
+				</div>
+				<div class="modal-footer">
+					<form name="formModal" th:action="@{/tax/delete}" th:object="${taxDTO}" method="post">
+						<input type="hidden"  th:field="*{id}" th:id="idModalConfirmDelete"></input>
+						<button class="btn" type="button" data-dismiss="modal"><span th:text="#{button.no}"></span></button>
+						<button class="btn btn-primary" type="submit"><span th:text="#{button.yes}"></span></button>
+					</form>
+				</div>
+			</div>
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+
+			<div class="row-fluid">
+				<div class="span12">
+				    <div class="page-header">
+					    <h1 th:text="#{title.tax.consult}" style="text-transform: none;"></h1>
+					</div>
+	 				
+					<div id="divformFilter" style="display:none;" >	
+  						<div class="row-fluid">
+							<div class="btn-toolbar pull-left" style="width:49%;*width:60%">
+ 									<a href="#" data-th-href="@{/tax/add}" class="btn">
+  										<i class="icon-plus"></i>&nbsp;<span th:text="#{button.include}"></span></a>
+								<div class="clearfix"></div>
+							</div>					
+						</div>		
+ 						
+		 				<form id="formFilter" class="form-inline actions-toolbar" action="#" th:action="@{/tax/list}" th:object="${taxDTO}" method="post">
+
+						<input type="hidden"  th:field="*{action}"></input>
+						
+						<div class="actions-toolbar-inner"> 							
+ 								
+ 								<label th:text="#{formFilter.button.search}"></label> 
+								
+								<label class="radio-inline">
+									<input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" 
+										th:value="1" th:checked="${optionRadioFilter == '1'}?'checked'" th:class="textCode">&nbsp;
+										<span th:text="#{model.TaxDTO.code}"></span></input></label>
+									 
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								
+								<label class="radio-inline">
+									<input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" 
+										th:value="2" th:checked="${optionRadioFilter == '2'}?'checked'" th:class="textDesc">&nbsp;
+										<span th:text="#{model.TaxDTO.description}"></span></input>
+								 </label> 						
+ 						</div>
+						
+
+						<div class="actions-toolbar-inner">
+							<input type="text" id="inputFormFilter" class="input-xlarge" style="margin-right:5px;" th:field="*{inputFormFilter}" ></input>
+							
+							<button id="btnFormFilter" type="submit" class="btn btn-primary" >
+									<i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+						    
+						    <button id="btnFormClean"  type="button" class="btn" onclick="clearFilter();" >
+						    	&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+						</div>
+						
+						</form>	
+						<br/>
+					</div>
+		
+ 				<div class="control-group" th:include="tax/taxMessage :: messageView" />
+				<table id="taxListDtId" class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th><span th:text="#{dataTable.column.tax.code}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.tax.description}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.tax.dateAlter}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.tax.responsible}"></span><i class="sort"></i></th>					
+							<th width="10%" colspan="2" ><span th:text="#{dataTable.column.title.action}"></span><i class="sort"></i></th>
+						</tr>
+					</thead>
+ 					<tbody>
+  						<tr th:each="taxDTO : ${listTaxDTO}">
+  						
+							<td><a th:href="@{/tax/view(id=${taxDTO.id})}" th:title="#{title.link.view.details}" th:text="${taxDTO.code}"></a></td>  						
+  						
+ 							<td th:text="${taxDTO.description}"></td>
+							<td th:text="${taxDTO.dateAlter}"></td>	
+ 							<td th:text="${taxDTO.responsible}"></td>
+ 							
+ 							<td align="center">
+								<a th:href="@{/tax/edit(id=${taxDTO.id})}" th:title="#{title.link.edit}"><i class="icon-pencil"></i></a>
+							</td>						
+							<td align="center">
+								<span th:if="${!taxDTO.isTaxInUse}">
+									<a 	data-toggle="modal" data-target="#confirmDeleteVariable" href="#" 
+										th:onclick="'deleteItem(\'' + ${taxDTO.id} + '\')'" 
+										th:title="#{title.link.delete}"><i class="icon-remove"></i></a>
+								</span>	
+																
+							</td>
+ 						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			
+		</div>
+ 	</div>
+
+ 
+ <script>
+   //<![CDATA[
+    
+    function deleteItem(id) {
+    	$("#idModalWarningDelete").val(id);
+        $("#idModalConfirmDelete").val(id);
+    }
+
+    function clearFilter() {
+        document.getElementById('inputFormFilter').value='';
+        document.getElementById('optionRadioFilter').value='1';
+        document.getElementById('action').value='clear';
+        document.getElementById('formFilter').submit();
+    }
+
+        $(document).ready(function () {
+            configureDataTable('#taxListDtId', [ 4, 5 ]);
+      });
+        
+        
+        
+        $(window).load(function() {
+        	
+            $(".rowTopTable").append($("#divformFilter").html());
+            
+          //Filter tax
+    		$("[name='inputFormFilter']").keypress(blockSpace);
+    		$("[name='inputFormFilter']").keypress(onlyWordAndNumber);
+    		blockCtrlKey("[name='inputFormFilter']");
+    		blockPasteWithMouse("[name='inputFormFilter']");
+
+    		$("[name='inputFormFilter']").attr('maxlength','20');
+
+    		$(".textCode").click(function(){
+    			$("[name='inputFormFilter']").attr('maxlength','20');
+    		});
+
+    		$(".textDesc").click(function(){
+    			$("[name='inputFormFilter']").attr('maxlength','100');
+    		});
+    		
+/*             $("#btnFormFilter").click(function () {
+            		if ($(".dataTables_wrapper #inputFormFilter").val() == "" ||
+            				$("#formFilter input[type='radio']:checked").length == 0){
+                		
+                        return false;
+                        
+                    } else {
+                    	
+                        $("#inputFormFilter").submit();
+                    }
+                
+            });
+ */
+ 
+ 
+        });
+        
+        //]]>
+    </script>
+
+</div>
+</html>

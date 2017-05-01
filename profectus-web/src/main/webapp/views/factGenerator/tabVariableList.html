@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	
+<!--MODAL DELETE -->
+	<div class="modal hide" id="confirmDeleteVariavel">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h3><span th:text="#{title.variable.modal.confirm}" ></span></h3>
+	</div>
+	<div class="modal-body">
+				
+	<fieldset>
+	 	<span th:text="#{message.formVariable.modal.confirm.delete}"></span>
+	</fieldset>
+				
+	</div>
+	<div class="modal-footer">
+		<form name="formModal"		th:action="@{/factGenerator/view}" th:object="${factGeneratorDTO}" method="post">
+			 <input type="hidden"  	th:field="*{id}" th:id="modalfactGeneratorId"></input>
+			 <input type="hidden"  	th:field="*{factGeneratorVersionDTO.id}" th:id="modalFactGeneratorVersionId"></input>
+			 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+			 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+			 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}"></input>
+			 <input type="hidden"  	th:field="*{variableDTO.id}" th:id="modalVariableId"></input>
+			 <input type="hidden" 	th:field="*{factGeneratorVersionDTO.situation}" th:id="modalSituationId"></input>
+			 <input type="hidden" 	th:id="action2"   th:field="*{action}"></input>
+			 <input type="hidden" 	th:id="viewName2" th:field="*{viewName}"></input>
+			<button type="button" 	class="btn" data-dismiss="modal"><span th:text="#{button.no}"></span></button>
+			<button type="submit" 	class="btn btn-primary" ><span th:text="#{button.yes}"></span></button>
+		</form>
+	</div>
+</div>
+
+<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.variable.consult}" style="text-transform:none;"></h1>
+				</div>
+
+				<div th:include="factGenerator/factGeneratorMessage :: messageView" />
+				
+				<form class="form-horizontal form-container" action="#" th:action="@{/factGenerator/view}" th:object="${factGeneratorDTO}" method="post">
+
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.responsible}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:id="action1" th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName1" th:field="*{viewName}"></input>
+
+					<fieldset>
+					
+	
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')"></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('limitMonthLosses', 'input-small', 'false', 'true','2')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('typeDetermination','description','typeDeterminationEnum', 'input-small', 'readonly')" ></div>
+						
+						<div class="control-group" >
+							<label class="control-label" th:for="dayTrade"><span th:text="#{model.FactGeneratorDTO.dayTrade}"></span></label>
+						    <div class="controls"  >
+								<input type="text" th:class="input-mini" th:value="#{${factGeneratorDTO.getDescriptionDayTrade(factGeneratorDTO.dayTrade)}}" th:readonly="true"></input>
+						     </div>
+						</div>
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorVersionDTO.startTerm', 'startTerm', 'false', 'true', 'en', '-')" />
+						
+						<div class="control-group" th:include="fragments/inputs :: textAreaField('factGeneratorVersionDTO.calculationBase', 'span12', 'false', 'true')" />
+
+						<div class="control-group">
+
+							<ul class="nav nav-tabs">
+								<li><a><span th:text="#{title.tab.tax}"></span></a></li>
+								<li class="active"><a href="#tab2" data-toggle="tab"><span th:text="#{title.tab.variable}"></span></a></li>
+							</ul>
+							<div class="tab-content">
+								<!-- <div class="tab-pane active" id="tab1"></div> -->
+								<div class="tab-pane" id="tab2">
+								</div>
+							</div>
+
+							<table id="variableTable" class="table table-bordered table-striped dataTable">
+											<thead>
+												<tr>
+													<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.name}" ></span><i class="sort"></i></th>
+													<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.description}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.origin}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.type}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.variableSize}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.mandatory}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.value}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.key}" ></span><i class="sort"></i></th>
+													<th style="text-align: center; width: 7%;"><span th:text="#{dataTable.column.title.action}"></span><i class="sort"></i></th>
+												</tr>
+											</thead>
+											<tbody  th:id="tbodyList" >
+													<tr th:each="variableDTO, iterStat : ${factGeneratorDTO.listVariableDTO}" class="linha">
+													
+													<td th:text="${variableDTO.name}"></td>
+													
+													<td th:text="${variableDTO.description}"></td>
+													
+													<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionOriginEnum(variableDTO.origin)}}"></td>
+													
+													<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionTypeEnum(variableDTO.type)}}"></td>
+													
+													<td style="text-align: center;" th:text="${variableDTO.variableSize}"></td>
+													
+													<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionMandatory(variableDTO.mandatory)}}"></td>
+					
+													<td style="text-align: center;" th:text="${variableDTO.value}"></td>
+													
+													<td style="text-align: center;">
+															<span th:if="${variableDTO.key != null}">
+																	<span th:text="#{${variableDTO.getDescriptionKeyNetting(variableDTO.key)}}"></span>
+															</span>		
+													</td>
+													
+					<!--						<td align="center">
+					 								<a th:href="@{/factGenerator/editInterval(rangeID=${rangeDTO.id}, rangeIntervalID=${rangeIntervalDTO.id}, indexList=${iterStat.index})}"
+														th:title="#{title.link.edit}"><i class="icon-pencil"></i></a>
+					 							</td>
+					 -->
+												<td style="text-align: center; width: 7%;">
+					 									<a 	data-toggle="modal" data-target="#confirmDeleteVariavel" href="#" 
+															th:onclick="'deleteVariable( \'' + ${factGeneratorDTO.id} + '\' ,  \'' + ${factGeneratorDTO.factGeneratorVersionDTO.id} + '\' , \'' + ${factGeneratorDTO.factGeneratorVersionDTO.situation} + '\',  \'' + ${variableDTO.id} + '\')'" 
+															th:title="#{title.link.delete}"><i class="icon-remove"></i></a>
+					 							</td>
+											</tr>
+										</tbody>
+									</table>
+							
+						</div>
+
+					</fieldset>
+
+					<div class="form-actions">
+							<button id="buttonChange" th:if="${IS_CHANGE_DESCRIPTION}" class="btn btn-primary" type="submit" ><span th:text="#{button.change}"></span></button>
+
+							<button id="buttonSave" th:if="${!IS_CHANGE_DESCRIPTION}" class="btn btn-primary" type="submit" ><span th:text="#{button.save}"></span></button>
+							
+							<button id="buttonPrev" class="btn" type="submit"><span th:text="#{button.prev}"></span></button>
+							
+							<button id="buttonCancel" class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	//<![CDATA[
+	
+
+	$(document).ready(function() {
+		
+       configureDataTable('#variableTable', [8]);
+
+	});
+	
+	$(window).load(function() {
+
+	    //Botões de Action
+		$("#buttonPrev").click(function(){
+	    	$("#action1").val("prev");
+	    	$("#viewName1").val("factGenerator/criterionView");
+	    });
+	    
+	    $("#buttonChange").click(function(){
+	    	$("#action1").val("editVariable");
+	    	$("#viewName1").val("factGenerator/variableChange");
+	    });
+	    
+	    $("#buttonCancel").click(function(){
+	    	$("#action1").val("cancel");
+	    	$("#viewName1").val("factGenerator/factGeneratorList");
+	    });
+	    
+	    $("#buttonSave").click(function(){
+	    	$("#action1").val("save");
+	    	$("#viewName").val("factGenerator/tabVariableList");
+	    });
+
+
+		$("[name='variableDTO.variableSize']").keypress(onlyNumber);
+		//blockCtrlKey("[name='code']");
+		//blockPasteWithMouse("[name='code']");
+
+		//$("#description").keypress(onlyWordAndNumber);
+		//blockCtrlKey("[name='description']");
+		//blockPasteWithMouse("[name='description']");
+		
+		//Setar focu no primeiro campo com erro------------------
+ 	   $("[name='"+$("#firstFieldError").val()+"']").focus();
+
+		$("#buttonClean").click(function(){
+			$("[name='variableDTO.name']").val("");
+			$("[name='variableDTO.description']").val("");
+			$("[name='variableDTO.origin']").val("");
+			$("[name='variableDTO.type']").val("");
+			$("[name='variableDTO.variableSize']").val("");
+			$("[name='variableDTO.mandatory']").attr('checked',false);
+		});
+	});
+
+	function deleteVariable(factGeneratorId, versionId, situationId, variableId){
+		$("#modalfactGeneratorId").val(factGeneratorId);
+		$("#modalFactGeneratorVersionId").val(versionId);
+		$("#modalSituationId").val(situationId);
+		$("#modalVariableId").val(variableId);
+		$("#action2").val("deleteVariable");
+		$("#viewName2").val("factGenerator/tabVariableList");
+	}
+	 //]]>
+	</script>
+</div>
+</html>

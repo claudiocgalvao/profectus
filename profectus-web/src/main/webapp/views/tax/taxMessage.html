@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+           
+           	<div th:fragment="messageView">
+           	
+           					<div th:if='${taxDTO.treatmentMessageDTO!=null}' 
+					 th:include="fragments/alert :: alert('${taxDTO.treatmentMessageDTO.typeMessage}', '${taxDTO.treatmentMessageDTO.message}')"></div>
+           		
+            </div>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.adm.approvalChangesRequestFactGenerator.confirmReplaceFGVersion}" style="text-transform:none;"></h1>
+				</div>
+
+					<div th:if='${approvalChangeRequestDTO.treatmentMessageDTO!=null}' 
+						 th:include="fragments/alert :: alert('${approvalChangeRequestDTO.treatmentMessageDTO.typeMessage}', 
+						 										'${approvalChangeRequestDTO.treatmentMessageDTO.message}')"></div>
+
+				<form class="form-horizontal form-container" action="#" th:action="@{/approvalChangeRequestFG/init}" th:object="${approvalChangeRequestDTO}" method="post">
+						 										
+					<input type="hidden" th:field="*{id}"></input>
+
+					<input type="hidden" th:field="*{factGeneratorDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.startTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.situation}"></input>
+					
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.id}"></input>
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.factGeneratorVersionDTO.startTerm}"></input>
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{activeFactGeneratorDTO.factGeneratorVersionDTO.situation}"></input>
+
+					<fieldset>					
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.code', 'input-xlarge', 'false', 'true','30')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.versionView', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorDTO.factGeneratorVersionDTO.situation','description','factGeneratorDTO.factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')"></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.limitMonthLosses', 'input-small', 'false', 'true','2')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorDTO.typeDetermination','description','factGeneratorDTO.typeDeterminationEnum', 'input-small', 'readonly')" ></div>
+						
+						<div class="control-group" >
+							<label class="control-label" th:for="dayTrade"><span th:text="#{model.AdmFactGeneratorPublishedDTO.factGeneratorDTO.factGeneratorVersionDTO.dayTrade}"></span></label>
+						    <div class="controls"  >
+								<input type="text" th:class="input-mini" th:value="#{${approvalChangeRequestDTO.factGeneratorDTO.getDescriptionDayTrade(approvalChangeRequestDTO.factGeneratorDTO.dayTrade)}}" th:readonly="true"></input>
+						     </div>
+						</div>
+						
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('factGeneratorDTO.factGeneratorVersionDTO.startTerm', 'startTerm', 'false', 'true', 'en', '-')" />
+						
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.factGeneratorVersionDTO.responsible', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.factGeneratorVersionDTO.responsibleApprovalTest', 'input-small', 'false', 'true','11')" ></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.factGeneratorVersionDTO.dateApprovalTest', 'input-small', 'false', 'true','11')" ></div>
+						
+						<div class="control-group">
+							<div class="tab-content">
+								<!-- TAB TAX -->
+								<div class="tab-pane active" id="tab1">
+									<h4 th:text="#{title.adm.admFactGeneratorPublished.list.versions}"></h4>
+									<table id="taxListDtId"
+										class="table table-bordered table-striped dataTable">
+										<thead>
+											<tr>
+												<th><span th:text="#{dataTable.column.adm.approvalChangesRequestFactGenerator.confirmReplace.version.situation}"></span></th>
+												<th><span th:text="#{dataTable.column.adm.approvalChangesRequestFactGenerator.confirmReplace.version.version}"></span></th>
+												<th><span th:text="#{dataTable.column.adm.approvalChangesRequestFactGenerator.confirmReplace.version.responsible}"></span></th>
+												<th><span th:text="#{dataTable.column.adm.approvalChangesRequestFactGenerator.confirmReplace.version.startTerm}"></span></th>
+												<th><span th:text="#{dataTable.column.adm.approvalChangesRequestFactGenerator.confirmReplace.version.endTerm}"></span></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td th:text="#{${approvalChangeRequestDTO.currentFactGeneratorDTO.getDescriptionSituarionEnum(approvalChangeRequestDTO.currentFactGeneratorDTO.factGeneratorVersionDTO.situation)}}"></td>
+												<td><span th:text="${approvalChangeRequestDTO.currentFactGeneratorDTO.factGeneratorVersionDTO.version}"/>.<span th:text="${approvalChangeRequestDTO.currentFactGeneratorDTO.factGeneratorVersionDTO.digtiVersion}"/></td>
+												<td><span th:text="${approvalChangeRequestDTO.currentFactGeneratorDTO.factGeneratorVersionDTO.responsible}"></span></td>
+												<td><span th:text="${approvalChangeRequestDTO.currentFactGeneratorDTO.factGeneratorVersionDTO.startTerm}"></span></td>
+												<td><span th:text="${approvalChangeRequestDTO.currentFactGeneratorDTO.factGeneratorVersionDTO.endTerm}"></span></td>
+											</tr>
+											<tr>
+												<td th:text="#{${approvalChangeRequestDTO.activeFactGeneratorDTO.getDescriptionSituarionEnum(approvalChangeRequestDTO.activeFactGeneratorDTO.factGeneratorVersionDTO.situation)}}"></td>
+												<td><span th:text="${approvalChangeRequestDTO.activeFactGeneratorDTO.factGeneratorVersionDTO.version}"/>.<span th:text="${approvalChangeRequestDTO.activeFactGeneratorDTO.factGeneratorVersionDTO.digtiVersion}"/></td>
+												<td><span th:text="${approvalChangeRequestDTO.activeFactGeneratorDTO.factGeneratorVersionDTO.responsible}"></span></td>
+												<td><span th:text="${approvalChangeRequestDTO.activeFactGeneratorDTO.factGeneratorVersionDTO.startTerm}"></span></td>
+												<td><span th:text="${approvalChangeRequestDTO.activeFactGeneratorDTO.factGeneratorVersionDTO.endTerm}"></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+
+					<div class="form-actions">
+						<button class="btn btn-primary" type="submit" name="acceptReplace" th:onclick="'return confirm(\'' + #{message.approvalChangesRequestFactGenerator.confirm.replcace} + '\')'"><span th:text="#{button.confirm}"></span></button>
+						<button class="btn btn-primary" type="submit" name="rejectChange" th:onclick="'return confirm(\'' + #{message.approvalChangesRequestFactGenerator.confirm.reject} + '\')'"><span th:text="#{button.reject}"></span></button>
+						<a class="btn" th:id="btnCancel" onclick="javascript:document.location.href ='list';" ><span th:text="#{button.back}"></span></a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+		});
+	</script>
+</div>
+</html>

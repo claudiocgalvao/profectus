@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="contentBody">
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+
+			<div class="row-fluid">
+				<div class="span12">
+				    <div class="page-header">
+					    <h1 style="text-transform: none;" th:text="#{title.test.fact.generator.consult}"></h1>
+					</div>
+
+					<div id="divformFilter" style="display:none;" >	
+  						<div class="row-fluid">
+							<div class="btn-toolbar pull-left" style="width:49%;*width:60%">
+							
+								<a class="btn" th:href="@{/test/add}"><i class="icon-plus"></i>&nbsp;<span th:text="#{button.include}"></span></a>
+								
+								<div class="clearfix"></div>
+							</div>					
+						</div>		
+ 						
+ 						
+		 				<form id="formFilter" class="form-inline actions-toolbar" 
+		 						action="#" th:action="@{/test/list}" 
+		 						 th:object="${factGeneratorDTO}" method="post">
+		 					
+		 					<input type="hidden" th:field="*{action}" th:id="action" ></input>
+ 							<div class="actions-toolbar-inner"> 							
+ 								<label th:text="#{formFilter.button.search}"></label> 
+								
+								<label class="radio-inline">
+									<input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" th:class="textCode"
+										th:value="1" th:checked="${optionRadioFilter == '1'}?'checked'" >&nbsp;
+										<span th:text="#{formFilter.label.code}"></span></input></label>
+								
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								
+								<label class="radio-inline"><input type="radio" th:id="optionRadioFilter" 
+										th:field="*{optionRadioFilter}" th:value="2" th:class="textDescription"
+										th:checked="${optionRadioFilter == '2'}?'checked'">&nbsp;
+										<span th:text="#{formFilter.label.name.fact.generator}"></span></input></label> 						
+
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								
+								<label class="radio-inline">
+									
+									<input type="radio" th:id="optionRadioFilter"  th:field="*{optionRadioFilter}" th:value="3" th:class="onlyNumber"
+										th:checked="${optionRadioFilter == '3'}?'checked'">&nbsp;
+										<span th:text="#{formFilter.label.test.requesting}"></span></input>
+										
+								</label> 						
+
+								<span>&nbsp;&nbsp;&nbsp;</span>
+
+								<label class="radio-inline"><input type="radio" th:id="optionRadioFilter" 
+										th:field="*{optionRadioFilter}" th:value="4" th:class="dateRadio"
+										th:checked="${optionRadioFilter == '4'}?'checked'">&nbsp;
+										<span th:text="#{formFilter.label.test.request.date}"></span></input></label> 						
+							
+ 							</div>
+							
+							<div class="actions-toolbar-inner dateFilter" style="display: none;">
+								<div class="input-append date" data-date-format="yyyy-mm-dd" th:id="dateInitialCalendar">
+									<input th:class="fieldDateFee" type="text" th:field="*{testDTO.dateInitial}" id="testDTO.dateInitial" size="10" th:errorclass="text-error"></input>
+		                        	<span class="add-on" ><i class="icon-th"></i></span>
+		                        </div>
+		                        <div class="input-append date" data-date-format="yyyy-mm-dd" th:id="dateEndCalendar">
+		                        	<input type="text" th:field="*{testDTO.dateEnd}" th:id="testDTO.dateEnd" size="10"></input>
+		                        	<span class="add-on" ><i class="icon-th"></i></span>
+								</div>
+								<button th:id="btnFormFilter"  class="btn btn-primary" type="submit">
+									<i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+						    	<button th:id="btnFormClean"   class="btn" onclick="clearFilter();">
+						    		<i class="icon-remove"></i>&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+							</div>
+
+							<div class="actions-toolbar-inner textFilter" >
+								<input type="text" th:id="inputFormFilter" class="input-xlarge" style="margin-right:5px;" th:field="*{inputFormFilter}" />
+								<button id="btnFormFilter" class="btn btn-primary" type="submit"><i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+						    	<button id="btnFormClean"  class="btn" onclick="clearFilter();"><i class="icon-remove"></i>&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+							</div>
+						</form>	
+						<br/>
+					</div>
+				
+ 				<form id="formSelected" action="#" th:action="@{/test/list}" th:object="${factGeneratorDTO}" method="post">
+				
+				<input type="hidden" th:field="*{action}" th:id="action" ></input>
+ 				
+ 				<div class="control-group" th:include="factGenerator/factGeneratorMessage :: messageView" />
+ 				
+				<table id="tableTest" class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th><span th:text="#{dataTable.column.fact.generator.code}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.name}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.version}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.situation}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.responsible}"></span><i class="sort"></i></th>
+ 							<th><span th:text="#{dataTable.column.test.number.solicitation}"></span><i class="sort"></i></th>
+ 							<th><span th:text="#{dataTable.column.test.date.solicitation}"></span><i class="sort"></i></th>
+ 							<th style="width: 7%" ><span th:text="#{dataTable.column.test.result.view}"></span><i class="sort"></i></th>
+						</tr>
+					</thead>
+ 					<tbody>
+  						<tr th:each="factGeneratorDTO, stat : ${listFactGeneratorDTO}" >
+  						
+							<td><span th:text="${factGeneratorDTO.code}"></span></td>  						
+ 							
+ 							<td th:text="${factGeneratorDTO.description}"></td>
+							
+							<td><span th:text="${factGeneratorDTO.versionView}"></span></td>
+ 							
+ 							<td th:text="#{${factGeneratorDTO.getDescriptionSituarionEnum(factGeneratorDTO.factGeneratorVersionDTO.situation)}}"></td>
+ 							
+ 							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.responsible}"></td>
+ 							
+	  						<td style="text-align: center;" th:text="${factGeneratorDTO.testDTO.testRequestId}"></td>
+	  						
+	  						<td style="text-align: center;" th:text="${factGeneratorDTO.testDTO.dateSolicitation}"></td>
+	  						
+	  						<td style="text-align: center;" >
+	  							 <a  th:if="${factGeneratorDTO.testDTO.testRequestId != null}" th:href="@{/test/viewTestResult(factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id},
+	  							 									testDTO.testRequestId=${factGeneratorDTO.testDTO.testRequestId})}" 
+																	th:title="#{title.link.view.details}"><i class="icon-book" ></i></a>
+							</td>  						
+	  						
+	  						<!-- <td style="text-align: center; width: 5%">
+								<input type="checkbox" id="chkSelectScript" class="checkScript" th:if="${factGeneratorDTO.factGeneratorVersionDTO.situation == 10}"
+								th:onclick="'setScriptValue(\'' + ${factGeneratorDTO.factGeneratorVersionDTO.id} + '\')'" />
+							</td> -->						
+ 							
+	  						<!-- <td style="text-align: center; width: 5%">
+								<input type="checkbox" id="chkSelectTest" class="checkTest" th:if="${factGeneratorDTO.factGeneratorVersionDTO.situation == 13}"
+								th:onclick="'setTestValue(\'' + ${factGeneratorDTO.factGeneratorVersionDTO.id} + '\')'" />
+							</td> -->
+													
+  						</tr>
+					</tbody>
+				</table>
+
+ 				 </form>
+			</div>
+		</div>
+ 	</div>
+
+ 
+ 
+<script type="text/javascript">
+//<![CDATA[
+ function clearFilter() {
+	 $("[name='inputFormFilter']").val("");
+     $("[name='testDTO.dateInitial']").val("");
+     $("[name='testDTO.dateEnd']").val("");
+     $("[name='action']").val("");
+     $("[name='optionRadioFilter']").val("1");
+     document.getElementById('formFilter').submit();
+  }
+             
+     $(document).ready(function () {
+
+          configureDataTable('#tableTest', [7]);
+          
+          $('.input-xlarge').keypress(onlyWordAndNumber);
+          
+          $(".onlyNumber").click(function(){
+			$("[name='inputFormFilter']").attr('maxlength','8');
+			$("[name='inputFormFilter']").keypress(onlyNumber);
+	      });
+          
+          $(".textCode").click(function(){
+        	$("[name='inputFormFilter']").attr('maxlength','30');
+          });
+          
+          $(".textDescription").click(function(){
+        	$("[name='inputFormFilter']").attr('maxlength','50');
+          });
+          
+          if($("#formFilter input[type='radio']:checked").val() != null){
+				
+	        	var radioId = $("#formFilter input[type='radio']:checked").val();
+	        	
+	        	if(radioId == "1"){
+	        		$("[name='inputFormFilter']").attr('maxlength','30');
+	        	}else if(radioId == "2"){
+	        		$("[name='inputFormFilter']").attr('maxlength','50');
+	        	}else if(radioId == "3"){
+	        		$("[name='inputFormFilter']").attr('maxlength','8');
+					$("[name='inputFormFilter']").keypress(onlyNumber);
+	        	}
+	        }
+          
+		blockCtrlKey("[name='inputFormFilter']");
+		blockPasteWithMouse("[name='inputFormFilter']");
+
+    });
+        
+    $(window).load(function() {
+    	
+        $(".rowTopTable").append($("#divformFilter").html());
+        
+        $(".onlyNumber").click(function(){
+     		$("[name='inputFormFilter']" ).off();
+        	$("[name='inputFormFilter']").val("");
+        	$("[name='testDTO.dateInitial']").val("");
+        	$("[name='testDTO.dateEnd']").val("");
+        	$(".textFilter").css("display","block");
+        	$(".dateFilter").css("display","none");
+			$("[name='action']").val("filterByRequesting");
+			$("[name='inputFormFilter']").attr('maxlength','8');
+			blockCtrlKey("[name='inputFormFilter']");
+			blockPasteWithMouse("[name='inputFormFilter']");
+        	$("[name='inputFormFilter']").keypress(onlyNumber);
+
+    	});
+
+        $(".textCode").click(function(){
+            $("[name='testDTO.dateInitial']").val("");
+            $("[name='testDTO.dateEnd']").val("");
+        	$(".textFilter").css("display","block");
+        	$(".dateFilter").css("display","none");
+        	$("[name='inputFormFilter']").off();
+        	$("[name='action']").val("filterByCode");
+        	$("[name='inputFormFilter']").attr('maxlength','30');
+			blockCtrlKey("[name='inputFormFilter']");
+			blockPasteWithMouse("[name='inputFormFilter']");
+			$('.input-xlarge').keypress(onlyWordAndNumber);
+    	});
+
+
+        
+        $(".textDescription").click(function(){
+            $("[name='testDTO.dateInitial']").val("");
+            $("[name='testDTO.dateEnd']").val("");
+        	$(".textFilter").css("display","block");
+        	$(".dateFilter").css("display","none");
+        	$("[name='inputFormFilter']").off();
+        	$("[name='action']").val("filterByDescription");
+        	$("[name='inputFormFilter']").attr('maxlength','50');
+			blockCtrlKey("[name='inputFormFilter']");
+			blockPasteWithMouse("[name='inputFormFilter']");
+			$('.input-xlarge').keypress(onlyWordAndNumber);
+
+    	});
+
+        $(".dateRadio").click(function(){
+        	
+        	$("[name='inputFormFilter']").val("");
+    		$("[name='inputFormFilter']" ).off();
+        	
+    		$(".textFilter").css("display","none");
+        	$(".dateFilter").css("display","block");
+    		
+        	onlyDateFormatThis("[name='testDTO.dateInitial']");
+        	onlyDateFormatThis("[name='testDTO.dateEnd']");
+			blockCtrlKey("[name='testDTO.dateInitial']");
+			blockPasteWithMouse("[name='testDTO.dateInitial']");
+			blockCtrlKey("[name='testDTO.dateEnd']");
+			blockPasteWithMouse("[name='testDTO.dateEnd']");
+			$("[name='action']").val("filterByDate");
+        });
+        
+        
+        if($("#formFilter input[type='radio']:checked").val() != null){
+
+        	var radioId = $("#formFilter input[type='radio']:checked").val();
+        	
+        	if(radioId == "1"){
+            	$( "[name='inputFormFilter']" ).off();
+            	$("[name='action']").val("filterByCode");
+
+        	}else if(radioId == "2"){
+            	$( "[name='inputFormFilter']" ).off();
+            	$("[name='action']").val("filterByDescription");
+        
+        	}else if(radioId == "3"){
+        		
+            	$( "[name='inputFormFilter']" ).off();
+            	$("[name='action']").val("filterByNumber");
+
+        	}else if(radioId == "4"){
+            	$(".textFilter").css("display","none");
+            	$(".dateFilter").css("display","block");
+            	onlyDateFormatThis("[name='simulationDTO.dateInitial']");
+            	onlyDateFormatThis("[name='simulationDTO.dateEnd']");
+    			blockCtrlKey("[name='simulationDTO.dateInitial']");
+    			blockPasteWithMouse("[name='simulationDTO.dateInitial']");
+    			blockCtrlKey("[name='simulationDTO.dateEnd']");
+    			blockPasteWithMouse("[name='simulationDTO.dateEnd']");
+    			$("[name='action']").val("filterByDate");
+        	}
+        }
+
+        
+        $(".date").datepicker({
+        	autoclose: true
+        });
+        
+        
+		blockCtrlKey("[name='inputFormFilter']");
+		blockPasteWithMouse("[name='inputFormFilter']");
+		$('.input-xlarge').keypress(onlyWordAndNumber);
+
+    });
+    
+  //]]>
+  </script>
+</div>
+</html>

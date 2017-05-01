@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content" style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.simulation.include}" style="text-transform:none;"></h1>
+				</div>
+
+				<form  id="formSimulation" class="form-horizontal form-container" action="#" 
+						th:action="@{/simulation/add}" th:object="${factGeneratorDTO}" method="post" enctype="multipart/form-data">
+
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.startTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.calculationBase}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:field="*{simulationDTO.id}"></input>
+					<input type="hidden" th:field="*{simulationDTO.simulationRequestId}"></input>
+					<input type="hidden" th:field="*{dayTrade}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+					<input type="hidden" th:id="action"   th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName" th:field="*{viewName}"></input>
+					<input type="hidden" th:field="*{currentIndex}" ></input>
+					
+ 					<fieldset>
+ 					
+						<div class="control-group" th:include="fragments/inputs :: selectListDoubleDescription('simulationDTO.fgvId','input-xlarge', 'simulationDTO.listFactGeneratorCurrent', 'factGeneratorVersionDTO.id', 'code','versionView','V.', 'true', 'false', 'false')"></div>
+						
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						
+ 						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.description', 'input-xxlarge', 'true', 'false','40')" />
+					
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('simulationDTO.dateSolicitation', 'dateSolicitation', 'false', 'true', 'en', '-')" />
+
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.clientName', 'input-xxlarge', 'false', 'false','40')" ></div>
+
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.cpfCnpj', 'input-xlarge integer', 'false', 'false','20')" ></div>
+						
+						<div class="control-group" th:include="fragments/inputs :: selectEnum('simulationDTO.type', 'simulationDTO.simulationTypeEnum', 'input-medium', 'true', 'false', 'false')" />
+
+
+ 						<div th:if="${factGeneratorDTO.simulationDTO.type == 2}" >
+								<div class="control-group"  th:include="fragments/inputs :: file('multiPartFile', 'simulationDTO.fileInput', 'true','false','100')"></div>
+						</div>
+ 						
+ 						<div class="control-group" th:include="factGenerator/factGeneratorMessage :: messageView" />
+ 						
+ 						<div th:if="${VARIABLES_NOT_FOUNDS != null}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formSimulation.excel.variable.error}"></span>&nbsp;</b>
+		 								<span class="text-error" th:text="${VARIABLES_NOT_FOUNDS}"></span>
+			        			    </div>	
+ 						</div>
+ 						
+ 						
+ 						<div th:if="${VARIABLES_VALUE_EMPTY != null}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formSimulation.excel.variable.value.empty.error}"></span>&nbsp;</b>
+		 								<span class="text-error" th:text="${VARIABLES_VALUE_EMPTY}"></span>
+			        			    </div>	
+ 						</div>
+
+					</fieldset>
+
+					<div class="form-actions">
+
+							<div class="control-group">
+							
+							<button id="buttonSend" 	th:if="${IS_SHOW_BUTTON_SEND}" 
+								class="btn btn-primary" type="submit" ><span th:text="#{button.send}" ></span></button>
+						
+							<button id="buttonSendRequestExcel" 	th:if="${IS_SHOW_BUTTON_RESQUEST_EXCEL}" 
+								class="btn btn-primary" type="submit" ><span th:text="#{button.send}" ></span></button>
+
+							<button id="buttonCancel" class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+
+							</div>
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+	<script >
+	//<![CDATA[
+	           
+       $(document).ready(function () {
+
+			$("[name='simulationDTO.description']").keypress(onlyWordAndNumber);
+			blockCtrlKey("[name='simulationDTO.description']");
+			blockPasteWithMouse("[name='simulationDTO.description']");
+
+			$("[name='simulationDTO.clientName']").keypress(onlyWordAndNumber);
+			blockCtrlKey("[name='simulationDTO.clientName']");
+			blockPasteWithMouse("[name='simulationDTO.clientName']");
+
+			$("[name='simulationDTO.cpfCnpj']").keypress(onlyNumber);
+			blockCtrlKey("[name='simulationDTO.cpfCnpj']");
+			blockPasteWithMouse("[name='simulationDTO.cpfCnpj']");
+			
+         	
+    	   $("#buttonCancel").click(function(){
+		    	$("#action").val("cancel");
+		    });
+		    
+		    $("#buttonSend").click(function(){
+     		  	$("#action").val("sendNew");
+		    });
+
+		    $("#buttonSendRequest").click(function(){
+     		  	$("#action").val("sendRequest");
+		    });
+
+		    $("#buttonSendRequestExcel").click(function(){
+     		  	//$("#action").val("sendRequestExcel");
+		    	$("#action").val("sendRequestExcelSave");
+		    });
+
+		    $("#buttonSendRequestExcelSave").click(function(){
+		    	$("#action").val("sendRequestExcelSave");
+		    });
+
+		    $("#buttonPrev").click(function(){
+     		  	$("#action").val("prev");
+		   });
+		    
+           $(".double").maskMoney({decimal: ",", precision: 4, thousands: "."});//MASK
+
+           $(".integer").keypress(onlyNumber);
+           
+           
+		    //EVENTO CHANGE
+	        $("[name='simulationDTO.fgvId']").change(function () {
+	        	$("#action").val("selectFG");
+	        	$("#formSimulation").submit();
+	        	
+	        });
+
+	      //EVENTO CHANGE
+	        $("[name='simulationDTO.type']").change(function () {
+	        	$("#action").val("selectType");
+	        	$("#formSimulation").submit();
+	        	
+	        });
+		    
+		    
+		        //$("[name='simulationDTO.type']").change(function () {
+
+				    //var type = $("[name='simulationDTO.type']").val();
+				    //if(type == 2){
+			        	//$("#action").val("selectType");
+			        	//$("#formSimulation").submit();
+				    //}
+		        //});
+
+
+	});
+		//]]>
+
+	</script>
+	
+</div>
+</html>

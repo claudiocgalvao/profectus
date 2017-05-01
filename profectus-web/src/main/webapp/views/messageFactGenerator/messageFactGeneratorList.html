@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+	<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+</head>
+
+<div th:fragment="contentBody">
+
+	<!-- MODAL WARNING DELETE -->
+	<div class="modal hide" id="showWarningDelete">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h3><span th:text="#{title.messageFactGenerator.modal.warning.delete}" ></span></h3>
+		</div>
+		<div class="modal-body">
+		 	<span th:text="#{message.formMessageFactGenerator.delete.link.error}"></span>
+		 	<div th:if="${MODULE_NAME1}"  >&#45;<span th:text="#{__${MODULE_NAME1}__}"></span></div>
+			<div th:if="${MODULE_NAME2}"  >&#45;<span th:text="#{__${MODULE_NAME2}__}"></span></div>
+		</div>
+		<div class="modal-footer">
+			<form name="formModalWarningDelete" th:action="@{/messageFactGenerator/delete}" th:object="${messageFactGeneratorDTO}" method="post">
+				<input type="text"  th:field="*{idMessage}" th:id="idModalWarningDelete"></input>
+				<input type="text"  th:field="*{idFactGenerator}" th:id="idFactGeneratorModalWarningDelete"></input>
+				<button class="btn" type="button" data-dismiss="modal"><span th:text="#{button.close}"></span></button>
+			</form>
+		</div>
+	</div>
+	
+	<!-- MODAL CONFIRM -->
+	<div class="modal hide" id="confirmDeleteMessage">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h3><span th:text="#{title.messageFactGenerator.modal.confirm}" ></span></h3>
+		</div>
+		<div class="modal-body">
+					
+		<fieldset>
+		 	<span th:text="#{message.formMessageFactGenerator.confirm.delete}"></span>
+		</fieldset>
+					
+		</div>
+		<div class="modal-footer">
+			<form name="formModal" th:action="@{/messageFactGenerator/delete}" th:object="${messageFactGeneratorDTO}" method="post">
+				<input type="hidden"  th:field="*{idMessage}" th:id="idModalConfirmDelete"></input>
+				<input type="hidden"  th:field="*{idFactGeneratorVersion}" th:id="idFactGeneratorModalConfirmDelete"></input>
+				<button class="btn" type="button" data-dismiss="modal"><span th:text="#{button.no}"></span></button>
+				<button class="btn btn-primary" type="submit"><span th:text="#{button.yes}"></span></button>
+			</form>
+		</div>
+	</div>	
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+
+			<div class="row-fluid">
+				<div class="span12">
+				    <div class="page-header">
+					    <h1 th:text="#{title.messageFactGenerator.search}"></h1>
+					</div>
+	 
+	 				
+	 				
+					<div id="divformFilter" style="display:none;" >	
+  						<div class="row-fluid">
+							<div class="btn-toolbar pull-left" style="width:49%;*width:60%">
+								<div class="btn-group">
+ 									
+ 									<a th:href="@{/messageFactGenerator/add}" class="btn"><i class="icon-plus"></i>&nbsp;<span th:text="#{button.include}"></span></a>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+ 
+ 								</div>
+								<div class="clearfix"></div>
+							</div>					
+						</div>		
+ 						
+		 				<form id="formFilter" class="form-inline actions-toolbar" action="#" th:action="@{/messageFactGenerator/list}" th:object="${messageFactGeneratorDTO}" method="post">
+		 					
+ 		 					<input type="hidden" name="showModal" id="showModal"  th:field="*{showModal}"/>
+ 							
+ 							<div th:if='${messageFactGeneratorDTO.treatmentMessageDTO!=null}' th:include="fragments/alert :: alert('${messageFactGeneratorDTO.treatmentMessageDTO.typeMessage}', '${messageFactGeneratorDTO.treatmentMessageDTO.message}')"></div>
+ 							
+ 							<div class="actions-toolbar-inner"> 							
+ 								<label th:text="#{formFilter.button.search}"></label> 
+								<label class="radio-inline"><input type="radio" name="optRadio" value="1" th:checked="${messageFactGeneratorDTO.optionRadioFilter == '1'}?'checked'" th:field="*{optionRadioFilter}">&nbsp;<span th:text="#{model.MessageFactGeneratorDTO.filterOption.messageName}"></span></input></label>
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								<label class="radio-inline"><input type="radio" name="optRadio" value="3" th:checked="${messageFactGeneratorDTO.optionRadioFilter == '3'}?'checked'" th:field="*{optionRadioFilter}">&nbsp;<span th:text="#{model.MessageFactGeneratorDTO.filterOption.factGeneratorName}"></span></input></label> 						
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								<label class="radio-inline"><input type="radio" name="optRadio" value="2" th:checked="${messageFactGeneratorDTO.optionRadioFilter == '2'}?'checked'" th:field="*{optionRadioFilter}">&nbsp;<span th:text="#{model.MessageFactGeneratorDTO.filterOption.messageDescription}"></span></input></label>
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								<label class="radio-inline"><input type="radio" name="optRadio" value="4" th:checked="${messageFactGeneratorDTO.optionRadioFilter == '4'}?'checked'" th:field="*{optionRadioFilter}">&nbsp;<span th:text="#{model.MessageFactGeneratorDTO.filterOption.factGeneratorDescription}"></span></input></label>
+ 							</div>
+ 
+ 	
+							<div class="actions-toolbar-inner">
+								<!-- <label><span th:text="#{formFilter.label.name}"></span></label> -->
+ 								<input type="text" id="inputFormFilter" class="input-xxlarge" style="margin-right:5px;" th:field="*{inputFormFilter}" th:maxlength="30" ></input>
+								<button id="btnFormFilter" class="btn btn-primary" type="submit" ><span th:text="#{button.search}"></span></button>
+								<!-- <button id="btnFormClean"  class="btn"><i class="icon-remove"></i><span th:text="#{formFilter.button.clean}"></span></button> -->
+							    <button id="btnFormClean"  class="btn" type="button" onclick="clearFilter();"><span th:text="#{formFilter.button.clean}"></span></button>
+							</div>
+						</form>	
+						
+						
+							<div class="actions-toolbar-inner">
+								<!--<label><span th:text="#{formFilter.label.name}"></span></label>
+ 								<input type="text" id="inputFormFilter" class="input-medium" style="margin-right:5px;" th:field="*{inputFormFilter}" ></input>
+ 								-->
+<!--  								<a href="#" data-th-href="@{/tax/add}"><button id="btnFormAdd" class="btn btn-primary" ><span th:text="Incluir"></span></button></a>
+								<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+ -->								<!-- <button id="btnFormClean"  class="btn"><span th:text="#{formFilter.button.clean}"></span></button> -->
+							</div>
+						<br/>
+					</div>
+				
+ 
+				<table id="messageFactGeneratorListDtId" class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th><span th:text="#{dataTable.column.messageFactGenerator.messageName}"></span></th>
+							<th><span th:text="#{dataTable.column.messageFactGenerator.messageDescription}"></span></th>
+							<th><span th:text="#{dataTable.column.messageFactGenerator.factGeneratorName}"></span></th>
+							<th><span th:text="#{dataTable.column.messageFactGenerator.factGeneratorDescription}"></span></th>
+							<th><span th:text="#{dataTable.column.messageFactGenerator.versionView}"></span></th>
+							<th width="10%" colspan="2" ><span th:text="#{dataTable.column.title.action}"></span></th>
+						</tr>
+					</thead>
+ 					<tbody>
+  						<tr th:each="messageFactGeneratorDTO : ${messageFactGeneratorDTOsList}">
+  						
+							<td><a th:href="@{/messageFactGenerator/view(idMessage=${messageFactGeneratorDTO.idMessage}, idFactGenerator=${messageFactGeneratorDTO.idFactGenerator}, idFactGeneratorVersion=${messageFactGeneratorDTO.idFactGeneratorVersion})}" th:title="#{title.link.view.details}" th:text="${messageFactGeneratorDTO.messageDTO.name}"></a></td>
+ 							<td th:text="${messageFactGeneratorDTO.messageDTO.description}"></td>
+ 							<td th:text="${messageFactGeneratorDTO.factGeneratorDTO.code}"></td>
+ 							<td th:text="${messageFactGeneratorDTO.factGeneratorDTO.description}"></td>
+ 							<td th:text="${messageFactGeneratorDTO.factGeneratorDTO.versionView}"></td>
+ 							<td align="center">
+								<a th:href="@{/messageFactGenerator/edit(idMessage=${messageFactGeneratorDTO.idMessage}, idFactGenerator=${messageFactGeneratorDTO.idFactGenerator}, idFactGeneratorVersion=${messageFactGeneratorDTO.idFactGeneratorVersion})}" th:title="#{title.link.edit}"><i class="icon-pencil"></i></a>					
+							</td>						
+							<td align="center">
+								<a 	data-toggle="modal" data-target="#confirmDeleteMessage" href="#" 
+									th:onclick="'deleteItem(\'' + ${messageFactGeneratorDTO.idMessage} + '\', \'' + ${messageFactGeneratorDTO.idFactGeneratorVersion} + '\')'" 
+									th:title="#{title.link.delete}"><i class="icon-remove"></i></a>							
+							</td>
+ 						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			
+		</div>
+ 	</div>
+
+ 
+    <script >
+    
+    function clearFilter() {
+    	$("[name='optionRadioFilter']").val("1");
+        document.getElementById('inputFormFilter').value='';
+        document.getElementById('formFilter').submit();
+    }
+
+    
+	    function deleteItem(idMessage, idFactGeneratorVersion) {
+	    	//Warning Delete
+	    	$("#idModalWarningDelete").val(idMessage);
+	    	$("#idFactGeneratorModalWarningDelete").val(idFactGeneratorVersion);
+	    	//Delete
+	        $("#idModalConfirmDelete").val(idMessage);
+	        $("#idFactGeneratorModalConfirmDelete").val(idFactGeneratorVersion);
+	    }
+
+        //<![CDATA[
+        $(document).ready(function () {
+            configureDataTable('#messageFactGeneratorListDtId', [ 5, 6 ]);
+      	});
+        
+        
+        
+        $(window).load(function() {
+        	
+        	// Abrir modal em caso de vinculo na exclusao da variavel
+        	if ($("#showModal").val() == "showWarningDelete") {
+        		$('#showWarningDelete').modal('show');
+        	}
+
+            $(".rowTopTable").append($("#divformFilter").html());
+            
+            $("[name='inputFormFilter']").keypress(onlyWordAndNumber);
+        });
+        
+        //]]>
+    </script>
+
+</div>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 style="text-transform: none;" th:text="#{title.validatorFactGenerator.consult.tax}"></h1>
+				</div>
+
+				<div th:include="factGenerator/factGeneratorMessage :: messageView" />
+
+				<form class="form-horizontal form-container" action="#" th:action="@{/validatorFactGenerator/view}" th:object="${factGeneratorDTO}" method="post">
+ 					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:field="*{dayTrade}"></input>
+					<input type="hidden" th:field="*{action}" th:id="action"></input>
+					
+ 					<fieldset>
+							
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-medium', 'false', 'true','11')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-medium', 'true')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('limitMonthLosses', 'input-small', 'false', 'true','2')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('typeDetermination','description','typeDeterminationEnum', 'input-small', 'readonly')" ></div>
+						<div class="control-group" >
+							<label class="control-label" th:for="dayTrade">
+			                   	<span th:text="#{model.FactGeneratorDTO.dayTrade}"></span>
+			                </label>
+		                    <div class="controls">
+								<input type="text" th:class="input-mini" th:value="#{${factGeneratorDTO.getDescriptionDayTrade(factGeneratorDTO.dayTrade)}}" th:readonly="true"></input>
+		                    </div>
+						</div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('factGeneratorVersionDTO.startTerm', 'input-medium', 'false', 'true','10')" />
+
+				
+				<div class="control-group">
+				<br/>
+					<h4 th:text="#{title.validatorFactGenerator.list.taxs}" ></h4>
+					
+					<table id="taxListDtId" class="table table-bordered table-striped dataTable">
+						<thead>
+							<tr>
+								<th><span th:text="#{dataTable.column.tax.code}"></span></th>
+								<th><span th:text="#{dataTable.column.tax.description}"></span></th>
+								<th><span th:text="#{dataTable.column.tax.bind.code}"></span></th>
+								<th><span th:text="#{dataTable.column.tab.tax.periodCalculation}"></span></th>
+								<th><span th:text="#{dataTable.column.tab.tax.paymentDate}"></span></th>
+								<th><span th:text="#{dataTable.column.tax.bind.situation}"></span></th>					
+							</tr>
+						</thead>
+	 					<tbody>
+	  						<tr th:each="taxDTO : ${factGeneratorDTO.listTaxDTO}">
+		  						<td><span th:text="${taxDTO.code}"></span></td>
+		  						<td><span th:text="${taxDTO.description}"></span></td>
+		  						<td><span th:text="${taxDTO.taxCriterionDTO.collectionCode}"></span></td>
+		  						<td><span th:text="${taxDTO.taxCriterionDTO.periodCalculation}"></span></td>
+		  						<td><span th:text="${taxDTO.taxCriterionDTO.paymentDate}"></span></td>
+		   						<td>
+			   						<div th:if="${taxDTO.taxCriterionDTO != null}">
+			   							<div th:if="${taxDTO.taxCriterionDTO.formulaDTO != null}">
+			   								<span th:if="${taxDTO.taxCriterionDTO.formulaDTO.situation != null}"  
+			   									th:text="#{${taxDTO.taxCriterionDTO.formulaDTO.situation}}"></span>
+			   							</div>		
+			   						</div>
+		   						</td>
+	 						</tr>
+						</tbody>
+					</table>
+			</div>				
+			<br/>
+			<div class="control-group">
+				
+				<h4 th:text="#{title.validatorFactGenerator.sistuation}" ></h4>
+  				
+  				<!--FORMULA CALC BASE  -->
+				<div th:if="${IS_CALC_BASE_VALID == true}">
+					<span  class="success" th:text="${FORMULA_VALID}"></span>
+					<span class="success" th:text="#{message.formValidator.formula.calc.base.valid}"></span><br/>
+					<span class="success" th:text="#{message.formValidator.formula}"></span>&nbsp;<span class="success" th:text="${FORMULA_CALC_BASE}"></span>
+					<br/><br/>
+				</div>
+				
+				<div th:if="${IS_CALC_BASE_VALID == false}">
+					<span class="text-error" th:text="#{message.formValidator.formula.calc.base.error}"></span><br/>
+					<!-- <span class="text-error" th:text="#{label.common.error}"  th:if="${ERROR_FORMULA != null}">
+					</span>&nbsp;<span class="text-error" th:text="${ERROR_FORMULA}"></span><br/> -->
+					<span class="text-error" th:text="#{message.formValidator.formula}"></span>&nbsp;<span class="text-error" th:text="${FORMULA_CALC_BASE}"></span>
+					<br/><br/>
+				</div>
+
+				<div th:if="${IS_VARIABLE_MANDATORY_IN_EQUATION == true}">
+	 				<span class="text-error" th:text="#{message.formValidator.variable.not.mandatory.equation.error}"></span>&nbsp;
+	 				<span class="text-error" th:text="${VARIABLE_NAME_NOT_MANDATORY}"></span><br/>
+	 				<span class="text-error" th:text="#{message.formValidator.formula.error}"></span>
+	 				<span class="text-error" th:text="${FORMULA_ERROR}"></span>
+	 				<br/><br/>
+	 			</div>
+				
+				<div th:if="${IS_CALC_BASE_VARIABLE_VALID == false}">
+					<!-- <span class="text-error" th:text="#{message.formValidator.formula.calc.base.error}"></span><br/> -->
+	 				<span class="text-error" th:text="#{message.formValidator.variable.label1.error}"></span>
+	 				<span class="text-error" th:text="${MESSAGE_VARIABLE}"></span>
+	 				<span class="text-error" th:text="#{message.formValidator.variable.label2.error}"></span><br/>
+	 				<span class="text-error" th:text="#{message.formValidator.formula.error}"></span>
+	 				<span class="text-error" th:text="${FORMULA_CALC_BASE}"></span>
+	 				<br/><br/>
+	 			</div>
+
+				<div th:if="${IS_EXTERNAL_VARIABLE_ERROR == false}">
+	 				<span class="text-error" th:text="#{message.formValidator.external.variable.not.found.error}"></span>
+	 				<br/><br/>
+	 			</div>
+
+				<div th:if="${IS_VARIABLE_NOT_FOUND == true}">
+	 				<span class="text-error" th:text="#{message.formFactGenerator.not.found.variable.error}"></span>
+	 				<br/><br/>
+	 			</div>
+
+
+
+				
+ 				<!--FORMULA TAX  -->
+ 				<!-- <div th:if="${IS_CALC_BASE_VALID == true}"> -->
+	 				<div th:each="taxDTO : ${factGeneratorDTO.listTaxDTO}">
+	
+	 					<div th:if="${taxDTO.getTaxCriterionDTO().getFormulaDTO().getIsFormulaAndVariableValid() == true}">
+	  					    <span  class="success" th:text="#{message.formValidator.formula.valid1}"></span>&nbsp;
+	  					    <span  class="success" th:text="${taxDTO.getCode()}"></span>&nbsp;
+	  					    <span  class="success" th:text="#{message.formValidator.formula.valid2}"></span><br/>
+	  					    
+	 						<span  class="success" th:text="#{message.formValidator.formula}"></span>&nbsp;
+	 						<span  class="success" th:text="${taxDTO.getTaxCriterionDTO().getFormulaDTO().getTaxFormula()}"></span>
+	 						<br/><br/>
+	 					</div>
+	 					
+	 					<div th:if="${taxDTO.getTaxCriterionDTO().getFormulaDTO().getIsFormulaValid() == false}">
+	 						<span class="text-error" th:text="${taxDTO.getCode()}"></span>
+	  					    <span class="text-error" th:text="#{${taxDTO.getTaxCriterionDTO().getFormulaDTO().label1}}"></span><br/>
+	 						<span class="text-error" th:text="${taxDTO.getTaxCriterionDTO().getFormulaDTO().label2}"></span><br/>
+	 						<span class="text-error" th:text="${taxDTO.getTaxCriterionDTO().getFormulaDTO().messageLastSituation}"></span>
+	 						<br/><br/>
+	 					</div>
+	 					
+	 					<div th:if="${taxDTO.getTaxCriterionDTO().getFormulaDTO().getIsVariableValid() == false}">
+	 						<span class="text-error" th:text="${taxDTO.getCode()}"></span>&#58;&nbsp;
+	 						<span class="text-error" th:text="#{${taxDTO.getTaxCriterionDTO().getFormulaDTO().label1}}"></span>
+	 						<span class="text-error" th:text="${taxDTO.getTaxCriterionDTO().getFormulaDTO().messageLastSituation}"></span>
+	 						<span class="text-error" th:text="#{${taxDTO.getTaxCriterionDTO().getFormulaDTO().label2}}"></span><br/>
+	 						<span class="text-error" th:text="#{${taxDTO.getTaxCriterionDTO().getFormulaDTO().label3}}"></span>
+	 						<span class="text-error" th:text="${taxDTO.getTaxCriterionDTO().getFormulaDTO().getTaxFormula()}"></span>
+	 						<br/><br/>
+	 					</div>
+	 				</div>
+ 				<!-- </div> -->
+				
+				<span th:if="${TAX_NOT_FOUND == true}" class="text-error" th:text="#{message.formValidator.tax.not.found.error}"></span>	
+				
+				
+				<!--SIMULATION CALC-->
+				<div th:if="${IS_SIMULATION_CALC_ERROR == false}">
+	 				<span class="text-error" th:text="#{message.formValidator.test.calc.error}"></span><br/>
+	 				
+	 				<div th:if="${FORMULA_TAX}">
+		 				<span class="text-error" th:text="#{message.formValidator.formula.error}"></span>
+		 				<span class="text-error" th:text="${FORMULA_TAX}"></span>
+		 				<br/><br/>
+	 				</div>
+
+	 				<div th:if="${FORMULA_CALC_BASE_SIMULATION}">
+		 				<span class="text-error" th:text="#{message.formValidator.formula.calc.base.error}"></span><br/>
+		 				<span class="text-error" th:text="#{message.formValidator.formula.error}"></span>
+		 				<span class="text-error" th:text="${FORMULA_CALC_BASE}"></span>
+		 				<br/><br/>
+	 				</div>
+	 				
+	 			</div>
+ 				  				
+			</div>
+			</fieldset>
+			<div class="form-actions">
+						<button id="buttonValidator" class="btn btn-primary" type="submit"><span th:text="#{button.validator}"></span></button>
+						<button id="buttonCancel" class="btn" type="submit"><span th:text="#{button.cancel}"></span></button>
+			</div>
+			</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+           configureDataTable('#variableTable', []);
+
+		});
+		
+		$(window).load(function() {
+			
+		    $("#buttonCancel").click(function(){
+		    	$("#action").val("cancel");
+		    });
+			
+			$("#buttonValidator").click(function(){
+				$("#action").val("validate");
+			});
+			
+
+
+		});
+		
+	</script>
+</div>
+</html>

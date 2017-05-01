@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+		<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+	</head>
+	
+	<div th:fragment="contentBody">
+	 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+	 	
+	 	<div th:if='${publishNewVersionFactGeneratorDTO.treatmentMessageDTO!=null}' 
+	 			th:include="fragments/alert :: alert('${publishNewVersionFactGeneratorDTO.treatmentMessageDTO.typeMessage}', '${publishNewVersionFactGeneratorDTO.treatmentMessageDTO.message}')"></div>
+	 	
+			<div class="row-fluid">
+				<div class="span12">
+				    <div class="page-header">
+					    <h1 th:text="#{title.adm.admFactGeneratorHomologation.consult}" style="text-transform:none;" ></h1>
+					</div>
+	
+					<div id="divformFilter" style="display:none;" >
+					
+						<div class="row-fluid">
+							<div class="btn-toolbar pull-left" style="width:49%;*width:60%">
+								<div class="btn-group">					
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+ 								</div>
+								<div class="clearfix"></div>
+							</div>					
+						</div>	
+						 						
+		 				<form id="formFilter" class="form-inline actions-toolbar" action="#" th:action="@{/publishNewVersionFactGenerator/list}" th:object="${publishNewVersionFactGeneratorDTO}" method="post">
+								
+								<div class="actions-toolbar-inner"> 							
+								<label th:text="#{formFilter.button.search}"></label> 
+								<label class="radio-inline">
+									<input  type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" th:value="1" class="textCode"
+											th:checked="${optionRadioFilter == '1'}?'checked'" >&nbsp;<span th:text="#{formFilter.label.code}"></span></input>
+								</label>
+								
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								
+									<label class="radio-inline">
+										<input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" th:value="2" class="textDescription" 
+											th:checked="${optionRadioFilter == '2'}?'checked'">&nbsp;<span th:text="#{formFilter.label.name.fact.generator}"></span></input>
+									</label> 						
+								</div>
+	
+		
+							<div class="actions-toolbar-inner">
+									<input type="text" id="inputFormFilter" class="input-xlarge" style="margin-right:5px;" th:field="*{inputFormFilter}" th:maxlength="30"></input>
+								<button id="btnFormFilter" type="submit" class="btn btn-primary" ><i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+							    <button id="btnFormClean"  type="button" class="btn" onclick="clearFilter();"><i class="icon-remove"></i>&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+							</div>
+						</form>	
+						<br/>
+					</div>
+					
+					<table id="factGeneratorPublishedListDtId" class="table table-bordered table-striped dataTable">
+						<thead>
+							<tr>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.code}"></span><i class="sort"></i></th>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.name}"></span><i class="sort"></i></th>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.version}"></span><i class="sort"></i></th>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.situation}"></span><i class="sort"></i></th>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.responsible}"></span><i class="sort"></i></th>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.approver}"></span><i class="sort"></i></th>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.dateApprovalTest}"></span><i class="sort"></i></th>
+								<th><span th:text="#{dataTable.column.adm.factgeneratorhomologation.startDate}"></span><i class="sort"></i></th>
+							</tr>
+						</thead>
+	 					<tbody>
+	  						<tr th:each="factGeneratorDTO : ${publishNewVersionFactGeneratorDTO.factsGeneratorList}">
+	  						
+								<td>
+									<a th:href="@{/publishNewVersionFactGenerator/view(factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id},
+								 								   factGeneratorVersionDTO.situation=${factGeneratorDTO.factGeneratorVersionDTO.situation})}" 
+									th:title="#{title.link.view.details}" 
+									th:text="${factGeneratorDTO.code}">&nbsp;&#40;<span th:text="${factGeneratorDTO.factGeneratorVersionDTO.id}"></span>&#41;
+									</a>
+								</td>  						
+	 							<td th:text="${factGeneratorDTO.description}"></td>
+								<td th:text="${factGeneratorDTO.versionView}"></td>
+	 							<td th:text="#{${factGeneratorDTO.getDescriptionSituarionEnum(factGeneratorDTO.factGeneratorVersionDTO.situation)}}"></td>
+	 							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.responsible}"></td>
+	 							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.responsibleApprovalTest}"></td>
+	 							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.dateApprovalTest}"></td>
+	 							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.startTerm}"></td>
+	  						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+	 	</div>
+	 	
+		<script>
+			//<![CDATA[
+				function deleteItem(fgvId,situationId,action) {
+			        $("#fgvIdDelete").val(fgvId);
+			        $("#situationIdDelete").val(situationId);
+			        $("#actionDelete").val(action);
+			    }
+			         
+			    function clearFilter() {
+			    	$("[name='optionRadioFilter']").val("1");
+					document.getElementById('inputFormFilter').value='';
+					document.getElementById('formFilter').submit();
+				}
+			       
+				$(document).ready(function () {
+					configureDataTable('#factGeneratorPublishedListDtId', [4]);
+				});
+			        
+				$(window).load(function() {
+			        	
+				$(".rowTopTable").append($("#divformFilter").html());
+				
+				
+				$("[name='inputFormFilter']").keypress(onlyWordAndNumber);
+				
+		        $(".textCode").click(function(){
+		    		blockCtrlKey("[name='inputFormFilter']");
+		    		blockPasteWithMouse("[name='inputFormFilter']");
+		        	$("[name='inputFormFilter']").attr('maxlength','30');
+		    	});
+
+
+		        $(".textDescription").click(function(){
+		    		blockCtrlKey("[name='inputFormFilter']");
+		    		blockPasteWithMouse("[name='inputFormFilter']");
+		        	$("[name='inputFormFilter']").attr('maxlength','50');
+		    	});
+
+				});
+		   //]]>
+		</script>
+	</div>
+</html>

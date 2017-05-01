@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+	<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+</head>
+
+<div th:fragment="contentBody">
+
+
+	<!-- MODAL CONFIRM -->
+		<div class="modal hide" id="confirmDeleteVariable">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h3><span th:text="#{title.factGenerator.modal.confirm}" ></span></h3>
+		</div>
+		<div class="modal-body">
+					
+		<fieldset>
+		 	<span th:text="#{message.factGenerator.modal.confirm.delete}"></span>
+		</fieldset>
+					
+		</div>
+		<div class="modal-footer">
+			<form name="formModal" th:action="@{/factGenerator/view}" th:object="${factGeneratorDTO}" method="post">
+				
+				<input type="hidden" th:field="*{factGeneratorVersionDTO.id}" th:id="fgvIdDelete"></input>
+				<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}" th:id="situationIdDelete"></input>
+				<input type="hidden" th:field="*{action}" th:id="actionDelete"></input>
+				
+				<button class="btn" type="button" data-dismiss="modal"><span th:text="#{button.no}"></span></button>
+				<button class="btn btn-primary" type="submit"><span th:text="#{button.yes}"></span></button>
+			</form>
+		</div>
+	</div>
+
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+
+	<div th:include="factGenerator/factGeneratorMessage :: messageView" />
+ 
+			<div class="row-fluid">
+				<div class="span12">
+				    <div class="page-header">
+					    <h1 th:text="#{title.factGenerator.consult}" style="text-transform:none;" ></h1>
+					</div>
+
+					<div id="divformFilter" style="display:none;" >	
+  						<div class="row-fluid">
+							<div class="btn-toolbar pull-left" style="width:49%;*width:60%">
+								<div class="btn-group">
+  									<a href="#" data-th-href="@{/factGenerator/add}" class="btn">
+  										<i class="icon-plus"></i>&nbsp;<span th:text="#{button.include}"></span></a>
+ 								</div>
+								<div class="clearfix"></div>
+							</div>					
+						</div>		
+ 						
+		 				<form id="formFilter" class="form-inline actions-toolbar" action="#" th:action="@{/factGenerator/list}" th:object="${factGeneratorDTO}" method="post">
+		 					
+ 							
+ 
+ 							<div class="actions-toolbar-inner"> 							
+ 								
+ 								<label th:text="#{formFilter.button.search}"></label> 
+								<label class="radio-inline"><input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" class="codeFactGenerator"
+									th:value="1" th:checked="${optionRadioFilter == '1'}?'checked'" >&nbsp;<span th:text="#{formFilter.label.code}"></span></input></label>
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								<label class="radio-inline">
+								<input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" class="nameFactGenerator" 
+								th:value="2" th:checked="${optionRadioFilter == '2'}?'checked'">&nbsp;<span th:text="#{formFilter.label.name.fact.generator}"></span></input></label> 						
+ 							</div>
+ 
+ 	
+							<div class="actions-toolbar-inner">
+								
+								<script>
+									$(document).ready(function () {
+										$(".dataTables_wrapper #inputFormFilter").keypress(onlyWordAndNumber);
+										$(".input-xlarge").keypress(onlyWordAndNumber);
+										
+										$(".codeFactGenerator").click(function(){
+											$(".input-xlarge").attr('maxlength','30');
+								    	});
+
+								        $(".nameFactGenerator").click(function(){
+								        	$(".input-xlarge").attr('maxlength','50');
+								    	});
+								        
+								        if($("#formFilter input[type='radio']:checked").val() != null){
+
+								        	var radioId = $("#formFilter input[type='radio']:checked").val();
+								        	
+								        	if(radioId == "1"){
+								        		$(".input-xlarge").attr('maxlength','30');
+								        	}else if(radioId == "2"){
+								        		$(".input-xlarge").attr('maxlength','50');
+								        	}
+								        }
+								        
+									});
+								</script>
+								
+ 								<input type="text" id="inputFormFilter" class="input-xlarge" style="margin-right:5px;" th:field="*{inputFormFilter}" th:maxlength="30" />
+								<button id="btnFormFilter" type="submit" class="btn btn-primary" ><i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+							    <button id="btnFormClean"  type="button" class="btn" onclick="clearFilter();"><i class="icon-remove"></i>&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+							</div>
+						</form>	
+						<br/>
+					</div>
+				
+				<table id="factGeneratorListDtId" class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th><span th:text="#{dataTable.column.fact.generator.code}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.name}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.version}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.situation}"></span><i class="sort"></i></th>
+							<th><span th:text="#{dataTable.column.fact.generator.responsible}"></span><i class="sort"></i></th>
+							<th style="width: 5%" colspan="1" ><span th:text="#{dataTable.column.title.action}"></span><i class="sort"></i></th>
+						</tr>
+					</thead>
+ 					<tbody>
+  						<tr th:each="factGeneratorDTO : ${listFactGeneratorDTO}">
+  						
+							<td>
+								 <a th:href="@{/factGenerator/view(factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id},
+								 								   factGeneratorVersionDTO.situation=${factGeneratorDTO.factGeneratorVersionDTO.situation},
+								 								   viewName=${'factGenerator/tabTaxList'})}" 
+									th:title="#{title.link.view.details}" 
+									th:text="${factGeneratorDTO.code}">&nbsp;&#40;<span th:text="${factGeneratorDTO.factGeneratorVersionDTO.id}"></span>&#41;
+									</a>
+							</td>  						
+ 							
+ 							<td th:text="${factGeneratorDTO.description}"></td>
+							
+							<td>
+								<span th:text="${factGeneratorDTO.versionView}"></span>
+							</td>
+							
+ 							<td th:text="#{${factGeneratorDTO.getDescriptionSituarionEnum(factGeneratorDTO.factGeneratorVersionDTO.situation)}}"></td>
+ 							
+ 							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.responsible}"></td>
+ 							
+							<td style="text-align: center;">						
+
+								 <!-- <a th:href="@{/factGenerator/view(factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id},factGeneratorVersionDTO.situation=${factGeneratorDTO.factGeneratorVersionDTO.situation},
+								   action=${'deleteFactGenerator'})}" th:title="#{title.link.delete}"><i class="icon-remove"></i></a> -->
+
+								<a data-toggle="modal" data-target="#confirmDeleteVariable"
+								href="#"
+								th:onclick="'deleteItem(\'' + ${factGeneratorDTO.factGeneratorVersionDTO.id} + '\',\'' + ${factGeneratorDTO.factGeneratorVersionDTO.situation} + '\', \'' + ${'deleteFactGenerator'} + '\')'"
+								th:title="#{title.link.delete}"><i class="icon-remove"></i></a>
+							</td>
+ 						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			
+		</div>
+ 	</div>
+<script>
+//<![CDATA[
+
+	function deleteItem(fgvId,situationId,action) {
+        $("#fgvIdDelete").val(fgvId);
+        $("#situationIdDelete").val(situationId);
+        $("#actionDelete").val(action);
+    }
+         
+      function clearFilter() {
+    	  $("[name='optionRadioFilter']").val("1");
+            document.getElementById('inputFormFilter').value='';
+            document.getElementById('formFilter').submit();
+        }
+       
+	           
+	           
+        $(document).ready(function () {
+        	configureDataTable('#factGeneratorListDtId', [5]);
+      	});
+        
+        $(window).load(function() {        	
+        	
+        	$(".rowTopTable").append($("#divformFilter").html());
+            
+        });
+        
+   //]]>
+</script>
+
+</div>
+</html>

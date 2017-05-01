@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+    <link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../resources/citi/js/jquery.js"></script>
+    <script type="text/javascript" src="../../resources/citi/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../resources/thirdparty/js/thymol.js"></script>
+</head>
+
+<body>
+
+    <!-- Pagination Bar -->
+    <div data-th-fragment='pager (pageWrapper)'>
+        <div class='pagination pagination-centered'>
+            <ul>
+                <li data-th-class="${pageWrapper.firstPage}? 'disabled' : ''">
+                    <span data-th-if='${pageWrapper.firstPage}' data-th-text="#{pager.firstPage}">Primeira Pagina</span>
+                    <a data-th-if='${not pageWrapper.firstPage}' data-th-href='@{${pageWrapper.url}(page.page=1,page.size=${page.size})}' data-th-text="#{pager.firstPage}">Primeira Pagina</a>
+                </li>
+                <li data-th-class="${pageWrapper.hasPreviousPage}? '' : 'disabled''">
+                    <span data-th-if='${not pageWrapper.hasPreviousPage}'>&lt;</span>
+                    <a data-th-if='${pageWrapper.hasPreviousPage}' data-th-href='@{${pageWrapper.url}(page.page=${page.number-1},page.size=${pageWrapper.size})}' data-th-title="#{pager.goPrevPage}">&lt;</a>
+                </li>
+                <li data-th-each="item : ${pageWrapper.items}" data-th-class="${item.current}? 'active' : ''">
+                    <span data-th-if='${item.current}' data-th-text='${item.number}'>1</span>
+                    <a data-th-if='${not item.current}' data-th-href='@{${pageWrapper.url}(page.page=${item.number},page.size=${pageWrapper.size})}'><span data-th-text='${item.number}'>1</span></a>
+                </li>
+                <li data-th-class="${pageWrapper.hasNextPage}? '' : 'disabled'">
+                    <span data-th-if='${not pageWrapper.hasNextPage}' data-th-text="#{pager.nextPage}">&gt;</span>
+                    <a data-th-if='${pageWrapper.hasNextPage}' data-th-href='@{${page.url}(page.page=${pageWrapper.number+1},page.size=${pageWrapper.size})}' data-th-title="#{pager.goNextPage}" data-th-text="#{pager.nextPage}">&gt;</a>
+                </li>
+                <li data-th-class="${pageWrapper.lastPage}? 'disabled' : ''">
+                    <span data-th-if="${pageWrapper.lastPage}" data-th-text="#{pager.lastPage}">Ultima Pagina</span>
+                    <a data-th-if="${not pageWrapper.lastPage}" data-th-href='@{${pageWrapper.url}(page.page=${page.totalPages},page.size=${page.size})}' data-th-text="#{pager.lastPage}">Ultima Pagina</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span10">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.add.variable}"></h1>
+				</div>
+
+				<form class="form-horizontal form-container" action="#" th:action="@{/factGenerator/save}" th:object="${factGeneratorDTO}" method="post">
+ 					<fieldset>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-medium', 'false', 'true','11')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-medium', 'true')" />
+						<br/><br/><br/>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('variableDTO.name', 'input-xlarge', 'true', 'false','30')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('variableDTO.description', 'input-xxlarge', 'true', 'false','50')" />
+						<div class="control-group" th:include="fragments/inputs :: selectEnum('variableDTO.origin', 'variableDTO.variableOriginEnum', 'input-medium', 'true', 'false', 'false')"/>
+						<div class="control-group" th:include="fragments/inputs :: selectEnum('variableDTO.type', 'variableDTO.variableTypeEnum', 'input-medium', 'true', 'false', 'false')"/>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('variableDTO.variableSize', 'input-medium', 'true', 'false','10')" />
+						<div class="control-group" th:include="fragments/inputs :: radioButton('variableDTO.mandatory','2', 'radio', 'true', 'false')" />
+						<div class="form-actions">
+							<button class="btn btn-primary" type="submit"><span th:text="#{button.include}"></span></button>
+							<button id="buttonClean" class="btn" type="button"><i class="icon-remove"></i>&nbsp;<span th:text="#{button.clean}"></span></button>
+						</div>
+					
+					
+					
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			$("[name='variableDTO.variableSize']").keypress(onlyNumber);
+			//blockCtrlKey("[name='code']");
+			//blockPasteWithMouse("[name='code']");
+
+			//$("#description").keypress(onlyWordAndNumber);
+			//blockCtrlKey("[name='description']");
+			//blockPasteWithMouse("[name='description']");
+			
+			
+			//$("#buttonClean").click(function(){
+				
+				//$("#code").val("");
+				//$("#description").val("");
+			//});
+
+		});
+	</script>
+</div>
+</html>

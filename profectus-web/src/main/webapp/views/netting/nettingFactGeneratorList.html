@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="../../resources/citi/css/citi-bootstrap.css" rel="stylesheet" />
+	<link href="../../resources/citi/css/font-awesome-ie7.min.css" rel="stylesheet" />
+</head>
+
+<div th:fragment="contentBody">
+
+
+			<!-- MODAL WARNING DELETE -->
+	 		<div class="modal hide" id="showWarningDelete">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h3><span th:text="#{title.variable.modal.warning.delete}" ></span></h3>
+				</div>
+				<div class="modal-body">
+				 	<span th:text="#{message.formVariable.delete.link.error}"></span>
+				 	<div th:if="${MODULE_NAME1}"  >&#45;<span th:text="#{__${MODULE_NAME1}__}"></span></div>
+					<div th:if="${MODULE_NAME2}"  >&#45;<span th:text="#{__${MODULE_NAME2}__}"></span></div>
+				</div>
+				<div class="modal-footer">
+					<form name="formModalWarningDelete" th:action="@{/factGenerator/delete}" th:object="${nettingFactGeneratorDTO}" method="post">
+						<input type="text"  th:field="*{id}" th:id="idModalWarningDelete"></input>
+						<button class="btn" type="button" data-dismiss="modal"><span th:text="#{button.close}"></span></button>
+					</form>
+				</div>
+			</div>
+			
+			<!-- MODAL CONFIRM -->
+			<div class="modal hide" id="confirmDeleteVariable">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h3><span th:text="#{title.feeType.modal.confirm}" ></span></h3>
+				</div>
+				<div class="modal-body">
+							
+				<fieldset>
+				 	<span th:text="#{message.formVariable.confirm.delete}"></span>
+				</fieldset>
+							
+				</div>
+				<div class="modal-footer">
+					<form name="formModal" th:action="@{/factGenerator/delete}" th:object="${nettingFactGeneratorDTO}" method="post">
+						<input type="hidden"  th:field="*{id}" th:id="idModalConfirmDelete"></input>
+						<button class="btn" type="button" data-dismiss="modal"><span th:text="#{button.no}"></span></button>
+						<button class="btn btn-primary" type="submit"><span th:text="#{button.yes}"></span></button>
+					</form>
+				</div>
+			</div>
+
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+
+			<div class="row-fluid">
+				<div class="span12">
+				    <div class="page-header">
+					    <h1 th:text="#{'menu.title.nettingConfig'}"></h1>
+					</div>
+
+					<div id="divformFilter" style="display:none;" >	
+  						<div class="row-fluid">
+							<div class="btn-toolbar pull-left" style="width:49%;*width:60%">
+								<div class="btn-group">
+  									<a href="#" data-th-href="@{/factGenerator/add}"><button id="btnFormAdd" class="btn" ><i class="icon-plus"></i>&nbsp;<span th:text="#{button.include}"></span></button></a>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+ 
+ 								</div>
+								<div class="clearfix"></div>
+							</div>					
+						</div>		
+ 						
+		 				<form id="formFilter" class="form-inline actions-toolbar" action="#" th:action="@{/factGenerator/list}" th:object="${nettingFactGeneratorDTO}" method="post">
+		 					
+<!-- 		 					<input type="hidden" name="showModal" id="showModal"  th:field="*{showModal}"/>
+ -->						
+ 
+ 							<div class="actions-toolbar-inner"> 							
+ 								<label th:text="#{formFilter.button.search}"></label> 
+								<label class="radio-inline"><input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" th:value="1" th:checked="${optionRadioFilter == '1'}?'checked'" >&nbsp;<span th:text="#{formFilter.label.code}"></span></input></label>
+								<span>&nbsp;&nbsp;&nbsp;</span>
+								<label class="radio-inline"><input type="radio" th:id="optionRadioFilter" th:field="*{optionRadioFilter}" th:value="2" th:checked="${optionRadioFilter == '2'}?'checked'">&nbsp;<span th:text="#{formFilter.label.name.fact.generator}"></span></input></label> 						
+ 							</div>
+ 
+ 	
+							<div class="actions-toolbar-inner">
+ 								<input type="text" id="inputFormFilter" class="input-xlarge" style="margin-right:5px;" th:field="*{inputFormFilter}" ></input>
+								<button id="btnFormFilter" class="btn" ><i class="icon-filter icon-white"></i>&nbsp;<span th:text="#{button.search}"></span></button>
+								<!-- <button id="btnFormClean"  class="btn"><i class="icon-remove"></i><span th:text="#{formFilter.button.clean}"></span></button> -->
+							    <button id="btnFormClean"  class="btn"><i class="icon-remove"></i>&nbsp;<span th:text="#{formFilter.button.clean}"></span></button>
+							</div>
+						</form>	
+						<br/>
+					</div>
+				
+ 
+				<table id="factGeneratorListDtId" class="table table-bordered table-striped dataTable">
+					<thead>
+						<tr>
+							<th><span th:text="#{dataTable.column.fact.generator.code}"></span></th>
+							<th><span th:text="#{dataTable.column.fact.generator.name}"></span></th>
+							<th><span th:text="#{dataTable.column.fact.generator.version}"></span></th>
+							<th><span th:text="#{dataTable.column.fact.generator.dayTrade}"></span></th>
+							<!-- <th><span th:text="#{dataTable.column.fact.generator.responsible}"></span></th> -->
+							<th width="10%" colspan="1" ><span th:text="#{dataTable.column.title.action}"></span></th>
+						</tr>
+					</thead>
+ 					<tbody>
+  						<tr th:each="factGeneratorDTO : ${listFactGeneratorDTO}">
+  						
+							<td><a th:href="@{/factGenerator/view(factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id})}" th:title="#{title.link.view.details}" th:text="${factGeneratorDTO.code}"></a></td>  						
+ 							<td th:text="${factGeneratorDTO.description}"></td>
+							
+							<td>
+								<span th:text="${factGeneratorDTO.versionView}"></span>
+							</td>
+							
+							<td > <span th:if="${factGeneratorDTO.dayTrade}">Sim</span><span th:if="${!factGeneratorDTO.dayTrade}">Não</span></td>
+ 							<!-- <td th:text="#{${factGeneratorDTO.getDescriptionSituarionEnum(factGeneratorDTO.factGeneratorVersionDTO.situation)}}"></td> -->
+ 							
+<!--  							<td th:text="${factGeneratorDTO.factGeneratorVersionDTO.responsible}"></td> -->
+<!--  							<td align="center">
+ 									<a th:href="@{/factGenerator/edit(factGeneratorVersionDTO.id=${factGeneratorDTO.factGeneratorVersionDTO.id})}" th:title="#{title.link.edit}"><i class="icon-pencil"></i></a>
+							</td>						
+ -->							<td align="center">						
+								<a 	data-toggle="modal" data-target="#confirmDeleteVariable" href="#" 
+									th:onclick="'deleteItem(\'' + ${factGeneratorDTO.id} + '\')'" 
+									th:title="#{title.link.delete}"><i class="icon-remove"></i></a>							
+							</td>
+ 						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			
+		</div>
+ 	</div>
+
+ 
+    <script >
+    
+    function deleteItem(id) {
+    	$("#idModalWarningDelete").val(id);
+        $("#idModalConfirmDelete").val(id);
+    }
+
+        //<![CDATA[
+        $(document).ready(function () {
+            configureDataTable('#factGeneratorListDtId', [ 4, 4 ]);
+      });
+        
+        
+        
+        $(window).load(function() {
+        	
+        	if ($("#showModal").val() == "showWarningDelete") {
+        		$('#showWarningDelete').modal('show');
+        	}
+
+            $(".rowTopTable").append($("#divformFilter").html());
+            
+            
+            $(".dataTables_wrapper #btnFormFilter").click(function () {
+
+            		if ($(".dataTables_wrapper #inputFormFilter").val() == "" ||
+            				$("#formFilter input[type='radio']:checked").length == 0){
+                		
+                        return false;
+                        
+                    } else {
+                    	
+                        $("#inputFormFilter").submit();
+                    }
+            		
+            		
+                
+            });
+
+            $(".dataTables_wrapper #btnFormClean").click(function () {
+                $(".dataTables_wrapper #inputFormFilter").val("");
+            });                      	
+        });
+        
+        //]]>
+    </script>
+
+</div>
+</html>

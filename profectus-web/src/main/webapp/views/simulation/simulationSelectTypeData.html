@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content" style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.simulation.requesting}" style="text-transform:none;"></h1>
+				</div>
+
+				<form  id="formCriterion" class="form-horizontal form-container" action="#" 
+						th:action="@{/simulation/newSimulation}" th:object="${factGeneratorDTO}" method="post" enctype="multipart/form-data">
+
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.startTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.calculationBase}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<!-- <input type="hidden" th:field="*{simulationDTO.id}"></input> -->
+					<input type="hidden" th:field="*{simulationDTO.simulationRequestId}"></input>
+					<input type="hidden" th:field="*{simulationDTO.fgvId}"></input>
+					<input type="hidden" th:field="*{dayTrade}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+					<input type="hidden" th:id="action"   th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName" th:field="*{viewName}"></input>
+					<input type="hidden" th:field="*{currentIndex}" ></input>
+					
+ 					<fieldset>
+ 					
+						<!-- <div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'false', 'true','11')" ></div> -->
+						<!-- <div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')"></div> -->
+
+							<div th:if="${HAS_ERRORS == true}">
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" ></div>
+
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+
+		 						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.description', 'input-medium', 'true', 'false','20')" />
+							
+								<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('simulationDTO.dateSolicitation', 'dateSolicitation', 'false', 'true', 'en', '-')" />
+								
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.clientName', 'input-xxlarge', 'false', 'true','40')" ></div>
+
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.cpfCnpj', 'input-xlarge', 'false', 'true','20')" ></div>
+								
+								<div class="control-group" th:include="fragments/inputs :: selectEnum('simulationDTO.type', 'simulationDTO.simulationTypeEnum', 'input-medium', 'true', 'false', 'false')" />
+
+							</div> 
+
+
+							<div th:if="${HAS_ERRORS == false}">
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" ></div>
+
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+							
+		 						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.description', 'input-medium', 'false', 'true','20')" />
+							
+								<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('simulationDTO.dateSolicitation', 'dateSolicitation', 'false', 'true', 'en', '-')" />
+								
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.clientName', 'input-xxlarge', 'false', 'true','40')" ></div>
+
+								<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('simulationDTO.cpfCnpj', 'input-xlarge', 'false', 'true','20')" ></div>
+								
+								<div class="control-group" th:include="fragments/inputs :: textFieldEnum('simulationDTO.type','description','simulationDTO.simulationTypeEnum', 'input-small', 'readonly')" ></div>
+							</div>
+
+<!-- 		 						<div th:if="${factGeneratorDTO.simulationDTO.type == 2}" >
+		 						
+		 							<div th:if="${factGeneratorDTO.simulationDTO.fileInput == null}" >
+										<div  class="control-group"  th:include="fragments/inputs :: file('multiPartFile', 'simulationDTO.fileInput', 'true','false','100')"></div>
+									</div>
+								</div>
+ -->
+
+ 						
+ 						<div class="control-group" th:include="factGenerator/factGeneratorMessage :: messageView" />
+ 						
+ 						<div th:if="${VARIABLES_NOT_FOUNDS != null}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formSimulation.excel.variable.error}"></span>&nbsp;</b>
+		 								<span class="text-error" th:text="${VARIABLES_NOT_FOUNDS}"></span>
+			        			    </div>	
+ 						</div>
+ 						
+ 						
+ 						<div th:if="${VARIABLES_VALUE_EMPTY != null}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formSimulation.excel.variable.value.empty.error}"></span>&nbsp;</b>
+		 								<span class="text-error" th:text="${VARIABLES_VALUE_EMPTY}"></span>
+			        			    </div>	
+ 						</div>
+
+ 						<div th:if="${VARIABLE_HEADER_EMPTY == true}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formSimulation.excel.variable.header.empty.error}"></span>&nbsp;</b>
+			        			    </div>	
+ 						</div>
+ 						
+ 						
+
+	 					<!-- <div th:if="${CALC_ERROR != null}">
+	 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+		        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+ 								<b><span class="text-error" th:text="#{message.formSimulation.tfsCalculator.calc.error}"></span>&nbsp;</b><br/><br/>
+ 								<b><span class="text-error" th:text="#{message.formSimulation.tfsCalculator.calc.msg.error}"></span>&nbsp;</b>
+ 								<span class="text-error" th:text="${CALC_ERROR}"></span>
+	        			    </div>	
+ 						</div> -->
+ 						
+ 						
+ 						<div th:if="${factGeneratorDTO.listVariableDTO != null}" >
+ 						
+							<h4 th:text="#{title.factGenerator.list.variable}" ></h4>
+							<table id="variableTable" class="table table-bordered table-striped dataTable">
+									<thead>
+										<tr>
+											<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.name}" ></span><i class="sort"></i></th>
+											<th style="text-align: center;"><span th:text="#{dataTable.column.variavel.description}" ></span><i class="sort"></i></th>
+											<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.origin}" ></span><i class="sort"></i></th>
+											<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.type}" ></span><i class="sort"></i></th>
+											<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.variableSize}" ></span><i class="sort"></i></th>
+											<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.mandatory}" ></span><i class="sort"></i></th>
+											<th style="text-align: center; width: 10%;"><span th:text="#{dataTable.column.variavel.value}" ></span><i class="sort"></i></th>
+										</tr>
+									</thead>
+									<tbody  th:id="tbodyList" >
+										
+										<tr th:each="variableDTO, rowStat : ${factGeneratorDTO.listVariableDTO}" class="linha">
+											
+											<td th:text="${variableDTO.name}"></td>
+											
+											<td th:text="${variableDTO.description}"></td>
+											
+											<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionOriginEnum(variableDTO.origin)}}"></td>
+											
+											<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionTypeEnum(variableDTO.type)}}"></td>
+											
+											<td style="text-align: center;" th:text="${variableDTO.variableSize}"></td>
+											
+											<td style="text-align: center;" th:text="#{${variableDTO.getDescriptionMandatory(variableDTO.mandatory)}}"></td>
+											
+											<td>
+												<input type="hidden"  th:field="*{listVariableDTO[__${rowStat.index}__].id}" />
+												
+												<input type="hidden"  th:field="*{listVariableDTO[__${rowStat.index}__].name}"/>
+												
+												<input type="hidden"  th:field="*{listVariableDTO[__${rowStat.index}__].description}"/>
+												
+												<input type="hidden"  th:field="*{listVariableDTO[__${rowStat.index}__].origin}"/>
+
+												<input type="hidden"  th:field="*{listVariableDTO[__${rowStat.index}__].type}"/>
+
+												<input type="hidden"  th:field="*{listVariableDTO[__${rowStat.index}__].variableSize}"/>
+
+												<input type="hidden"  th:field="*{listVariableDTO[__${rowStat.index}__].mandatory}"/>
+												
+												
+												
+
+												<div th:if="${variableDTO.type == 1}">
+													<input  type="text" th:id="line__${rowStat.index}__" 
+														th:field="*{listVariableDTO[__${rowStat.index}__].value}" 
+														th:maxlength="${variableDTO.variableSize}"/>
+												</div>	
+
+												<div th:if="${variableDTO.type == 2}">
+												<input class="integer" type="text" th:id="line__${rowStat.index}__" 
+													th:field="*{listVariableDTO[__${rowStat.index}__].value}" 
+													th:maxlength="${variableDTO.variableSize}"/>
+												</div>
+												
+												<div th:if="${variableDTO.type == 3}">
+												<input class="double" type="text" th:id="line__${rowStat.index}__" 
+													th:field="*{listVariableDTO[__${rowStat.index}__].value}" 
+													th:maxlength="${variableDTO.variableSize}"/>
+												</div>	
+												
+												<div th:if="${variableDTO.type == 4}">
+												<input class="dateField" type="text" th:id="line__${rowStat.index}__" 
+													th:field="*{listVariableDTO[__${rowStat.index}__].value}" 
+													th:maxlength="${variableDTO.variableSize}"/>
+												</div>	
+											</td>
+										</tr>
+								</tbody>
+							</table>
+						
+						<div class="control-group" th:if="${factGeneratorDTO.listTaxDTO != null}" >
+								<div class="control-group" th:if="${factGeneratorDTO.listTaxDTO.size() > 0}" >
+								
+								<div>
+									<h4 th:text="#{title.factGenerator.simulation.view.result.calc}" ></h4>
+									<table id="tableSimulation" class="table table-bordered table-striped dataTable">
+										<thead>
+											<tr>
+												<th>&nbsp;<i class="sort"></i></th>
+												<th><span th:text="#{dataTable.column.tab.tax.code}"></span><i class="sort"></i></th>
+												<th><span th:text="#{dataTable.column.tab.tax.description}"></span><i class="sort"></i></th>
+												<th style="width: 10%;" ><span th:text="#{dataTable.column.tab.tax.collectionCode}"></span><i class="sort"></i></th>
+												<!-- <th><span th:text="#{dataTable.column.tab.tax.datePay}"></span><i class="sort"></i></th> -->
+												<th><span th:text="#{dataTable.column.simulation.calculationBaseValue}"></span><i class="sort"></i></th>
+												<th><span th:text="#{dataTable.colemn.simulation.result}"></span><i class="sort"></i></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="taxDTO : ${factGeneratorDTO.listTaxDTO}">
+												<td><span th:text="${taxDTO.simulationId}"></span></td>
+												<td><span th:text="${taxDTO.code}"></span></td>
+												<td><span th:text="${taxDTO.description}"></span></td>
+												<td><span th:text="${taxDTO.taxCriterionDTO.collectionCode}"></span></td>
+												<!-- <td><span th:text="${taxDTO.taxCriterionDTO.paymentDate}"></span></td> -->
+												<td><span th:text="${taxDTO.calculationBaseValue}"></span></td>
+												<td><span th:text="${taxDTO.calculationResult}"></span></td>
+											</tr>
+										</tbody>
+									</table>
+									</div>
+								</div>
+						
+							</div>
+						</div>
+						
+						
+						
+					</fieldset>
+					<div class="form-actions">
+
+							<div class="control-group">
+							
+							<button id="buttonSend" 	th:if="${IS_SHOW_BUTTON_SEND}" 
+								class="btn btn-primary" type="submit" ><span th:text="#{button.send}" ></span></button>
+						
+							<button id="buttonSendRequest" 	th:if="${IS_SHOW_BUTTON_CALC}" 
+								class="btn btn-primary" type="submit" ><span th:text="#{button.calc}" ></span></button>
+					
+							<button id="buttonSendRequestExcel" 	th:if="${IS_SHOW_BUTTON_RESQUEST_EXCEL}" 
+								class="btn btn-primary" type="submit" ><span th:text="#{button.send}" ></span></button>
+
+							<button id="buttonSendRequestExcelSave" 	th:if="${IS_SHOW_BUTTON_RESQUEST_EXCEL_SAVE}" 
+								class="btn btn-primary" type="submit" ><span th:text="#{button.calc}" ></span></button>
+
+							<button id="buttonCancel" class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+
+							<button id="buttonPrev" th:if="${IS_SHOW_BUTTON_PREV}"	class="btn" type="submit"><span th:text="#{button.prev}"></span></button>
+							
+							</div>
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+	<script >
+	//<![CDATA[
+	           
+     $(document).ready(function () {
+          configureDataTableWithDefaultSort('#tableSimulation', [], 0);
+
+    });
+        
+    $(window).load(function() {
+    	   $("#buttonCancel").click(function(){
+		    	$("#action").val("cancel");
+		    });
+		    
+		    $("#buttonSend").click(function(){
+     		  	$("#action").val("send");
+		    });
+
+		    $("#buttonSendRequest").click(function(){
+     		  	$("#action").val("sendRequest");
+		    });
+
+		    $("#buttonSendRequestExcel").click(function(){
+     		  	//$("#action").val("sendRequestExcel");
+		    	$("#action").val("sendRequestExcelSave");
+		    });
+
+		    $("#buttonSendRequestExcelSave").click(function(){
+		    	$("#action").val("sendRequestExcelSave");
+		    });
+
+		    $("#buttonPrev").click(function(){
+     		  	$("#action").val("prev");
+		   });
+		    
+           
+           onlyDateFormatThis(".dateField");
+		   //blockCtrlKey(".dateField");
+		   //blockPasteWithMouse(".dateField");
+
+          	//$(".double").maskMoney({decimal: ",", precision: 4, thousands: "."});//MASK
+		   //blockCtrlKey(".double");
+		   //blockPasteWithMouse(".double");
+
+           $(".integer").keypress(onlyNumber);
+		   //blockCtrlKey(".integer");
+		   //blockPasteWithMouse(".integer");
+
+		   $('.inputText').keypress(onlyWordAndNumber);
+		   //blockCtrlKey(".inputText");
+		   //blockPasteWithMouse(".inputText");
+
+	});
+		//]]>
+
+	</script>
+	
+</div>
+</html>

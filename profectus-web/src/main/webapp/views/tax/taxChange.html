@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+        <div class="row-fluid">
+			<div class="span9">
+                <div class="page-header">
+                    <h1 th:text="#{title.tax.edit}" style="text-transform: none;" ></h1>
+                </div>
+
+       			<div th:include="tax/taxMessage :: messageView" />
+                
+  				<form class="form-horizontal form-container" action="#" th:action="@{/tax/save}" th:object="${taxDTO}" method="post">
+              			<input type="hidden" class="input-xlarge" th:field="*{id}"></input>
+              			<input type="hidden" class="input-xlarge" th:field="*{action}"></input>
+              			<input type="hidden" class="input-xlarge" th:field="*{viewName}"></input>
+               		<fieldset>
+               			
+                		<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-small', 'false', 'true','20')"/>
+                 		<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-large-480', 'true', 'false','100')"/>
+               			<div class="control-group" th:include="fragments/inputs :: textFieldEnum('typeTax','description','typeTaxEnum', 'input-small', 'readonly')"></div>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('dateInsert', 'input-small', 'false', 'true','10')"/> 				
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('dateAlter', 'input-small', 'false', 'true','10')"/>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('responsible', 'input-xlarge', 'false', 'true','30')"/> 				
+ 				
+ 					</fieldset>
+ 					
+					<div class="form-actions">
+						<button th:id="buttonSave"  class="btn btn-primary" type="submit"><span th:text="#{button.save}"></span></button>
+						<button th:id="buttonCancel" class="btn" type="submit"><span th:text="#{button.finalize}" ></span></button>
+					</div>
+ 					
+ 				</form>                
+			</div>
+		</div>
+	</div>
+
+   <script type="text/javascript">
+   $(document).ready(function() {
+		
+		//Variable code
+		$("[name='code']").keypress(blockSpace);
+		$("[name='code']").keypress(onlyWordAndNumber);
+		blockCtrlKey("[name='code']");
+		blockPasteWithMouse("[name='code']");
+
+		//Variable Name
+		$("[name='description']").keypress(onlyWordAndNumber);
+		blockCtrlKey("[name='description']");
+		blockPasteWithMouse("[name='description']");
+	   
+	    $("#buttonSave").click(function(){
+	    	$("#action").val("saveChange");
+	    	$("#viewName").val("tax/taxChange");
+	    });
+	    
+	    $("#buttonCancel").click(function(){
+	    	$("#action").val("cancel");
+	    	$("#viewName").val("tax/taxList");
+	    });
+
+
+   });
+   
+
+   </script>
+</div>
+</html>

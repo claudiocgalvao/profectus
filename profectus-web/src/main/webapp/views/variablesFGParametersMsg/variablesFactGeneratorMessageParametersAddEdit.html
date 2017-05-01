@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+			
+        <div class="row-fluid">
+			<div class="span9">
+                <div class="page-header">
+                    <h1 th:text="#{title.messageParamFactGeneratorVar.add}"></h1>
+                </div>
+                
+  				<form class="form-horizontal form-container" id="frmMessageFactGenerator" action="#" th:action="@{/msgParameterFGVariable/save}" th:object="${messageParamFactGeneratorVarDTO}" method="post">
+  					
+  					<div th:if='${messageParamFactGeneratorVarDTO.treatmentMessageDTO!=null}' th:include="fragments/alert :: alert('${messageParamFactGeneratorVarDTO.treatmentMessageDTO.typeMessage}', '${messageParamFactGeneratorVarDTO.treatmentMessageDTO.message}')"></div>
+              		
+               		<fieldset>
+                		<div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageParamFactGeneratorVar.formAddEdit.messageFactGenerator}"></span></h4>
+	                    	
+	                    	<input type="hidden" th:id="hdnMessageId" class="input-xlarge" th:field="*{messageDTO.messageId}"></input>
+	                    	<input type="hidden" th:id="hdnFactGeneratorId" class="input-xlarge" th:field="*{factGeneratorDTO.id}"></input>
+	                    	<input type="hidden" th:id="hdnFactGeneratorVersionId" class="input-xlarge" th:field="*{factGeneratorDTO.factGeneratorVersionDTO.id}"></input>
+	                    	
+	                    	<table id="messageFactGeneratorAssociationDtId"
+								class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th><span th:text="#{dataTable.add.column.messageParamFactGeneratorVar.messageName}"></span></th>
+										<th><span
+											th:text="#{dataTable.add.column.messageParamFactGeneratorVar.messageDescription}"></span></th>
+										<th><span
+											th:text="#{dataTable.add.column.messageParamFactGeneratorVar.factGeneratorName}"></span></th>
+										<th><span
+											th:text="#{dataTable.add.column.messageParamFactGeneratorVar.factGeneratorDescription}"></span></th>
+										<th><span
+											th:text="#{dataTable.add.column.messageParamFactGeneratorVar.versionView}"></span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><span th:text="${messageParamFactGeneratorVarDTO.messageDTO.name}"></span></td>
+										<td><span th:text="${messageParamFactGeneratorVarDTO.messageDTO.description}"></span></td>
+										<td><span th:text="${messageParamFactGeneratorVarDTO.factGeneratorDTO.code}"></span></td>
+										<td><span th:text="${messageParamFactGeneratorVarDTO.factGeneratorDTO.description}"></span></td>
+										<td><span th:text="${messageParamFactGeneratorVarDTO.factGeneratorDTO.versionView}"></span></td>
+									</tr>
+								</tbody>
+							</table>
+	                    </div>
+                		
+ 						<br />
+ 						<!-- Inicio Form Add Association -->
+	 					<div class="control-group">
+                            <h4><span th:text="#{subtitle.messageParamFactGeneratorVar.formAddEdit.messageParametersFactGeneratorVariables}"></span></h4>
+                            
+                            <!-- INICIO - Tratamento de erros de incompatibilidade de tipos de dados -->
+                            <br/>
+                            <input type="hidden" th:id="messageParamFactGeneratorVarDTO.associationParameterVsVariableDTO.typeDataValidator" class="input-xlarge" th:field="*{associationParameterVsVariableDTO.typeDataValidator}"></input>
+                            <span class="text-error" th:if="${#fields.hasErrors('associationParameterVsVariableDTO.typeDataValidator')}" th:errors="*{associationParameterVsVariableDTO.typeDataValidator}"></span>
+                            <br/>
+                            <br/>
+                            <!-- FIM -->
+                            
+                            <div th:include="fragments/inputs :: selectList('associationParameterVsVariableDTO.idParameterMessage', 'messageParametersList', 'parameterId', 'name', 'true', 'false','false')"></div>
+                            <br />
+                            <div th:include="fragments/inputs :: selectList('associationParameterVsVariableDTO.idVariableFactGenerator', 'variablesList', 'id', 'name', 'true', 'false','false')"></div>
+                            <br />
+                            <div class="form-actions">
+								<button class="btn btn-primary" type="submit" name="saveAssociation"><span th:text="#{button.association}"></span></button>
+							</div>
+							
+	                    </div>
+	                    <!-- Fim Form Add Association -->
+	                    
+	                    <!-- Inicio Grid associations added -->
+	                    <div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageParamFactGeneratorVar.formAddEdit.associationGrid}"></span></h4>
+	                    	
+		                    <table id="messageParameterFactGeneratorParametersListDtId" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th><span th:text="#{dataTable.messageParamFactGeneratorVar.column.messageParameter.name}"></span></th>
+										<th><span th:text="#{dataTable.messageParamFactGeneratorVar.column.messageParameter.description}"></span></th>
+										<th><span th:text="#{dataTable.messageParamFactGeneratorVar.column.factGeneratorVariable.name}"></span></th>
+										<th><span th:text="#{dataTable.messageParamFactGeneratorVar.column.factGeneratorVariable.description}"></span></th>
+										<th></th>
+									</tr>
+								</thead>
+			 					<tbody>
+			  						<tr th:each="associationParameterVsVariableDTO, iterStat: ${associationParameterVsVariableViewDTO}">
+										<td th:text="${associationParameterVsVariableDTO.messageParameterDTO.name}"></td>
+										<td th:text="${associationParameterVsVariableDTO.messageParameterDTO.description}"></td>
+			 							<td th:text="${associationParameterVsVariableDTO.variableDTO.name}"></td>
+			 							<td th:text="${associationParameterVsVariableDTO.variableDTO.description}"></td>
+				 						<td align="center">						
+											<a th:href="@{/msgParameterFGVariable/deleteAssociation(idMessage=${messageParamFactGeneratorVarDTO.messageDTO.messageId}, idFactGeneratorVersion=${messageParamFactGeneratorVarDTO.factGeneratorDTO.factGeneratorVersionDTO.id}, idParameter=${associationParameterVsVariableDTO.messageParameterDTO.parameterId}, idVariable=${associationParameterVsVariableDTO.variableDTO.id}, parameterIndex=${iterStat.index})}"  
+												th:title="#{title.link.delete}"><i class="icon-remove"></i></a>
+										</td>
+			 						</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- Fim Grid associations added -->
+						
+					</fieldset>
+					
+					<div class="form-actions">
+						<a class="btn" th:id="btnCancel" onclick="javascript:document.location.href ='list';" ><span th:text="#{button.cancel}"></span></a>
+						<button class="btn btn-primary" type="submit"><span th:text="#{button.save}"></span></button>
+					</div>
+					
+ 				</form>
+			</div>
+		</div>
+	</div>
+
+   <script type="text/javascript">
+   
+	   $(document).ready(function() {
+	       configureDataTable('#messageParameterFactGeneratorParametersListDtId', []);
+	   });
+   
+   </script>
+</div>
+</html>

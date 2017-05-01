@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+<link href="../../resources/citi/css/citi-bootstrap.css"
+	rel="stylesheet" />
+<link href="../../resources/citi/css/font-awesome-ie7.min.css"
+	rel="stylesheet" />
+</head>
+
+<div th:fragment="contentBody">
+
+	<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{menu.title.administrator}"></h1>
+				</div>
+				<div sec:authorize="hasRole('ADMIN')">This content is only shown to administrators.</div>
+				<div sec:authorize="hasRole('USER')">This content is only shown to users.</div>
+				Logged user: <span sec:authentication="name">Bob</span> Roles: <span sec:authentication="principal.authorities">[ROLE_USER,ROLE_ADMIN]</span>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

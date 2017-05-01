@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content"
+		style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.add}"></h1>
+				</div>
+
+				<form class="form-horizontal form-container" action="#" th:action="@{/factGenerator/save}" th:object="${factGeneratorDTO}" method="post">
+ 					<fieldset>
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'true', 'false','30')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'true', 'false','50')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-small', 'true', 'true','11')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-small', 'readonly')" />
+						<div class="form-actions">
+							<button class="btn btn-primary" type="submit"><span th:text="#{button.confirm}"></span></button>
+							<button id="buttonClean" class="btn" type="button"><i class="icon-remove"></i>&nbsp;<span th:text="#{button.clean}"></span></button>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			$("#code").keypress(onlyWordAndNumber);
+			blockCtrlKey("[name='code']");
+			blockPasteWithMouse("[name='code']");
+
+			//$("#description").keypress(onlyWordAndNumber);
+			//blockCtrlKey("[name='description']");
+			//blockPasteWithMouse("[name='description']");
+			
+			
+			$("#buttonClean").click(function(){
+				
+				$("#code").val("");
+				$("#description").val("");
+			});
+
+		});
+	</script>
+</div>
+</html>

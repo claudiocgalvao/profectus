@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+			
+        <div class="row-fluid">
+			<div class="span9">
+                
+                <div class="page-header">
+                    <h1 th:text="#{title.messageFactGenerator.view}"></h1>
+                </div>
+                
+                <div class="btn-toolbar">
+					<div class="btn-group">
+						<a class="btn" href="#" data-th-href="@{/messageFactGenerator/add}"><i class="icon-plus"></i>&nbsp;
+							<span th:text="#{button.add}"></span></a>
+					</div>
+            		<div class="btn-group">
+						<a class="btn" 
+							th:href="@{/messageFactGenerator/edit(idMessage=${messageFactGeneratorDTO.messageDTO.messageId}, 
+										idFactGenerator=${messageFactGeneratorDTO.factGeneratorDTO.id}, 
+										idFactGeneratorVersion=${messageFactGeneratorDTO.factGeneratorDTO.factGeneratorVersionDTO.id})}">
+										<i class="icon-edit"></i>&nbsp;<span th:text="#{button.edit}"></span></a>
+  					</div>
+                    <div class="btn-group">
+                    	<a class="btn" th:href="@{/messageFactGenerator/list}"><i class="icon-back-to-list"></i>&nbsp;
+                    		<span th:text="#{button.cancel}"></span></a>
+                    </div>
+                </div>
+  				
+  				<form class="form-horizontal form-container" id="frmMessageFactGenerator" action="#" 
+  						th:action="@{/messageFactGenerator/save}" th:object="${messageFactGeneratorDTO}" method="post">
+               		<fieldset>
+                		<div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formAddEditFilter.message}"></span></h4>
+	                    	<input type="hidden" th:id="hdnMessageId" class="input-xlarge" th:field="*{idMessage}"></input>
+	                    	
+	                    	<label for="input01" class="control-label"><span th:text="#{model.MessageFactGeneratorDTO.messageDTO.name}"></span></label>
+							<div class="controls">
+								<label> <span th:text="${messageFactGeneratorDTO.messageDTO.name}"></span> </label>
+							</div>
+							
+							<label for="input01" class="control-label"><span th:text="#{model.MessageFactGeneratorDTO.messageDTO.description}"></span></label>
+							<div class="controls">
+								<label> <span th:text="${messageFactGeneratorDTO.messageDTO.description}"></span> </label>
+							</div>
+	                    	
+	                    </div>
+	                    
+	                    <div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formAddEditFilter.factGenerator}"></span></h4>
+	                    	<input type="hidden" th:id="hdnFGId" class="input-xlarge" th:field="*{idFactGenerator}"></input>
+	                    	
+	                    	<label for="input01" class="control-label"><span th:text="#{model.MessageFactGeneratorDTO.factGeneratorDTO.code}"></span></label>
+							<div class="controls">
+								<label> <span th:text="${messageFactGeneratorDTO.factGeneratorDTO.code}"></span> </label>
+							</div>
+							
+							<label for="input01" class="control-label"><span th:text="#{model.MessageFactGeneratorDTO.factGeneratorDTO.description}"></span></label>
+							<div class="controls">
+								<label> <span th:text="${messageFactGeneratorDTO.factGeneratorDTO.description}"></span> </label>
+							</div>
+							
+							<div th:include="fragments/inputs :: viewFieldEnum('factGeneratorDTO.typeDetermination','description','typeDeterminationEnum')" ></div>
+							
+							<label for="input01" class="control-label"><span th:text="#{model.MessageFactGeneratorDTO.factGeneratorDTO.versionView}"></span></label>
+							<div class="controls">
+								<label> <span th:text="${messageFactGeneratorDTO.factGeneratorDTO.versionView}"></span> </label>
+							</div>
+	                    </div>
+                		
+ 						<br />
+	                    
+	                    <div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formView.filtersAssociation}"></span></h4>
+	                    	
+		                    <table id="messageFactGeneratorFilterListDtId" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.code}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.name}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.description}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.type}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.filter}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.value}"></span></th>
+									</tr>
+								</thead>
+			 					<tbody>
+			  						<tr th:each="messageParameterFilterDTO, iterStat: ${filterMessagesFGList}">
+										<td th:text="${messageParameterFilterDTO.parameterId}"></td>
+										<td th:text="${messageParameterFilterDTO.messageParameterDTO.name}"></td>
+			 							<td th:text="${messageParameterFilterDTO.messageParameterDTO.description}"></td>
+			 							<td th:text="#{__${messageParameterFilterDTO.messageParameterDTO.lblType}__}"></td>
+				 						<td th:text="#{__${messageParameterFilterDTO.messageParameterDTO.lblFilter}__}"></td>
+				 						<td th:text="${messageParameterFilterDTO.value}"></td>
+			 						</tr>
+								</tbody>
+							</table>
+						</div>
+						
+					</fieldset>
+					
+ 				</form>
+			</div>
+		</div>
+	</div>
+
+   <script type="text/javascript">
+   
+	   $(document).ready(function() {
+	       configureDataTable('#messageFactGeneratorFilterListDtId', []);
+	   });
+   
+
+   </script>
+</div>
+</html>

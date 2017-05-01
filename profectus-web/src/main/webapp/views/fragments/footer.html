@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+	<div data-th-fragment="footer" id="footer">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<a href="#" class="pull-right">Back to top</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li><a href="http://www.citigroup.net/CITINETWebApp/"
+							target="_blank">Citigroup.net</a></li>
+						<li><a href="http://www.citigroup.net/tos/" target="_blank">Terms
+								&amp; Conditions</a></li>
+						<li><a
+							href="http://www.citigroup.net/citigroup.net/newcitigroupdotnet/accessibility.html"
+							target="_blank">Accessibility</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="copyright">
+			<a target="_blank" href="http://www.citigroup.net/CITINETWebApp/">
+				<!-- <img src="http://www.citigroup.net/ti/csduserexperience/bootstrap/assets/img/logos/citilogo_footer.png" /> -->
+				<img src="../../resources/citi/img/citilogo_footer.png" data-th-attr="src=@{/assets/img/citilogo_footer.png},title=#{logo.footer},alt=#{logo.footer}" />
+			</a>
+			<span>Citigroup.com is the global source of information about
+				and access to financial services provided by the Citigroup
+				companies.</span> <span class="pull-right copyright">&copy; 2014
+				Citigroup Inc.</span>
+		</div>
+	</div>
+</body>
+</html>

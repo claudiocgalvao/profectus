@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content" style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.test.view.result}" style="text-transform:none;"></h1>
+				</div>
+
+				<div th:include="factGenerator/factGeneratorMessage :: messageView" />
+
+				<form  id="formCriterion" class="form-horizontal form-container" action="#" 
+						th:action="@{/test/approveOrReject}" th:object="${factGeneratorDTO}" method="post">
+
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{testDTO.testRequestId}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+					<input type="hidden" th:id="action"   th:field="*{action}"></input>
+					
+					
+ 					<fieldset>
+ 					
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('code', 'input-xlarge', 'false', 'true','30')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('versionView', 'input-medium', 'false', 'true','11')" />
+						<div class="control-group" th:include="fragments/inputs :: textFieldEnum('factGeneratorVersionDTO.situation','description','factGeneratorVersionDTO.situationEnum', 'input-medium', 'true')" />
+
+ 						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('testDTO.testRequestId', 'input-medium', 'false', 'true','20')" />
+ 						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('testDTO.description', 'input-medium', 'false', 'true','20')" />
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('testDTO.dateSolicitation', 'dateSolicitation', 'false', 'true', 'en', '-')" />
+							
+						<div class="control-group"  >
+							<h4 th:text="#{title.factGenerator.test.view.result.calc}" ></h4>
+							<table id="taxListDtId" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th><span th:text="#{dataTable.column.tab.tax.code}"></span></th>
+										<th><span th:text="#{dataTable.column.tab.tax.description}"></span></th>
+										<th><span th:text="#{dataTable.column.tab.tax.collectionCode}"></span></th>
+										<th><span th:text="#{dataTable.colemn.test.result}"></span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="taxDTO : ${factGeneratorDTO.listTaxDTO}">
+										<td><span th:text="${taxDTO.code}"></span></td>
+										<td><span th:text="${taxDTO.description}"></span></td>
+										<td><span th:text="${taxDTO.taxCriterionDTO.collectionCode}"></span></td>
+										<td> <span th:if="${taxDTO.testDTO != null}"><span th:text="${taxDTO.testDTO.result}"></span></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+ 					</fieldset>
+
+					<div class="form-actions">
+
+							<button id="buttonCancel"  class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+							<!-- <button id="buttonApprove" th:if="${APPROVE_TEST}" class="btn btn-primary" type="submit" ><span th:text="#{button.approve}"></span></button> -->
+							<!-- <button id="buttonReject"  th:if="${APPROVE_TEST}" class="btn" type="submit"><span th:text="#{button.reject}"></span></button> -->
+							<button id="buttonApprove" class="btn btn-primary" type="submit" ><span th:text="#{button.approve}"></span></button>
+							<button id="buttonReject"  class="btn" type="submit"><span th:text="#{button.reject}"></span></button>
+							
+					</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+	<script >
+	//<![CDATA[
+		$(document).ready(function() {
+
+		    //Action
+ 		    $("#buttonCancel").click(function(){
+		    	$("#action").val("cancel");
+		    });
+
+
+		    $("#buttonReject").click(function(){
+		    	$("#action").val("reject");
+		    });
+		    
+		    $("#buttonApprove").click(function(){
+		    	$("#action").val("approve");
+		    });
+
+		    
+	});
+		//]]>
+
+	</script>
+	
+</div>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+			
+        <div class="row-fluid">
+			<div class="span9">
+                <div class="page-header">
+                
+                    <!-- <h1 th:text="#{title.messageFactGenerator.add}"></h1> -->
+                                    	<span th:if="${action=='add'}">
+                  		<h1  th:text="#{title.messageFactGenerator.add}"></h1>
+                   </span>
+                   <span th:if="${action=='edit'}">
+                   		<h1  th:text="#{title.messageFactGenerator.edit}"></h1>
+                   </span>
+                    
+                </div>
+                
+  				<form class="form-horizontal form-container" id="frmMessageFactGenerator" action="#" th:action="@{/messageFactGenerator/save}" th:object="${messageFactGeneratorDTO}" method="post">
+  					
+  					<div th:if='${messageFactGeneratorDTO.treatmentMessageDTO!=null}' th:include="fragments/alert :: alert('${messageFactGeneratorDTO.treatmentMessageDTO.typeMessage}', '${messageFactGeneratorDTO.treatmentMessageDTO.message}')"></div>
+              		
+               		<fieldset>
+                		<div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formAddEditFilter.message}"></span></h4>
+	                    	<input type="hidden" th:id="hdnMessageId" class="input-xlarge" th:field="*{idMessage}"></input>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('messageDTO.name', 'input-medium', 'true', 'true','250')"></div>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('messageDTO.description', 'input-xlarge', 'true', 'true','250')"></div>
+	                    </div>
+	                    
+	                    <div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formAddEditFilter.factGenerator}"></span></h4>
+	                    	<input type="hidden" th:id="hdnFGId" class="input-xlarge" th:field="*{idFactGenerator}"></input>
+	                    	<input type="hidden" th:id="hdnFGIdVersion" class="input-xlarge" th:field="*{idFactGeneratorVersion}"></input>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.code', 'input-xlarge', 'true', 'true','250')"></div>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.description', 'input-large-480', 'true', 'true','250')"></div>
+	                    	<div th:include="fragments/inputs :: selectEnum('factGeneratorDTO.typeDetermination', 'typeDeterminationEnum', 'input-medium', 'true', 'true', 'false')"></div>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.versionView', 'input-medium', 'true', 'true','250')"></div>
+	                    </div>
+                		
+ 						<br />
+ 						
+	 					<div class="control-group">
+                            <h4><span th:text="#{subtitle.messageFactGenerator.formAddEditFilter.filterValue}"></span></h4>
+                            
+                            <div th:include="fragments/inputs :: selectList('messageFactGeneratorFilterDTO.parameterId', 'messageParametersFilterList', 'parameterId', 'name', 'true', 'false','false')"></div>
+                            <div th:include="fragments/inputs :: textFieldMaxLength('messageFactGeneratorFilterDTO.messageParameterDTO.description', 'input-xlarge', 'true', 'false','11')"></div>
+                            <br />
+                            <div th:include="fragments/inputs :: textFieldMaxLength('messageFactGeneratorFilterDTO.value', 'input-xlarge', 'true', 'false','20')"></div>
+                            
+                            <div class="form-actions">
+								<button class="btn btn-primary" type="submit" name="saveFilter"><span th:text="#{button.includeValue}"></span></button>
+							</div>
+	                    </div>
+	                    
+	                    <div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formAddEditFilter.filtersAssociation}"></span></h4>
+	                    	
+		                    <table id="messageFactGeneratorFilterListDtId" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.code}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.name}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.description}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.type}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.filter}"></span></th>
+										<th><span th:text="#{dataTable.filters.column.messageFactGenerator.value}"></span></th>
+									</tr>
+								</thead>
+			 					<tbody>
+			  						<tr th:each="messageParameterFilterDTO, iterStat: ${filterMessagesFGList}">
+										<td th:text="${messageParameterFilterDTO.parameterId}"></td>
+										<td th:text="${messageParameterFilterDTO.messageParameterDTO.name}"></td>
+			 							<td th:text="${messageParameterFilterDTO.messageParameterDTO.description}"></td>
+			 							<td th:text="#{__${messageParameterFilterDTO.messageParameterDTO.lblType}__}"></td>
+				 						<td th:text="#{__${messageParameterFilterDTO.messageParameterDTO.lblFilter}__}"></td>
+				 						<td th:text="${messageParameterFilterDTO.value}"></td>
+			 						</tr>
+								</tbody>
+							</table>
+						</div>
+						
+					</fieldset>
+					
+					<div class="form-actions">
+						<a class="btn" th:id="btnCancel" onclick="javascript:document.location.href ='list';" ><span th:text="#{button.cancel}"></span></a>
+						<button class="btn btn-primary" type="submit"><span th:text="#{button.save}"></span></button>
+					</div>
+					
+ 				</form>
+			</div>
+		</div>
+	</div>
+
+   	<script type="text/javascript">
+   
+	   $(document).ready(function() {
+	
+	       configureDataTable('#messageFactGeneratorFilterListDtId', []);
+		   
+	       $('[name="messageFactGeneratorFilterDTO.parameterId"]').change(function() {
+
+               $('[name="messageFactGeneratorFilterDTO.messageParameterDTO.description"]').val("");
+
+               var parameterId = $(this).val();
+               $.ajax({
+                   url : "loadDescriptionByParameterId",
+                   type : "POST",
+                   dataType : "json",
+                   data:'parameterId=' + parameterId,
+                   success : function(data) {
+                       $.each( data, function( key, val ) {
+                           //$('#sltValue').append('<option value="' + key + '">' + val + '</option>');
+                    	   $('[name="messageFactGeneratorFilterDTO.messageParameterDTO.description"]').val(val);
+                       });
+                   },
+                   error : function(data) {
+                       alert("ERRO!");
+                   }
+               });
+
+           });
+	       
+	       //$("#name").keypress(blockSpace);
+	       //blockCtrlKey("[name='name']");
+	       //blockPasteWithMouse("[name='name']");
+	       
+	       //$("#description").keypress(blockSpace);
+	       //blockCtrlKey("[name='description']");
+	       //blockPasteWithMouse("[name='description']");
+	
+	   });
+   
+
+   </script>
+</div>
+</html>

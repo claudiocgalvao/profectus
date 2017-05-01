@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<div th:fragment="contentBody">
+
+ 	<div id="content" style="position: relative; overflow: auto; padding-left: 25px;  padding-top: 25px; padding-right: 25px;">
+			
+        <div class="row-fluid">
+			<div class="span9">
+                <div class="page-header">
+                	<span th:if="${action=='add'}">
+                  		<h1  th:text="#{title.messageFactGenerator.add}"></h1>
+                   </span>
+                   <span th:if="${action=='edit'}">
+                   		<h1  th:text="#{title.messageFactGenerator.edit}"></h1>
+                   </span>
+                </div>
+                
+  				<form class="form-horizontal form-container" id="frmMessageFactGenerator" action="#" th:action="@{/messageFactGenerator/save}" th:object="${messageFactGeneratorDTO}" method="post">
+              		
+              		<div th:if='${messageFactGeneratorDTO.treatmentMessageDTO!=null}' th:include="fragments/alert :: alert('${messageFactGeneratorDTO.treatmentMessageDTO.typeMessage}', '${messageFactGeneratorDTO.treatmentMessageDTO.message}')"></div>
+              		
+               		<fieldset>
+	                    
+	                    <div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formAddEdit.message}"></span></h4>
+	                    	
+	                    	<input type="hidden" th:id="hdnMessageId" class="input-xlarge" th:field="*{idMessage}"></input>
+	                    	<input type="hidden" th:id="hdnTypeDetermination" class="input-xlarge" th:field="*{factGeneratorDTO.typeDetermination}"></input>
+	                    	
+	                    	<input type="hidden" th:id="hdnOriginalMessageId" class="input-xlarge" th:field="*{originalIdMessage}"></input>
+	                    	<input type="hidden" th:id="hdnOriginalFgvId" class="input-xlarge" th:field="*{originalIdFactGeneratorVersion}"></input>
+	                    	
+	                    	<span class="text-error" th:if="${#fields.hasErrors('idMessage')}" th:errors="*{idMessage}"></span>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('messageDTO.name', 'input-medium', 'true', 'true','250')"></div>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('messageDTO.description', 'input-xlarge', 'true', 'true','250')"></div>
+	                    	
+	                    	<!-- <div class="actions-toolbar-inner">
+ 								<input type="text" id="messageName" class="input-xlarge" style="margin-right:5px;" th:maxlength="30" ></input>
+							</div>
+	                    	
+	                    	<div dt:conf="oTable_tblMessageId">
+   								<div dt:confType="extrajs" dt:bundles="custom-filter" />
+							</div>-->
+	                    	
+	                    	<div><br clear="all"></br></div>
+	                    	<div><br clear="all"></br></div>
+	                    		                    	
+		                    <table id="oTable_tblMessageId" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th><span th:text="#{dataTable.messages.column.messageFactGenerator.messageName}"></span></th>
+										<th><span th:text="#{dataTable.messages.column.messageFactGenerator.messageDescription}"></span></th>
+									</tr>
+								</thead>
+			 					<tbody>
+			  						<tr th:each="messageDTO, iterStat: ${messageFactGeneratorDTO.messagesList}">
+										<td align="center">
+											<a 	data-toggle="modal" data-target="#confirmDeleteMessage" href="#" 
+												th:onclick="'selectMessage(\'' + ${messageDTO.messageId} + '\', \'' + ${messageDTO.name} + '\', \'' + ${messageDTO.description} + '\')'" 
+												th:text="${messageDTO.name}"></a>							
+										</td>
+										<td th:text="${messageDTO.description}"></td>
+			 						</tr>
+								</tbody>
+							</table>
+							
+						</div>
+						
+						<div class="control-group">
+	                    	<h4><span th:text="#{subtitle.messageFactGenerator.formAddEdit.factGenerator}"></span></h4>
+	                    	
+	                    	<input type="hidden" th:id="hdnFGId" class="input-xlarge" th:field="*{idFactGenerator}"></input>
+	                    	<input type="hidden" th:id="hdnFGIdVersion" class="input-xlarge" th:field="*{idFactGeneratorVersion}"></input>
+	                    	
+	                    	<span class="text-error" th:if="${#fields.hasErrors('idFactGeneratorVersion')}" th:errors="*{idFactGeneratorVersion}"></span>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.code', 'input-xlarge', 'true', 'true','250')"></div>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.description', 'input-large-480', 'true', 'true','250')"></div>
+	                    	<div th:include="fragments/inputs :: selectEnum('factGeneratorDTO.typeDetermination', 'typeDeterminationEnum', 'input-medium', 'true', 'true', 'false')"></div>
+	                    	<div th:include="fragments/inputs :: textFieldMaxLength('factGeneratorDTO.versionView', 'input-medium', 'true', 'true','250')"></div>
+	                    	
+	                    	<div><br clear="all"></br></div>
+	                    	<div><br clear="all"></br></div>
+	                    	
+ 		                    <table id="tblFactGeneratorId" class="table table-bordered table-striped dataTable">
+								<thead>
+									<tr>
+										<th><span th:text="#{dataTable.messages.column.messageFactGenerator.code}"></span></th>
+										<th><span th:text="#{dataTable.messages.column.messageFactGenerator.description}"></span></th>
+										<th><span th:text="#{dataTable.messages.column.messageFactGenerator.version}"></span></th>
+									</tr>
+								</thead>
+			 					<tbody>
+			  						<tr th:each="factGeneratorDTO, iterStat: ${messageFactGeneratorDTO.factsGeneratorsList}">
+										<td align="center">
+											<a 	data-toggle="modal" data-target="#confirmDeleteMessage" href="#" 
+												th:onclick="'selectFactGenerator(\'' + ${factGeneratorDTO.id} + '\', \'' + ${factGeneratorDTO.factGeneratorVersionDTO.id} + '\', \'' + ${factGeneratorDTO.code} + '\', \'' + ${factGeneratorDTO.description} + '\', \'' + ${factGeneratorDTO.typeDetermination} + '\', \'' + ${factGeneratorDTO.versionView} + '\')'"
+												th:text="${factGeneratorDTO.code}"></a>							
+										</td>
+										<td th:text="${factGeneratorDTO.description}"></td>
+										<td th:text="${factGeneratorDTO.versionView}"></td>
+			 						</tr>
+								</tbody>
+							</table>
+							
+						</div>
+						
+					</fieldset>
+					
+					<div class="form-actions">
+						<a class="btn" th:id="btnCancel" onclick="javascript:document.location.href ='list';" ><span th:text="#{button.return}"></span></a>
+						<button class="btn btn-primary" type="submit" name="next"><span th:text="#{button.next}"></span></button>
+					</div>
+					
+ 				</form>
+			</div>
+		</div>
+	</div>
+
+   <script type="text/javascript">
+   		
+   		function selectMessage(id, name, description) {
+      		$("#hdnMessageId").val(id);
+      		$('[name="messageDTO.name"]').val(name);
+      		$('[name="messageDTO.description"]').val(description);
+  		}
+   		
+   		function selectFactGenerator(id, idFactGeneratorVersion, code, description, typeDetermination, versionView) {
+      		$("#hdnFGId").val(id);
+      		$("#hdnFGIdVersion").val(idFactGeneratorVersion);
+      		$("#hdnTypeDetermination").val(typeDetermination);
+      		$('[name="factGeneratorDTO.code"]').val(code);
+      		$('[name="factGeneratorDTO.description"]').val(description);
+      		$('[name="factGeneratorDTO.typeDetermination"]').val(typeDetermination);
+      		$('[name="factGeneratorDTO.versionView"]').val(versionView);
+  		}
+   
+   
+	   $(document).ready(function() {
+		   
+		   configureDataTableWithFilter('#oTable_tblMessageId', []);
+		   configureDataTableWithFilter('#tblFactGeneratorId', []);
+	       
+ 	       $('#oTable_tblMessageId').dataTable()
+			  .columnFilter({
+				aoColumns: [ { type: "text" }, null]
+			});
+	       
+	       $('#tblFactGeneratorId').dataTable()
+			  .columnFilter({
+				aoColumns: [ { type: "text"}, null]
+			});
+       /////$('.dataTables_filter input').attr( 'maxlength', 50 );
+	   });
+   
+
+   </script>
+</div>
+</html>

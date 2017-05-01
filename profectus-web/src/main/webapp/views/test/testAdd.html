@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contentBody">
+	<div id="content" style="position: relative; overflow: auto; padding-left: 25px; padding-top: 25px; padding-right: 25px;">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="page-header">
+					<h1 th:text="#{title.factGenerator.test.include}" style="text-transform:none;"></h1>
+				</div>
+
+				<form  id="formTest" class="form-horizontal form-container" action="#" 
+						th:action="@{/test/add}" th:object="${factGeneratorDTO}" method="post" enctype="multipart/form-data">
+
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.fgId}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.version}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.digtiVersion}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.startTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.endTerm}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.situation}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.calculationBase}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.id}"></input>
+					<input type="hidden" th:field="*{factGeneratorVersionDTO.taxDTO.taxCriterionDTO.formulaDTO.id}" th:id="formulaId"></input>
+					<input type="hidden" th:field="*{variableDTO.id}"></input>
+					<input type="hidden" th:field="*{testDTO.id}"></input>
+					<input type="hidden" th:field="*{testDTO.testRequestId}"></input>
+					<input type="hidden" th:field="*{dayTrade}"></input>
+					<input type="hidden" th:id="firstFieldError" th:value="${firstFieldError}"></input>
+					<input type="hidden" th:id="action"   th:field="*{action}"></input>
+					<input type="hidden" th:id="viewName" th:field="*{viewName}"></input>
+					<input type="hidden" th:field="*{currentIndex}" ></input>
+					
+ 					<fieldset>
+ 					
+						<div class="control-group" th:include="fragments/inputs :: selectListDoubleDescription('testDTO.fgvId', 'input-xlarge', 'testDTO.listFgValidatedAndTest', 'factGeneratorVersionDTO.id', 'code','versionView','V.', 'true', 'false', 'false')"></div>
+
+						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('description', 'input-xxlarge', 'false', 'true','50')" ></div>
+						
+ 						<div class="control-group" th:include="fragments/inputs :: textFieldMaxLength('testDTO.description', 'input-medium', 'true', 'false','20')" />
+					
+						<div class="control-group" th:include="fragments/inputs :: dateFieldFormat('testDTO.dateSolicitation', 'dateSolicitation', 'false', 'true', 'en', '-')" />
+
+						<div class="control-group" th:include="fragments/inputs :: selectEnum('testDTO.type', 'testDTO.testTypeEnum', 'input-medium', 'true', 'false', 'false')" />
+
+ 						<div th:if="${factGeneratorDTO.testDTO.type == 2}" >
+								<div class="control-group"  th:include="fragments/inputs :: file('multiPartFile', 'testDTO.fileInput', 'true','false','100')"></div>
+						</div>
+ 						
+ 						<div class="control-group" th:include="factGenerator/factGeneratorMessage :: messageView" />
+ 						
+ 						<div th:if="${VARIABLES_NOT_FOUNDS != null}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formTest.excel.variable.error}"></span>&nbsp;</b>
+		 								<span class="text-error" th:text="${VARIABLES_NOT_FOUNDS}"></span>
+			        			    </div>	
+ 						</div>
+ 						
+ 						
+ 						<div th:if="${VARIABLES_VALUE_EMPTY != null}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formTest.excel.variable.value.empty.error}"></span>&nbsp;</b>
+		 								<span class="text-error" th:text="${VARIABLES_VALUE_EMPTY}"></span>
+			        			    </div>	
+ 						</div>
+
+ 						<div th:if="${VARIABLES_SIZE_ERRORS != null}">
+			 						<div class="alert alert-dismissable" data-th-classappend="alert-error">
+				        				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 								<b><span class="text-error" th:text="#{message.formTest.excel.variable.size.error}"></span>&nbsp;</b>
+		 								<span class="text-error" th:text="${VARIABLES_SIZE_ERRORS}"></span>
+			        			    </div>	
+ 						</div>
+					</fieldset>
+
+		<div class="form-actions">
+
+				<div class="control-group">
+				
+				<button id="buttonSend"	
+				   th:if="${IS_SHOW_BUTTON_SEND}"  class="btn btn-primary" type="submit" ><span th:text="#{button.send}" ></span></button>
+			
+				<button id="buttonSendRequestExcel" 
+					th:if="${IS_SHOW_BUTTON_RESQUEST_EXCEL}" class="btn btn-primary" type="submit" ><span th:text="#{button.send}" ></span></button>
+
+				<button id="buttonCancel" class="btn" type="submit"><span th:text="#{button.finalize}"></span></button>
+
+				</div>
+		</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+	<script >
+	//<![CDATA[
+	           
+       $(document).ready(function () {
+
+			$("[name='testDTO.description']").keypress(onlyWordAndNumber);
+			blockCtrlKey("[name='testDTO.description']");
+			blockPasteWithMouse("[name='testDTO.description']");
+
+    	   $("#buttonCancel").click(function(){
+		    	$("#action").val("cancel");
+		    });
+		    
+		    $("#buttonSend").click(function(){
+     		  	$("#action").val("sendNew");
+		    });
+
+		    $("#buttonSendRequestExcel").click(function(){
+     		  	$("#action").val("sendRequestExcel");
+		    });
+
+
+		    $("#buttonPrev").click(function(){
+     		  	$("#action").val("prev");
+		   });
+		    
+           $(".double").maskMoney({decimal: ",", precision: 4, thousands: "."});//MASK
+
+           $(".integer").keypress(onlyNumber);
+           
+           
+		    //EVENTO CHANGE
+	        $("[name='testDTO.fgvId']").change(function () {
+	        	$("#action").val("selectFG");
+	        	$("#formTest").submit();
+	        	
+	        });
+
+	      //EVENTO CHANGE
+	        $("[name='testDTO.type']").change(function () {
+	        	$("#action").val("selectType");
+	        	$("#formTest").submit();
+	        	
+	        });
+		    
+		    
+		        //$("[name='testDTO.type']").change(function () {
+
+				    //var type = $("[name='testDTO.type']").val();
+				    //if(type == 2){
+			        	//$("#action").val("selectType");
+			        	//$("#formTest").submit();
+				    //}
+		        //});
+
+
+	});
+		//]]>
+
+	</script>
+	
+</div>
+</html>
