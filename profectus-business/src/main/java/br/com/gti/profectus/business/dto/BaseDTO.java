@@ -2,9 +2,7 @@ package br.com.gti.profectus.business.dto;
 
 import java.io.Serializable;
 
-import br.com.gti.profectus.business.dto.security.UserDTO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 
 /**
@@ -12,8 +10,7 @@ import lombok.Setter;
  * @author tiago.canatelli
  * @since 24/11/2014
  */
-@Getter
-@Setter
+@Data
 public class BaseDTO implements Serializable {
 
   /**
@@ -49,7 +46,6 @@ public class BaseDTO implements Serializable {
   private String viewName;
 
   /** userDTO. */
-  private UserDTO userDTO;
 
   /**
    * Constructor of class BaseDTO.java.

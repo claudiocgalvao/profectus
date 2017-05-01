@@ -1,9 +1,6 @@
 package br.com.gti.profectus.business.dao.security;
 
-import org.springframework.data.jpa.repository.Query;
-
-import br.com.gti.profectus.business.dao.ISpringDataDAO;
-import br.com.gti.profectus.business.entity.security.User;
+import org.springframework.security.core.userdetails.User;
 
 /**
  * ISecurityDAO.
@@ -11,7 +8,7 @@ import br.com.gti.profectus.business.entity.security.User;
  * @since 02/12/2014
  */
 
-public interface ISecurityDAO extends ISpringDataDAO<User, Long> {
+public interface ISecurityDAO{
 
     /**
      * findByUserName.
@@ -20,7 +17,7 @@ public interface ISecurityDAO extends ISpringDataDAO<User, Long> {
      * @param code
      * @return List<Tax>
      */
-    @Query("from User As A where UPPER(TRIM(A.username)) = UPPER(TRIM(?1))")
+    //@Query("from User As A where UPPER(TRIM(A.username)) = UPPER(TRIM(?1))")
     User findByUserName(String username);
 
 }

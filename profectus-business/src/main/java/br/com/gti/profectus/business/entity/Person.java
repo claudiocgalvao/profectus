@@ -1,5 +1,8 @@
 package br.com.gti.profectus.business.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Person {
 
 	private String id;

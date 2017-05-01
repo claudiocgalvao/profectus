@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableTransactionManagement
 @EnableWebMvc
 @ComponentScan(basePackages = { "br.com.gti" }, excludeFilters = @Filter({Controller.class, Configuration.class }))
-@Import({CacheConfig.class, JpaConfig.class, SchedulingConfig.class, SecurityConfig.class })
+@Import({CacheConfig.class, MongoConfig.class, SchedulingConfig.class, SecurityConfig.class })
 public class ApplicationConfig {
 
 

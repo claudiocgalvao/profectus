@@ -21,10 +21,9 @@
 		<maven.compiler.fork>true</maven.compiler.fork>
 		<spring-bom.version>4.3.8.RELEASE</spring-bom.version>
 		<spring-boot.version>1.1.5.RELEASE</spring-boot.version>
-		<spring-reloaded.version>1.2.0.RELEASE</spring-reloaded.version>
-		<spring-data-commons.version>1.9.0.RELEASE</spring-data-commons.version>
+		<spring-data-commons.version>1.13.3.RELEASE</spring-data-commons.version>
 		<spring-data-mongodb.version>1.10.3.RELEASE</spring-data-mongodb.version>
-		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version>
+		<!-- <spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version> -->
 		<spring-reloaded.version>1.2.0.RELEASE</spring-reloaded.version>
 		<spring-security.version>3.2.5.RELEASE</spring-security.version>
 
@@ -92,14 +91,35 @@
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>2.6</version>
 				</plugin>
-				<!-- <plugin> <groupId>org.spring.framework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
-					<version>${spring-boot.version}</version> <dependencies> <dependency> <groupId>org.springframework</groupId> 
-					<artifactId>springloaded</artifactId> <version>${spring-reloaded.version}</version> 
-					</dependency> </dependencies> </plugin> -->
-				<!-- <plugin> <groupId>org.antlr</groupId> <artifactId>antlr4-maven-plugin</artifactId> 
-					<version>${antlr4.version}</version> <executions> <execution> <id>generate-antlr-sources</id> 
-					<goals> <goal>antlr4</goal> </goals> <phase>generate-sources</phase> <configuration> 
-					<visitor>true</visitor> </configuration> </execution> </executions> </plugin> -->
+				<plugin>
+					<groupId>org.spring.framework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.springframework</groupId>
+							<artifactId>springloaded</artifactId>
+							<version>${spring-reloaded.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.antlr</groupId>
+					<artifactId>antlr4-maven-plugin</artifactId>
+					<version>${antlr4.version}</version>
+					<executions>
+						<execution>
+							<id>generate-antlr-sources</id>
+							<goals>
+								<goal>antlr4</goal>
+							</goals>
+							<phase>generate-sources</phase>
+							<configuration>
+								<visitor>true</visitor>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -261,28 +281,16 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-jpa</artifactId>
-				<version>${spring-data-jpa.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>jcl-over-slf4j</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-envers</artifactId>
-				<version>0.2.0.RELEASE</version>
-			</dependency>
+			<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-jpa</artifactId> 
+				<version>${spring-data-jpa.version}</version> <exclusions> <exclusion> <groupId>org.slf4j</groupId> 
+				<artifactId>jcl-over-slf4j</artifactId> </exclusion> </exclusions> </dependency> -->
+			<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-envers</artifactId> 
+				<version>0.2.0.RELEASE</version> </dependency> -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-mongodb</artifactId>
 				<version>${spring-data-mongodb.version}</version>
 			</dependency>
-
 
 			<!-- Spring Security -->
 			<dependency>
@@ -299,6 +307,27 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${spring-security.version}</version>
+			</dependency>
+
+			<!-- Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-mongodb</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+			<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-thymeleaf</artifactId> 
+				<version>${spring-boot.version}</version> </dependency> -->
+			<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-logging</artifactId> 
+				<version>${spring-boot.version}</version> </dependency> -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot</artifactId>
+				<version>${spring-boot.version}</version>
 			</dependency>
 
 			<!-- Hibernate Dependencies -->
@@ -481,8 +510,11 @@
 				<artifactId>beanio</artifactId>
 				<version>2.1.0</version>
 			</dependency>
-			<!-- <dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-mapper-asl</artifactId> 
-				<version>1.9.13</version> </dependency> -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>1.9.13</version>
+			</dependency>
 			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>

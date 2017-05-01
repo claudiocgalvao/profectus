@@ -29,7 +29,6 @@ public abstract class AbstractFileReader<T> {
      * Constructor of class AbstractFileReader.java.
      */
     public AbstractFileReader() {
-        // TODO Auto-generated constructor stub
     }
 
     /**

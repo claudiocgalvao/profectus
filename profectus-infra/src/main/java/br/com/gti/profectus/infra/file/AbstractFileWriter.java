@@ -34,7 +34,6 @@ public abstract class AbstractFileWriter<T> {
      * Constructor of class AbstractFileWriter.java.
      */
     public AbstractFileWriter() {
-        // TODO Auto-generated constructor stub
     }
 
     /**

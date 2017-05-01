@@ -3,12 +3,12 @@ package br.com.gti.profectus.infra.scheduled.task;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.gti.profectus.tools.dateTime.DateHelper;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * TaskExecutor.

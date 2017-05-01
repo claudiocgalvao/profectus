@@ -26,7 +26,6 @@ public class Variable implements IVariable {
      * Constructor of class Variable.java.
      */
     public Variable() {
-        // TODO Auto-generated constructor stub
     }
 
     /**

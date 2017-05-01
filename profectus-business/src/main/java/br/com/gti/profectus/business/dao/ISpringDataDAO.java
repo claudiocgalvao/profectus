@@ -4,15 +4,14 @@ import java.io.Serializable;
 
 import org.springframework.data.repository.NoRepositoryBean;
 
-import br.com.gti.profectus.infra.repository.ISpringDataRepository;
+import br.com.gti.profectus.infra.repository.ISpringDataMongoRepository;
 
 /**
  * ISpringDataDAO.
- * @author claudio.cesar
- * @since 13/11/2014
+ * @author Claudio
  * @param <T>
  * @param <ID>
  */
 @NoRepositoryBean
-public interface ISpringDataDAO<T, ID extends Serializable> extends ISpringDataRepository<T, ID> {
+public interface ISpringDataDAO<T, ID extends Serializable> extends ISpringDataMongoRepository<T, ID> {
 }
