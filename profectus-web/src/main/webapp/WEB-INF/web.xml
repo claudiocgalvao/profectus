@@ -29,21 +29,21 @@
 		<session-timeout>30</session-timeout>
 	</session-config>
 
-	<resource-ref>
+<!-- 	<resource-ref>
       <description>Profectus Connection Data Base</description>
       <res-ref-name>jdbc/u885303517_gtidb</res-ref-name>
       <res-type>javax.sql.DataSource</res-type>
       <res-auth>Container</res-auth>
-	</resource-ref>
+	</resource-ref> -->
 
-	<filter>
+	<!-- <filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 
 	<filter>
 		<display-name>springMultipartFilter</display-name>
