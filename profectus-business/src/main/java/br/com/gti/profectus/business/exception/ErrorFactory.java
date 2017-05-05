@@ -8,13 +8,13 @@ import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class error factory.
  * @author tiago.canatelli
  */
-@Slf4j
+@Log4j2
 public final class ErrorFactory {
 
     private static ErrorFactory instance = new ErrorFactory();

@@ -11,7 +11,7 @@ import org.beanio.StreamFactory;
 
 import br.com.gti.profectus.infra.xstream.XStreamTranslator;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * AbstractFileWriter class to process Objects/Strings to Write File.
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 20/05/2015
  * @param <T>
  */
-@Slf4j
+@Log4j2
 public abstract class AbstractFileWriter<T> {
 
     /** Stream Factory to use BeanIO. **/

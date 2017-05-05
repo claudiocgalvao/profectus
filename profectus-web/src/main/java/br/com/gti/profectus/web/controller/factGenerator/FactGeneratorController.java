@@ -8,7 +8,7 @@ package br.com.gti.profectus.web.controller.factGenerator;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 //
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.log4j.Log4j2;
 //
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +48,7 @@ package br.com.gti.profectus.web.controller.factGenerator;
 // * @author claudio.cesar
 // * @since 20/11/2014
 // */
-//@Slf4j
+//@Log4j2
 //@Controller
 //@RequestMapping(value = "/factGenerator")
 //public class FactGeneratorController implements IController<FactGeneratorDTO> {

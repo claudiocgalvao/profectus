@@ -1,4 +1,4 @@
-package br.com.gti.profectus.tools.file;
+/*package br.com.gti.profectus.tools.file;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -14,9 +14,9 @@ import java.io.OutputStreamWriter;
 
 import org.apache.log4j.Logger;
 
-/**
+*//**
  * IOHelper.
- */
+ *//*
 public final class IOHelper {
 
     private static final Logger LOGGER = Logger.getLogger(IOHelper.class);
@@ -24,11 +24,11 @@ public final class IOHelper {
     private IOHelper() {
     }
 
-    /**
+    *//**
      * Read file to string.
      * @param file
      * @return
-     */
+     *//*
     public static String readFile(File file) {
         try {
             FileInputStream fis = new FileInputStream(file);
@@ -41,11 +41,11 @@ public final class IOHelper {
         }
     }
 
-    /**
+    *//**
      * Write file content.
      * @param file
      * @param content
-     */
+     *//*
     public static void writeFile(File file, String content) {
         try {
             FileOutputStream fos = new FileOutputStream(file);
@@ -59,11 +59,11 @@ public final class IOHelper {
         }
     }
 
-    /**
+    *//**
      * Read stream to a string.
      * @param is
      * @return
-     */
+     *//*
     public static String readStream(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -87,12 +87,12 @@ public final class IOHelper {
         return sb.toString();
     }
 
-    /**
+    *//**
      * Move file to a boolean.
      * @param sourcePath
      * @param destPath
      * @return
-     */
+     *//*
     public static boolean moveFile(String sourcePath, String destPath) {
         try {
             File sourceFile = new File(sourcePath);
@@ -103,12 +103,12 @@ public final class IOHelper {
         }
     }
 
-    /**
+    *//**
      * Read file to bytes.
      * @param file
      * @return
      * @throws IOException
-     */
+     *//*
     public static byte[] readBytes(File file) throws IOException {
         FileInputStream fis = new FileInputStream(file);
         @SuppressWarnings("resource")
@@ -123,22 +123,22 @@ public final class IOHelper {
         return bytes;
     }
 
-    /**
+    *//**
      * Read file path to bytes.
      * @param filePath
      * @return
      * @throws IOException
-     */
+     *//*
     public static byte[] readBytes(String filePath) throws IOException {
         return readBytes(new File(filePath));
     }
 
-    /**
+    *//**
      * Write bytes in a file.
      * @param bytes
      * @param f
      * @throws IOException
-     */
+     *//*
     public static void writeBytes(byte[] bytes, File f) throws IOException {
         FileOutputStream fos = new FileOutputStream(f);
         fos.write(bytes);
@@ -146,25 +146,25 @@ public final class IOHelper {
         fos.close();
     }
 
-    /**
+    *//**
      * Write bytes to a file in a destination path.
      * @param bytes
      * @param destDir
      * @param fileName
      * @throws IOException
-     */
+     *//*
     public static void writeBytes(byte[] bytes, String destDir, String fileName) throws IOException {
         File f = createFile(destDir, fileName);
         writeBytes(bytes, f);
     }
 
-    /**
+    *//**
      * Create a file.
      * @param destDir
      * @param fileName
      * @return
      * @throws IOException
-     */
+     *//*
     public static File createFile(String destDir, String fileName) throws IOException {
         File dir = new File(destDir);
         if (!dir.exists()) {
@@ -177,11 +177,11 @@ public final class IOHelper {
         return file;
     }
 
-    /**
+    *//**
      * Delete file.
      * @param filePath
      * @return
-     */
+     *//*
     public static boolean deleteFile(String filePath) {
         try {
             File f = new File(filePath);
@@ -192,3 +192,4 @@ public final class IOHelper {
         }
     }
 }
+*/

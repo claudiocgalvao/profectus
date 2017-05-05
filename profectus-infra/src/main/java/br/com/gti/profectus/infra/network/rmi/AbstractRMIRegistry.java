@@ -5,14 +5,14 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * AbstractRMIListener.
  * @author eduardo.fsantos
  * @since 25/05/2015
  */
-@Slf4j
+@Log4j2
 @Data
 public abstract class AbstractRMIRegistry implements IRMIRegistry {
 

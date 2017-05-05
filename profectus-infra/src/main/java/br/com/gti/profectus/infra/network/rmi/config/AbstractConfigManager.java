@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * ConfigManager.
  * @author eduardo.fsantos
  * @since 28/05/2015
  */
-@Slf4j
+@Log4j2
 public abstract class AbstractConfigManager implements IConfigManager {
 
   private final ConfigInfo configInfo;

@@ -35,8 +35,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   private static final String MESSAGE_SOURCE = "/WEB-INF/i18n/messages";
 
-  @Autowired
-  private EntityManagerFactory entityManagerFactory;
+  //@Autowired
+  //private EntityManagerFactory entityManagerFactory;
 
   /**
    * MultipartResolver.
@@ -80,12 +80,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
       return bean;
   }
 
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    OpenEntityManagerInViewInterceptor entityManagerInterceptor = new OpenEntityManagerInViewInterceptor();
-    entityManagerInterceptor.setEntityManagerFactory(this.entityManagerFactory);
-    registry.addWebRequestInterceptor(entityManagerInterceptor);
-  }
+//  @Override
+//  public void addInterceptors(InterceptorRegistry registry) {
+//    OpenEntityManagerInViewInterceptor entityManagerInterceptor = new OpenEntityManagerInViewInterceptor();
+//    entityManagerInterceptor.setEntityManagerFactory(this.entityManagerFactory);
+//    registry.addWebRequestInterceptor(entityManagerInterceptor);
+//  }
 
 //  @Override
 //  public Validator getValidator() {

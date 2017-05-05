@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import lombok.extern.log4j.Log4j2;
+
+
+
+
 /**
  * LoginController.
  * @author eduardo.fsantos
@@ -20,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(value = "/")
+@Log4j2
 public class LoginController {
 
   private Authentication auth;
@@ -38,7 +44,7 @@ public class LoginController {
 
     this.auth = SecurityContextHolder.getContext().getAuthentication();
 
-    if (this.auth.isAuthenticated()) {
+    if (auth != null && this.auth.isAuthenticated()) {
       view.setViewName("layouts/default");
     } else {
       view.setViewName("login/login");
@@ -83,27 +89,14 @@ public class LoginController {
 
   }
 
-  /**
-   * login.
-   * @author eduardo.fsantos
-   * @since 03/12/2014
-   * @return ModelAndView
-   */
+
   @RequestMapping(value = "/login", method = RequestMethod.GET)
   public ModelAndView login() {
     ModelAndView modelAndView = new ModelAndView("login/login");
-
+    log.info("Login GET");
     return modelAndView;
   }
 
-  /**
-   * login.
-   * @author eduardo.fsantos
-   * @since 03/12/2014
-   * @param error
-   * @param logout
-   * @return ModelAndView
-   */
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public ModelAndView login(@RequestParam(value = "error", required = false) String error, @RequestParam(
       value = "logout", required = false) String logout) {
@@ -128,7 +121,6 @@ public class LoginController {
   //for 403 access denied page
   /**
    * accesssDenied.
-   * @author eduardo.fsantos
    * @since 03/12/2014
    * @return ModelAndView
    */

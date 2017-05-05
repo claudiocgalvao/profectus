@@ -5,13 +5,14 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.log4j.Log4j2;
 import br.com.gti.profectus.tools.constants.NumberDoubleMagic;
 
 /**
  * Classe utilitaria para manipulacao de valores numericos.
  */
-@Slf4j
+@Log4j2
 public final class NumericHelper {
 
     private static final String MASK_MILHAR_INT = "###,###,###";

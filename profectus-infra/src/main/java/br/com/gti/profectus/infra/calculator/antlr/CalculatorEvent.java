@@ -3,7 +3,7 @@ package br.com.gti.profectus.infra.calculator.antlr;
 import java.util.Collections;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.Parser;
@@ -15,7 +15,7 @@ import org.antlr.v4.runtime.Recognizer;
  * @author eduardo.fsantos
  * @since 18/12/2014
  */
-@Slf4j
+@Log4j2
 public class CalculatorEvent extends BaseErrorListener {
 
     private String message;

@@ -8,14 +8,14 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import br.com.gti.profectus.tools.dateTime.DateHelper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * TaskExecutor.
  * @author claudio.cesar
  * @since 17/12/2015
  */
-@Slf4j
+@Log4j2
 @Service
 public class TaskExecutor {
 

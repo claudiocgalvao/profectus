@@ -10,7 +10,7 @@ import java.util.List;
 import org.beanio.StreamFactory;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * AbstractFileReader class to process file to Read.
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 20/05/2015
  * @param <T>
  */
-@Slf4j
+@Log4j2
 public abstract class AbstractFileReader<T> {
 
     /** Stream Factory to use BeanIO. **/

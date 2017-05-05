@@ -12,12 +12,12 @@ import org.joda.time.LocalDate;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**	
  * DateHelper.
  */
-@Slf4j
+@Log4j2
 public abstract class DateHelper {
 
     private static final Integer DAYS_MONTH_31 = 31;

@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html >
 
 <body>
 
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" data-th-fragment="contentBody">
+<!-- <div xmlns:c="http://java.sun.com/jsp/jstl/core" data-th-fragment="contentBody"> -->
+<div>
     <div id="content">
 
         <style>
@@ -53,7 +54,7 @@
                 <div id="left" class="span3" style="width:209px;">
                     <div class="loginTop"></div>
                     <div id="login">
-                        <form method="post" action="#" data-th-action="@{/login}">
+                        <form method="post" action="#">
                             <h2>Sign on using SSO</h2>
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" class="login-input"/>
@@ -75,7 +76,7 @@
                 </div>
                 <div id="right" class="span9">
                     <div id="slogan">
-                        <h1><span th:text="#{aplication.slogan}"></span></h1>
+                        <h1><span ></span></h1>
                     </div>
                 </div>
             </div>

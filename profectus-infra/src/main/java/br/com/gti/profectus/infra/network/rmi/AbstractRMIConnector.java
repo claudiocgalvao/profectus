@@ -5,14 +5,14 @@ import java.rmi.registry.Registry;
 
 import br.com.gti.profectus.infra.common.ProtocolRequestMessage;
 import br.com.gti.profectus.infra.common.ProtocolResponseMessage;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * AbstractRMIConnector.
  * @author eduardo.fsantos
  * @since 26/05/2015
  */
-@Slf4j
+@Log4j2
 public abstract class AbstractRMIConnector implements IRMIConnector {
 
     private Registry registry;

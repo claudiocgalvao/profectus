@@ -1,6 +1,6 @@
-package br.com.gti.profectus.web.error;
+/*package br.com.gti.profectus.web.error;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,15 +9,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.base.Throwables;
 
-/**
+*//**
  * General error handler for the application.
- */
-@Slf4j
+ *//*
+@Log4j2
 @ControllerAdvice
 class DefaultExceptionHandler {
-    /**
+    *//**
      * Handle exceptions thrown by handlers.
-     */
+     *//*
     @ExceptionHandler(value = Exception.class)
     public ModelAndView exception(Exception exception, WebRequest request) {
         ModelAndView modelAndView = new ModelAndView("error/generalError");
@@ -31,3 +31,4 @@ class DefaultExceptionHandler {
         modelAndView.addObject("stackTraceAsString", Throwables.getStackTraceAsString(exception));
     }
 }
+*/

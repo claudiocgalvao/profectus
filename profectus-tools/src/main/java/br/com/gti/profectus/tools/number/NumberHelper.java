@@ -5,12 +5,13 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
-import lombok.extern.slf4j.Slf4j;
+
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Helper for number formatting.
  */
-@Slf4j
+@Log4j2
 public final class NumberHelper {
 
     private static final int A_HUNDRED = 100;

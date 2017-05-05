@@ -1,26 +1,25 @@
-package br.com.gti.profectus.web.error;
+/*package br.com.gti.profectus.web.error;
 
 import java.text.MessageFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.core.util.Throwables;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.google.common.base.Throwables;
-
-/**
+*//**
  * ErrorController.
- */
+ *//*
 @Controller
 class ErrorController {
 
-    /**
+    *//**
      * Display an error page, as defined in web.xml <code>custom-error</code> element.
-     */
+     *//*
     @RequestMapping("generalError")
     public String generalError(HttpServletRequest request, HttpServletResponse response, Model model) {
         // retrieve some useful information from the request
@@ -41,12 +40,12 @@ class ErrorController {
         return "error/general";
     }
 
-    /**
+    *//**
      * getExceptionMessage.
      * @param throwable
      * @param statusCode
      * @return
-     */
+     *//*
     private static String getExceptionMessage(Throwable throwable, Integer statusCode) {
         if (throwable != null) {
             return Throwables.getRootCause(throwable).getMessage();
@@ -55,3 +54,4 @@ class ErrorController {
         return httpStatus.getReasonPhrase();
     }
 }
+*/

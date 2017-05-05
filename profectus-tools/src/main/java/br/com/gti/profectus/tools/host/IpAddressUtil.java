@@ -1,4 +1,4 @@
-package br.com.gti.profectus.tools.host;
+/*package br.com.gti.profectus.tools.host;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -9,9 +9,9 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 public class IpAddressUtil {
 
     public static InetAddress getIpServer(boolean preferIpv4, boolean preferIPv6) {
@@ -64,3 +64,4 @@ public class IpAddressUtil {
 
     }
 }
+*/

@@ -18,14 +18,14 @@
 //import br.com.gti.profectus.business.entity.security.User;
 //import br.com.gti.profectus.business.entity.security.UserRole;
 //import lombok.Data;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.log4j.Log4j2;
 //
 ///**
 // * SecurityService.
 // * @author eduardo.fsantos
 // * @since 02/12/2014
 // */
-//@Slf4j
+//@Log4j2
 //@Service
 //@Transactional
 //@Data

@@ -4,13 +4,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Helper class to Exception.
  * @author tiago.canatelli
  */
-@Slf4j
+@Log4j2
 public final class ExceptionHelper {
 
     private ExceptionHelper() {

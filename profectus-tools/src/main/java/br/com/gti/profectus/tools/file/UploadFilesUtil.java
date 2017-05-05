@@ -12,9 +12,9 @@ import java.util.Properties;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 public final class UploadFilesUtil {
 
     private static final int READING_SIZE = 1024;

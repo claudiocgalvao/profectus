@@ -13,13 +13,13 @@
 //import br.com.gti.profectus.business.dto.security.UserDTO;
 //import br.com.gti.profectus.business.entity.security.User;
 //import br.com.gti.profectus.business.services.security.ISecurityService;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.log4j.Log4j2;
 //
 ///**
 // * SecurityController.
 // * @since 25/11/2014
 // */
-//@Slf4j
+//@Log4j2
 //@Controller
 //@RequestMapping(value = "/security")
 //public class SecurityController {

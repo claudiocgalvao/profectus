@@ -10,14 +10,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Helper to read file.
  */
-@Slf4j
+@Log4j2
 public final class ReadFileUtil {
 
     /**

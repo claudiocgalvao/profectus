@@ -17,14 +17,14 @@ import br.com.gti.profectus.infra.logfile.logLayout.LogLayout;
 import br.com.gti.profectus.tools.dateTime.DateHelper;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * AbstractFileLogService.
  * @author tiago.canatelli
  * @since 25/06/2015
  */
-@Slf4j
+@Log4j2
 public abstract class AbstractFileLogService {
 
     /** Path log file. */
