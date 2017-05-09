@@ -49,7 +49,7 @@ public class LoginController {
     } else {
       view.setViewName("login/login");
     }
-    log.debug("nivel info");
+    log.debug("nivel debug");
     log.info("nivel info");
     log.error("nivel error");
 
