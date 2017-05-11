@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<configuration status="info">
-	<appenders>
-		<console name="console" target="system_out">
-			<patternlayout pattern="%d{hh:mm:ss.sss} [%t] %-5level %logger{36} - %msg%n" />
-		</console>
-		<file name="myfile" filename="all.log" immediateflush="true" append="true">
-			<patternlayout pattern="%d{yyy-mm-dd hh:mm:ss.sss} [%t] %-5level %logger{36} - %msg%n" />
-		</file>
-	</appenders>
-	<!-- <loggers> <root level="error"> <appenderref ref="console" /> <appenderref ref="myfile" /> </root> </loggers> -->
-	<loggers>
-		<root level="info">
-			<appenderref ref="console" />
-			<appenderref ref="myfile" />
-		</root>
-		<logger name="br" level="trace" additivity="false">
-			<appenderref ref="console" />
-		</logger>
-		<logger name="br.com.gti" additivity="false">
-			<appenderref ref="console" />
-		</logger>
-		<logger name="br.com.gti.profectus" level="error" additivity="false">
-			<appenderref ref="console" />
-		</logger>
-	</loggers>
+<!-- configuracao async -->
+<configuration status="info" name="profectus" packages="br.com.profectus">
+  <appenders >
+	<console name="console" target="system_out">
+		<patternlayout pattern="%d %p %c{1} %m%n" />
+	</console>
+    <file name="file" filename="c:/devtools/srv/apache-tomcat-8.0.43/logs/profectus.log">
+		<patternlayout pattern="%d %p %c{1} %m%n" />
+    </file>
+    <async name="async">
+      <appenderref ref="file"/>
+      <appenderref ref="console" />
+    </async>
+  </appenders>
+  <loggers>
+    <root level="debug">
+      <appenderref ref="async"/>
+    </root>
+  </loggers>
 </configuration>
