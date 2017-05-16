@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- configuracao async -->
-<configuration status="info" name="profectus" packages="br.com.profectus">
+<configuration status="debug" name="profectus" packages="br.com.profectus">
   <appenders >
 	<console name="console" target="system_out">
 		<patternlayout pattern="%d %p %c{1} %m%n" />
