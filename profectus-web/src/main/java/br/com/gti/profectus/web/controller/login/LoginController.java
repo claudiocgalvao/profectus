@@ -1,7 +1,10 @@
 package br.com.gti.profectus.web.controller.login;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.gti.profectus.business.dao.user.UserDAO;
+import br.com.gti.profectus.business.entity.security.User;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -20,20 +26,19 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * LoginController.
- * @author eduardo.fsantos
- * @since 25/11/2014
  */
 @Controller
 @RequestMapping(value = "/")
 @Log4j2
+@Data
 public class LoginController {
 
   private Authentication auth;
-
+  
+  @Autowired
+  private UserDAO userDAO;
   /**
    * defaultPage.
-   * @author eduardo.fsantos
-   * @since 03/12/2014
    * @return ModelAndView
    */
   @RequestMapping(value = {
@@ -49,18 +54,12 @@ public class LoginController {
     } else {
       view.setViewName("login/login");
     }
-    log.debug("nivel debug");
-    log.info("nivel info");
-    log.error("nivel error");
-
     return view;
 
   }
 
   /**
    * executeSecurity.
-   * @author eduardo.fsantos
-   * @since 03/12/2014
    * @param model
    * @param request
    * @return String
@@ -116,12 +115,23 @@ public class LoginController {
       model.addObject("msg", "You've been logged out successfully.");
     }
     model.setViewName("login/login");
+    
+//    for (long i = 0; i < 10; i++) {
+//		User user = new User(null, "despartment", "email", true, "name", "password", "username");
+//		userDAO.save(user);
+//	}
+
+    //TESTE MONGO
+    List<User> users = userDAO.findAll();
+    model.addObject("users", users);
+    
+    for (User user : users) {
+    	log.info(user.getName());
+	}
 
     return model;
-
   }
 
-  //for 403 access denied page
   /**
    * accesssDenied.
    * @since 03/12/2014
