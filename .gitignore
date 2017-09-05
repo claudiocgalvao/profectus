@@ -3,3 +3,4 @@
 *.classpath
 .settings
 bin
+/profectus-front-end/node_modules

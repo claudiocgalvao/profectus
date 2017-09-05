@@ -126,7 +126,7 @@ public class LoginController {
     model.addObject("users", users);
     
     for (User user : users) {
-    	log.info(user.getName());
+    	log.info(user.getEmail());
 	}
 
     return model;

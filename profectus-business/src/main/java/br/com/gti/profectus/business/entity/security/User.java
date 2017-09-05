@@ -22,6 +22,10 @@ public class User implements Serializable {
     @Id
     private Object _id;
 
+    private String _class;
+    
+    private Long userId;
+    
     private String despartment;
 
     private String email;
